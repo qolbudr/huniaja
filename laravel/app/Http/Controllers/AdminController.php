@@ -37,7 +37,46 @@ class AdminController extends Controller
 
     public function collectionFacility(){
         $facilityList = DB::table('facility_list')->get();
-        return view("admin.facility", ["facilities" => $facilityList]);
+        $facilities = Array(
+            [
+                'name' => 'Sarapan',
+                'icon' => 'fa fa-cutlery'
+            ],
+            [
+                'name' => 'WIFI',
+                'icon' => 'fa fa-wifi'
+            ],
+            [
+                'name' => 'AC',
+                'icon' => 'fa fa-wind'
+            ],
+            [
+                'name' => 'Kasur',
+                'icon' => 'fa fa-bed'
+            ],
+            [
+                'name' => 'WC',
+                'icon' => 'fa fa-bath'
+            ],
+            [
+                'name' => 'PDAM',
+                'icon' => 'fa fa-tint'
+            ],
+            [
+                'name' => 'TV',
+                'icon' => 'fa fa-tv'
+            ],
+            [
+                'name' => 'Listrik',
+                'icon' => 'fa fa-lightbulb-o'
+            ],
+            [
+                'name' => 'Parkir',
+                'icon' => 'fa fa-parking-circle'
+            ]
+        );
+            // return ['facilites' => $facilities];
+        return view("admin.facility", [  "facilities" => json_encode($facilities), "facilityCollection" => $facilityList]);
     }
 
     public function updateUser(Request $request, $id){
@@ -80,6 +119,32 @@ class AdminController extends Controller
     }
     public function deleteOwner($ownerid){
         DB::table('users')->where('role', 1)->where('id', $ownerid)->delete();
+        return redirect()->back();
+    }
+
+    public function createFacility(Request $request){
+        $data = [
+            "name" => $request->name,
+            "webIcon" => $request->icon,
+        ];
+        DB::table('facility_list')->insert($data);
+        return redirect()->back();
+    }
+
+    public function deleteFacility($id){
+        DB::table('facility_list')->where('id', $id)->delete();
+        return redirect()->back();
+    }
+
+    public function getFacility($id){
+        return DB::table('facility_list')->where('id', $id)->first();
+    }
+
+    public function updateFacility(Request $req, $id){
+        DB::table('facility_list')->where('id', $id)->update([
+            'name' => $req->name,
+            'webIcon' => $req->icon
+        ]);
         return redirect()->back();
     }
 }
