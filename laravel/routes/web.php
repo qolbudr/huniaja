@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\WebFunction;
 
@@ -51,6 +52,10 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/account/add/balance/{balance}', [WebFunction::class, 'addBalance'])->name('addBalance');
 });
 
+Route::get('/owner', function () {
+    return redirect('/owner/dashboard');
+});
+
 /* MUST BE OWNER AUTH */
 Route::group(['middleware' => 'owner.auth'], function () {
     Route::get('/owner/dashboard', [OwnerController::class, 'dashboard'])->name('ownerDashboard');
@@ -62,3 +67,18 @@ Route::group(['middleware' => 'owner.auth'], function () {
 
     Route::post('owner/property/insert', [OwnerController::class, 'insertProperty']);
 });
+
+//route for admin without middleware
+Route::get('/admin', function () {
+    return redirect('/admin/dashboard');
+});
+Route::get('/admin/login', [AdminController::class, 'login'])->name('adminLogin');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adminDashboard');
+Route::get('/admin/user', [AdminController::class, 'manageUser'])->name('adminCollectionUser');
+Route::get('/admin/user/{userid}', [AdminController::class, 'getUserByAdmin'])->name('adminGetUser');
+Route::post('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('adminUpdateUser');
+Route::post('/admin/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('adminDeleteUser');
+Route::get('/admin/owner', [AdminController::class, 'collectionOwner'])->name('adminCollectionOwner');
+Route::get('/admin/facility', [AdminController::class, 'collectionFacility'])->name('adminFacility');
+Route::post('/admin/facility/create', [AdminController::class, 'createFacility'])->name('adminCreateFacility');
+// Route::post('/admin/facility/update/${id}',[]);
