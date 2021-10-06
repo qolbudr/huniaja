@@ -61,4 +61,25 @@ class AdminController extends Controller
         $user = DB::table('users')->where('id', $userid)->first();
         return $user;
     }
+    public function getOwner($ownerid){
+        $owner = DB::table('users')->where('id', $ownerid)->where('role', 1)->first();
+        return $owner;
+    }
+    public function updateOwner(Request $request, $ownerid){
+        $updateData = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "dob" => $request->dob,
+            "phone" => $request->phone,
+            "balance" => $request->balance,
+            "address" => $request->address
+        ];
+        
+        DB::table('users')->where('role', 1)->where('id', $ownerid)->update($updateData);
+        return redirect()->back();
+    }
+    public function deleteOwner($ownerid){
+        DB::table('users')->where('role', 1)->where('id', $ownerid)->delete();
+        return redirect()->back();
+    }
 }
