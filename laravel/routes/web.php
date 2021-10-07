@@ -87,4 +87,5 @@ Route::get('/admin/facility/{id}', [AdminController::class, 'getFacility'])->nam
 Route::post('/admin/facility/update/{id}', [AdminController::class, 'updateFacility'])->name('adminUpdateFacility');
 Route::post('/admin/facility/delete/{id}', [AdminController::class, 'deleteFacility'])->name('adminDeleteFacility');
 Route::post('/admin/facility/create', [AdminController::class, 'createFacility'])->name('adminCreateFacility');
-// Route::post('/admin/facility/update/${id}',[]);
+Route::get('/admin/property',[AdminController::class, 'collectionProperty'])->name('adminProperty');
+Route::post('/admin/property/delete/{id}',[AdminController::class, 'deleteProperty'])->name('adminDeleteProperty');

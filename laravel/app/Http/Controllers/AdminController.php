@@ -35,9 +35,10 @@ class AdminController extends Controller
         return view("admin.owner", ['owners' => $owners]);
     }
 
-    public function collectionFacility(){
+    public function collectionFacility()
+    {
         $facilityList = DB::table('facility_list')->get();
-        $facilities = Array(
+        $facilities = array(
             [
                 'name' => 'Sarapan',
                 'icon' => 'fa fa-cutlery'
@@ -75,11 +76,12 @@ class AdminController extends Controller
                 'icon' => 'fa fa-parking-circle'
             ]
         );
-            // return ['facilites' => $facilities];
-        return view("admin.facility", [  "facilities" => json_encode($facilities), "facilityCollection" => $facilityList]);
+        // return ['facilites' => $facilities];
+        return view("admin.facility", ["facilities" => json_encode($facilities), "facilityCollection" => $facilityList]);
     }
 
-    public function updateUser(Request $request, $id){
+    public function updateUser(Request $request, $id)
+    {
         $updateData = [
             "name" => $request->name,
             "email" => $request->email,
@@ -92,19 +94,23 @@ class AdminController extends Controller
         return redirect('/admin/user');
     }
 
-    public function deleteUser($id){
+    public function deleteUser($id)
+    {
         DB::table('users')->where('id', $id)->delete();
         return redirect()->back();
     }
-    public function getUserByadmin($userid){
+    public function getUserByadmin($userid)
+    {
         $user = DB::table('users')->where('id', $userid)->first();
         return $user;
     }
-    public function getOwner($ownerid){
+    public function getOwner($ownerid)
+    {
         $owner = DB::table('users')->where('id', $ownerid)->where('role', 1)->first();
         return $owner;
     }
-    public function updateOwner(Request $request, $ownerid){
+    public function updateOwner(Request $request, $ownerid)
+    {
         $updateData = [
             "name" => $request->name,
             "email" => $request->email,
@@ -113,16 +119,18 @@ class AdminController extends Controller
             "balance" => $request->balance,
             "address" => $request->address
         ];
-        
+
         DB::table('users')->where('role', 1)->where('id', $ownerid)->update($updateData);
         return redirect()->back();
     }
-    public function deleteOwner($ownerid){
+    public function deleteOwner($ownerid)
+    {
         DB::table('users')->where('role', 1)->where('id', $ownerid)->delete();
         return redirect()->back();
     }
 
-    public function createFacility(Request $request){
+    public function createFacility(Request $request)
+    {
         $data = [
             "name" => $request->name,
             "webIcon" => $request->icon,
@@ -131,20 +139,48 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function deleteFacility($id){
+    public function deleteFacility($id)
+    {
         DB::table('facility_list')->where('id', $id)->delete();
         return redirect()->back();
     }
 
-    public function getFacility($id){
+    public function getFacility($id)
+    {
         return DB::table('facility_list')->where('id', $id)->first();
     }
 
-    public function updateFacility(Request $req, $id){
+    public function updateFacility(Request $req, $id)
+    {
         DB::table('facility_list')->where('id', $id)->update([
             'name' => $req->name,
             'webIcon' => $req->icon
         ]);
+        return redirect()->back();
+    }
+
+    public function collectionProperty()
+    {
+        $properties = DB::table('property')
+            ->join('users', 'property.ownerId', '=', 'users.id')
+            ->select(
+                'property.id',
+                'property.ownerId',
+                'users.name as owner',
+                'property.name',
+                'property.address',
+                'property.price_day',
+                'property.price_month',
+                'property.price_year'
+            )
+            ->get();
+        // return $properties;
+        return view('admin.property', ['properties' => $properties]);
+    }
+
+    public function deleteProperty($id)
+    {
+        DB::table('property')->where('id', $id)->delete();
         return redirect()->back();
     }
 }
