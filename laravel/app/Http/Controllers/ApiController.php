@@ -284,5 +284,195 @@ class ApiController extends Controller
       ]);
 
       return response()->json(['message' => "Booking berhasil menunggu persetujuan pemilik"], 200);
-    }   
+    }
+
+    public function updateUserAccount(Request $request) {
+        $userId = $request->userId;
+
+        $rules = [
+            'name'                  => 'required|min:6|max:15',
+            'email'                 => 'required|email|unique:users,email,'.$userId,
+            'dob'                   => 'required',
+            'address'               => 'required',
+            'phone'                 => 'required|numeric|min:12'
+        ];
+  
+        $messages = [
+            'name.required'         => 'Nama Lengkap wajib diisi',
+            'name.min'              => 'Nama lengkap minimal 6 karakter',
+            'name.max'              => 'Nama lengkap maksimal 15 karakter',
+            'email.required'        => 'Email wajib diisi',
+            'email.email'           => 'Email tidak valid',
+            'email.unique'          => 'Email sudah terdaftar',
+            'dob.required'          => 'Tanggal lahir harus diisi',
+            'address.required'      => 'Alamat harus diisi',
+            'phone.required'        => 'Telepon harus diisi',
+            'phone.min'             => 'Telepon minimal 12 karakter',
+            'phone.numeric'         => 'Telepon harus angka',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+  
+        if($validator->fails()){
+            $data = $validator->messages()->toArray();
+            $output = "";
+
+            foreach($data as $k => $v) {
+                $output = str_replace(['[', ']'], ['', ''], $v[0]);
+                break;
+            } 
+            return response()->json(['message' => $output], 500);
+        }
+
+        $data = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "dob" => $request->dob,
+            "phone" => $request->phone,
+            "address" => $request->address
+        ];
+
+        $data = DB::table('users')->where('id', $userId)->update($data);
+        $users = DB::table('users')->where('id', $userId)->first();
+        return response()->json(['message' => "User berhasil diupdate", "user" => $users], 200);
+    }
+
+    public function getBooking(Request $req) {
+        $userId = $req->userId;
+        $data = DB::table('q_booking')->where('userId', $userId)->first();
+        return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
+    }
+
+    public function getBill($userId) {
+        $data = DB::table('q_bill')->where('userId', $userId)->get();
+        // dd($data);
+        return response()->json(['message' => "Fetching data berhasil", "bill" => $data], 200);
+    }
+
+    public function topupBalance(Request $req) {
+      \Midtrans\Config::$serverKey = 'SB-Mid-server-zF2jvA9m2dmnatNsgA7VQgqX';
+      \Midtrans\Config::$isProduction = false;
+      \Midtrans\Config::$isSanitized = true;
+      \Midtrans\Config::$is3ds = true;
+
+      $users = DB::table('users')->where('id', $req->userId)->first();
+
+      $data = [
+        "transaction_details" => [
+          "order_id" => time(),
+          "gross_amount" => 5
+        ],
+
+        "item_details" => [
+          [
+            "id" => time(),
+            "price" => $req->price,
+            "quantity" => 1,
+            "name" => "Topup Saldo"
+          ]
+        ],
+
+        "customer_details" => [
+          "first_name" => $users->name,
+          "email" => $users->email,
+          "phone" => $users->phone
+        ]
+      ];
+
+      $snapToken = \Midtrans\Snap::createTransaction($data)->redirect_url;
+      return $snapToken;
+    }
+
+    public function getBookingData(Request $req) {
+        $data = DB::table('q_booking')
+                ->where('userId', $req->userId)
+                ->where('status', '!=', 2)->first();
+        return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
+    }
+
+    public function getReviewId($userId, $propertyId) {
+        $data = DB::table('review')
+                ->where('userId', $userId)
+                ->where('propertyId', $propertyId)->first();
+        return response()->json($data, 200);
+    }
+
+    public function addReview(Request $req) {
+      $userId = $req->userId;
+
+      DB::table('review')->upsert([
+        "date" => date('Y-m-d'),
+        "userId" => $userId,
+        "propertyId" => $req->propertyId,
+        "rating" => $req->rating,
+        "review" => $req->review,
+      ], ['userId', 'propertyId'], ['date', 'rating', 'review']);
+
+      return response()->json(['message' => "Review has been added"], 200);
+    }
+
+    public function changePassword(Request $req) {
+        $userId = $req->userId;
+        $users = DB::table('users')->where('id', $userId)->first();
+
+        $rules = [
+            'current_password'      => 'required',
+            'password'              => 'required|min:6|confirmed',
+        ];
+
+        $messages = [
+            'current_password.required' => 'Password saat ini harus diisi',
+            'password.min'          => 'Password minimal 6 karakter',
+            'password.required'     => 'Password wajib diisi',
+            'password.confirmed'    => 'Password tidak sama dengan konfirmasi password',
+        ];
+
+        $validator = Validator::make($req->all(), $rules, $messages);
+  
+        if($validator->fails()){
+            $data = $validator->messages()->toArray();
+            $output = "";
+
+            foreach($data as $k => $v) {
+                $output = str_replace(['[', ']'], ['', ''], $v[0]);
+                break;
+            } 
+            return response()->json(['message' => $output], 500);
+        }
+
+        if(!Hash::check($req->current_password, $users->password)) {
+            return response()->json(['message' => "Password lama salah"], 500);
+        }
+
+        DB::table('users')->where('id', $userId)->update(
+            [
+                "password" => Hash::make($req->password)
+            ]
+        );
+
+        return response()->json(['message' => "Password telah diubah silahkan login"], 200);
+    }
+
+    // public function payBill(Request $req) {
+    //     $userId = $req->userId;
+    //     $bill = DB::table('bill')->where('id', $billId)->where('userId', Auth::user()->id)->first();
+
+    //     if($users->balance < $bill->price) {
+    //         Session::flash('data', 'tagihan');
+    //         Session::flash('error', 'Saldo anda tidak cukup');
+    //         return redirect()->back();
+    //     }
+
+    //     $balance_left = $users->balance - $bill->price;
+
+    //     DB::table('users')->where('id', Auth::user()->id)->update([
+    //         "balance" => $balance_left
+    //     ]);
+
+    //     DB::table('bill')->where('id', $billId)->update(['status' => 1]);
+
+    //     Session::flash('data', 'tagihan');
+    //     Session::flash('success', 'Pembayaran tagihan berhasil');
+    //     return redirect(URL::to('account'));
+    // }   
 }
