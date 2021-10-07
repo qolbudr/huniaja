@@ -127,7 +127,7 @@
                         </li>
                         <li class="list-divider"></li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="{{ URL::to('logout') }}">
+                            <a class="sidebar-link sidebar-link" type="button" data-toggle="modal" data-target="#settingAccountDialog">
                                 <i data-feather="settings" class="feather-icon"></i>
                                 <span class="hide-menu">Pengaturan Akun</span>
                             </a>
@@ -144,57 +144,38 @@
         </aside>
         @yield('content')
 
-<div class="modal fade" id="viewUserModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myCenterModalLabel">Biodata Penyewa</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="row align-items-center my-4 mx-3">
-                    <div class="col-lg-4 text-center">
-                        <img id="pic" class="rounded-circle" style="height: 200px; width: 200px; object-fit: cover;">
+        <div class="modal fade" id="settingAccountDialog" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myCenterModalLabel">Pengaturan Akun</h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×</button>
                     </div>
-                    <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-6">
-                              <div class="form-group">
-                                <label>Nama</label>
-                                <input type="text" class="form-control" name="name" placeholder="Nama Lengkap" readonly>
-                              </div>
-                            </div>
-                            <div class="col-6">
-                              <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="form-control" name="email" placeholder="Email" readonly>
-                              </div>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-group">
-                                <label>Tanggal Lahir</label>
-                                <input type="date" class="form-control" name="dob" placeholder="Tanggal Lahir" readonly>
-                              </div>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-group">
-                                <label>Alamat</label>
-                                <input type="text" class="form-control" name="address" placeholder="Alamat" readonly>
-                              </div>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-group">
-                                <label>Telepon</label>
-                                <input type="number" class="form-control" name="phone" placeholder="Nomor Telepon" readonly>
-                              </div>
-                            </div>
-                        </div>
+                    <form action="{{URL::to('updateUserCredential')}}" id="updateAccount" method="POST">
+                      @csrf
+                      <div class="form-group col-md-12">
+                        <input type="text" id="namaSettingAccount" class="form-control" placeholder="nama" name="name" required>
+                      </div>
+                      <div class="form-group col-md-12">
+                        <input type="email" id="emailSettingAccount" class="form-control" placeholder="Email" name="email" required>
+                      </div>
+                      <div class="form-group col-md-12">
+                        <input type="number" id="phoneSettingAccount" class="form-control" placeholder="Nomor telepon" name="phone" required>
+                      </div>
+                      <div class="form-group col-md-12">
+                        <input type="date" id="dobSettingAccount" class="form-control" placeholder="Tanggal Lahir" name="dob" required>
+                      </div>
+                      <div class="form-group col-md-12">
+                        <textarea name="address" id="address" cols="30" rows="3" class="form-control" placeholder="Alamat"></textarea>
+                      </div>
+                      <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Simpan</button>
+                      </div>
                     </div>
+                </form>
                 </div>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
