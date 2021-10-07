@@ -151,7 +151,43 @@ class AuthController extends Controller
         } else if($role == 1) {
             return redirect()->route('ownerLogin');
         } else {
-            return redirect()->route('/admin/login');
+            return redirect()->route('adminLogin');
+        }
+    }
+
+    public function AdminLogin(Request $request)
+    {
+        $rules = [
+            'email'                 => 'required|email',
+            'password'              => 'required|string'
+        ];
+  
+        $messages = [
+            'email.required'        => 'Email wajib diisi',
+            'email.email'           => 'Email tidak valid',
+            'password.required'     => 'Password wajib diisi',
+            'password.string'       => 'Password harus berupa string'
+        ];
+  
+        $validator = Validator::make($request->all(), $rules, $messages);
+  
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput($request->all);
+        }
+  
+        $data = [
+            'email'     => $request->input('email'),
+            'password'  => $request->input('password'),
+        ];
+  
+        Auth::attempt($data);
+  
+        if (Auth::check() && Auth::user()->role == 2) {
+            return redirect()->route('adminDashboard');
+        } else {
+            Auth::logout();
+            Session::flash('error', 'Email atau password salah');
+            return redirect()->back();
         }
     }
 }

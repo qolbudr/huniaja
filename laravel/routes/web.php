@@ -21,6 +21,7 @@ use App\Http\Controllers\ApiController;
 */
 
 /* GLOBAL WEB */
+
 Route::get('/', [WebController::class, 'index'])->name('/');
 Route::get('/search', [WebController::class, 'search'])->name('search');
 Route::get('/login', [WebController::class, 'login'])->name('login');
@@ -74,20 +75,32 @@ Route::group(['middleware' => 'owner.auth'], function () {
 Route::get('/admin', function () {
     return redirect('/admin/dashboard');
 });
-Route::get('/admin/login', [AdminController::class, 'login'])->name('adminLogin');
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adminDashboard');
-Route::get('/admin/user', [AdminController::class, 'manageUser'])->name('adminCollectionUser');
-Route::get('/admin/user/{userid}', [AdminController::class, 'getUserByAdmin'])->name('adminGetUser');
-Route::post('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('adminUpdateUser');
-Route::post('/admin/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('adminDeleteUser');
-Route::get('/admin/owner', [AdminController::class, 'collectionOwner'])->name('adminCollectionOwner');
-Route::get('/admin/owner/{ownerid}', [AdminController::class, 'getOwner'])->name('adminGetOwner');
-Route::post('/admin/owner/update/{ownerid}', [AdminController::class, 'updateOwner'])->name('adminUpdateOwner');
-Route::post('/admin/owner/delete/{ownerid}', [AdminController::class, 'deleteOwner'])->name('adminDeleteOwner');
-Route::get('/admin/facility', [AdminController::class, 'collectionFacility'])->name('adminFacility');
-Route::get('/admin/facility/{id}', [AdminController::class, 'getFacility'])->name('adminGetFacility');
-Route::post('/admin/facility/update/{id}', [AdminController::class, 'updateFacility'])->name('adminUpdateFacility');
-Route::post('/admin/facility/delete/{id}', [AdminController::class, 'deleteFacility'])->name('adminDeleteFacility');
-Route::post('/admin/facility/create', [AdminController::class, 'createFacility'])->name('adminCreateFacility');
-Route::get('/admin/property',[AdminController::class, 'collectionProperty'])->name('adminProperty');
-Route::post('/admin/property/delete/{id}',[AdminController::class, 'deleteProperty'])->name('adminDeleteProperty');
+
+Route::get('/admin/login', function(){
+    return view('admin.login');
+})->name('adminLogin');
+
+Route::post('/auth/admin/login', [AuthController::class, 'adminLogin'])->name('adminValidationLogin');
+
+
+// MUST BE ADMIN AUTH
+Route::middleware(['middleware' => 'admin.auth'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adminDashboard');
+    Route::get('/admin/user', [AdminController::class, 'manageUser'])->name('adminCollectionUser');
+    Route::get('/admin/user/{userid}', [AdminController::class, 'getUserByAdmin'])->name('adminGetUser');
+    Route::post('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('adminUpdateUser');
+    Route::post('/admin/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('adminDeleteUser');
+    Route::get('/admin/owner', [AdminController::class, 'collectionOwner'])->name('adminCollectionOwner');
+    Route::get('/admin/owner/{ownerid}', [AdminController::class, 'getOwner'])->name('adminGetOwner');
+    Route::post('/admin/owner/update/{ownerid}', [AdminController::class, 'updateOwner'])->name('adminUpdateOwner');
+    Route::post('/admin/owner/delete/{ownerid}', [AdminController::class, 'deleteOwner'])->name('adminDeleteOwner');
+    Route::get('/admin/facility', [AdminController::class, 'collectionFacility'])->name('adminFacility');
+    Route::get('/admin/facility/{id}', [AdminController::class, 'getFacility'])->name('adminGetFacility');
+    Route::post('/admin/facility/update/{id}', [AdminController::class, 'updateFacility'])->name('adminUpdateFacility');
+    Route::post('/admin/facility/delete/{id}', [AdminController::class, 'deleteFacility'])->name('adminDeleteFacility');
+    Route::post('/admin/facility/create', [AdminController::class, 'createFacility'])->name('adminCreateFacility');
+    Route::get('/admin/property', [AdminController::class, 'collectionProperty'])->name('adminProperty');
+    Route::post('/admin/property/delete/{id}', [AdminController::class, 'deleteProperty'])->name('adminDeleteProperty');
+    Route::get('/admin/credential', [AdminController::class, 'getCredential'])->name('adminGetCurrentCredential');
+    Route::post('/admin/credential/update', [AdminController::class, 'updateAdminCredential'])->name('adminUpdateCurrentCredential');
+});
