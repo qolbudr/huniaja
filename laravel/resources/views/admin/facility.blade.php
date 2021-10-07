@@ -95,12 +95,13 @@
                   <div class="row">
                     <div class="form-group col-md-12">
                       <input type="hidden" name="icon" id="iconFacility">
+                      <input type="hidden" name="mobileIcon" id="mobileIcon">
                       <input type="text" class="form-control" placeholder="Nama Fasilitas" name="name" id="nameFacilityInput" required readonly>
                     </div>
                     
                     <div class="col-md-12 row form-group mx-auto">
                       @foreach(json_decode($facilities) as $i => $f)
-                        <button type="button" class="col-md-2 m-1 p-1 btn btn-light" onclick="changeFacilitiesStore('{{$f->name}}','{{$f->icon}}')">
+                        <button type="button" class="col-md-2 m-1 p-1 btn btn-light" onclick="changeFacilitiesStore('{{$f->name}}','{{$f->icon}}', '{{$f->mobileIcon}}')">
                           <i class="{{$f->icon}}" aria-hidden="true"></i>
                             <span>{{$f->name}}</span>
                         </button>
@@ -129,12 +130,13 @@
                 <div class="row">
                   <div class="form-group col-md-12">
                     <input type="hidden" name="icon" id="iconFacilityEdit">
+                    <input type="hidden" name="mobileIcon" id="mobileIconFacilityEdit">
                     <input type="text" class="form-control" placeholder="Nama Fasilitas" name="name" id="editNameFacility" required readonly>
                   </div>
                   
                   <div class="col-md-12 row form-group mx-auto">
                     @foreach(json_decode($facilities) as $i => $f)
-                      <button type="button" class="col-md-2 m-1 p-1 btn btn-light" onclick="changeEditFacility('{{$f->name}}','{{$f->icon}}')">
+                      <button type="button" class="col-md-2 m-1 p-1 btn btn-light" onclick="changeEditFacility('{{$f->name}}','{{$f->icon}}', '{{$f->mobileIcon}}')">
                         <i class="{{$f->icon}}" aria-hidden="true"></i>
                           <span>{{$f->name}}</span>
                       </button>
@@ -175,9 +177,10 @@
   </div>
 </div>
 <script>
-  function changeFacilitiesStore(name, icon){
+  function changeFacilitiesStore(name, icon, mobileIcon){
     document.querySelector('#iconFacility').value = icon
     document.querySelector('#nameFacilityInput').value = name
+    document.querySelector('#mobileIcon').value = mobileIcon
   }
 
   function editFacility(id){
@@ -188,8 +191,9 @@
     })
   }
 
-  function changeEditFacility(name, icon){
+  function changeEditFacility(name, icon, mobileIcon){
     document.querySelector("#editNameFacility").value = name
+    document.querySelector('#mobileIconFacilityEdit').value = mobileIcon
     document.querySelector("#iconFacilityEdit").value = icon
   }
 

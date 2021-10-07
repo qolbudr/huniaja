@@ -41,39 +41,48 @@ class AdminController extends Controller
         $facilities = array(
             [
                 'name' => 'Sarapan',
-                'icon' => 'fa fa-cutlery'
+                'icon' => 'fa fa-cutlery',
+                'mobileIcon' => '0xe3a0'
             ],
             [
                 'name' => 'WIFI',
-                'icon' => 'fa fa-wifi'
+                'icon' => 'fa fa-wifi',
+                'mobileIcon' => '58406'
             ],
             [
                 'name' => 'AC',
-                'icon' => 'fa fa-wind'
+                'icon' => 'fa fa-wind',
+                'mobileIcon' => '60969',
             ],
             [
                 'name' => 'Kasur',
-                'icon' => 'fa fa-bed'
+                'icon' => 'fa fa-bed',
+                'mobileIcon' => '0xe0d7'
             ],
             [
                 'name' => 'WC',
-                'icon' => 'fa fa-bath'
+                'icon' => 'fa fa-bath',
+                'mobileIcon' => '0xe0cf'
             ],
             [
                 'name' => 'PDAM',
-                'icon' => 'fa fa-tint'
+                'icon' => 'fa fa-tint',
+                'mobileIcon' => '0xe6d1'
             ],
             [
                 'name' => 'TV',
-                'icon' => 'fa fa-tv'
+                'icon' => 'fa fa-tv',
+                'mobileIcon' => '0xe687'
             ],
             [
                 'name' => 'Listrik',
-                'icon' => 'fa fa-lightbulb-o'
+                'icon' => 'fa fa-lightbulb-o',
+                'mobileIcon' => '0xe379'
             ],
             [
                 'name' => 'Parkir',
-                'icon' => 'fa fa-parking-circle'
+                'icon' => 'fa fa-parking-circle',
+                'mobileIcon' => '0xe39d'
             ]
         );
         // return ['facilites' => $facilities];
@@ -134,6 +143,7 @@ class AdminController extends Controller
         $data = [
             "name" => $request->name,
             "webIcon" => $request->icon,
+            "mobileIcon" => $request->mobileIcon
         ];
         DB::table('facility_list')->insert($data);
         return redirect()->back();
@@ -154,7 +164,8 @@ class AdminController extends Controller
     {
         DB::table('facility_list')->where('id', $id)->update([
             'name' => $req->name,
-            'webIcon' => $req->icon
+            'webIcon' => $req->icon,
+            'mobileIcon' => $req->mobileIcon
         ]);
         return redirect()->back();
     }
