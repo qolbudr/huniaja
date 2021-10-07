@@ -22,6 +22,7 @@ Route::post('/register', [ApiController::class, 'register']);
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/user/get/{id}', [ApiController::class, 'getUserData']);
+    Route::post('/user/update', [ApiController::class, 'updateUserAccount']);
     Route::get('/property/get', [ApiController::class, 'getProperty']);
     Route::get('/property/filter/{place}/{type}', [ApiController::class, 'filterSearch']);
     Route::get('/property/favorite/{userId}', [ApiController::class, 'getFavorite']);
@@ -31,4 +32,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/property/pay/day', [ApiController::class, 'payDay']);
     Route::post('/property/pay/month', [ApiController::class, 'payMonth']);
     Route::post('/property/pay/year', [ApiController::class, 'payYear']);
+    Route::get('/bill/get/{id}', [ApiController::class, 'getBill']);
+    Route::post('/saldo/topup', [ApiController::class, 'topupBalance']);
 });
