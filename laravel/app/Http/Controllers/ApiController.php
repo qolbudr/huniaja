@@ -383,6 +383,76 @@ class ApiController extends Controller
       return $snapToken;
     }
 
+    public function getBookingData(Request $req) {
+        $data = DB::table('q_booking')
+                ->where('userId', $req->userId)
+                ->where('status', '!=', 2)->first();
+        return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
+    }
+
+    public function getReviewId($userId, $propertyId) {
+        $data = DB::table('review')
+                ->where('userId', $userId)
+                ->where('propertyId', $propertyId)->first();
+        return response()->json($data, 200);
+    }
+
+    public function addReview(Request $req) {
+      $userId = $req->userId;
+
+      DB::table('review')->upsert([
+        "date" => date('Y-m-d'),
+        "userId" => $userId,
+        "propertyId" => $req->propertyId,
+        "rating" => $req->rating,
+        "review" => $req->review,
+      ], ['userId', 'propertyId'], ['date', 'rating', 'review']);
+
+      return response()->json(['message' => "Review has been added"], 200);
+    }
+
+    public function changePassword(Request $req) {
+        $userId = $req->userId;
+        $users = DB::table('users')->where('id', $userId)->first();
+
+        $rules = [
+            'current_password'      => 'required',
+            'password'              => 'required|min:6|confirmed',
+        ];
+
+        $messages = [
+            'current_password.required' => 'Password saat ini harus diisi',
+            'password.min'          => 'Password minimal 6 karakter',
+            'password.required'     => 'Password wajib diisi',
+            'password.confirmed'    => 'Password tidak sama dengan konfirmasi password',
+        ];
+
+        $validator = Validator::make($req->all(), $rules, $messages);
+  
+        if($validator->fails()){
+            $data = $validator->messages()->toArray();
+            $output = "";
+
+            foreach($data as $k => $v) {
+                $output = str_replace(['[', ']'], ['', ''], $v[0]);
+                break;
+            } 
+            return response()->json(['message' => $output], 500);
+        }
+
+        if(!Hash::check($req->current_password, $users->password)) {
+            return response()->json(['message' => "Password lama salah"], 500);
+        }
+
+        DB::table('users')->where('id', $userId)->update(
+            [
+                "password" => Hash::make($req->password)
+            ]
+        );
+
+        return response()->json(['message' => "Password telah diubah silahkan login"], 200);
+    }
+
     // public function payBill(Request $req) {
     //     $userId = $req->userId;
     //     $bill = DB::table('bill')->where('id', $billId)->where('userId', Auth::user()->id)->first();

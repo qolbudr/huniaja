@@ -7,6 +7,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\WebFunction;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,8 @@ Route::post('/auth/user/register', [AuthController::class, 'register'])->name('u
 Route::get('/search/filter/{place}/{type}', [WebFunction::class, 'filterSearch'])->name('filterSearch');
 Route::get('/user/info/{id}', [WebFunction::class, 'getUserInfo']);
 
+// Route::get('/test/{id}', [ApiController::class, 'getBookingData']);
+
 /* MUST BE USER AUTH */
 Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/detail/{id}/{name}', [WebController::class, 'detail'])->name('detail');
@@ -64,7 +67,6 @@ Route::group(['middleware' => 'owner.auth'], function () {
     Route::get('/owner/bill', [OwnerController::class, 'bill']);
     Route::get('/owner/property', [OwnerController::class, 'property']);
     Route::get('/owner/chat', [OwnerController::class, 'chat'])->name('ownerChat');
-
     Route::post('owner/property/insert', [OwnerController::class, 'insertProperty']);
 });
 
@@ -87,4 +89,3 @@ Route::get('/admin/facility/{id}', [AdminController::class, 'getFacility'])->nam
 Route::post('/admin/facility/update/{id}', [AdminController::class, 'updateFacility'])->name('adminUpdateFacility');
 Route::post('/admin/facility/delete/{id}', [AdminController::class, 'deleteFacility'])->name('adminDeleteFacility');
 Route::post('/admin/facility/create', [AdminController::class, 'createFacility'])->name('adminCreateFacility');
-// Route::post('/admin/facility/update/${id}',[]);

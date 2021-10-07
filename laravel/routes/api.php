@@ -22,16 +22,25 @@ Route::post('/register', [ApiController::class, 'register']);
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/user/get/{id}', [ApiController::class, 'getUserData']);
+    
     Route::post('/user/update', [ApiController::class, 'updateUserAccount']);
+    Route::post('/user/changePassword', [ApiController::class, 'changePassword']);
+    
     Route::get('/property/get', [ApiController::class, 'getProperty']);
     Route::get('/property/filter/{place}/{type}', [ApiController::class, 'filterSearch']);
     Route::get('/property/favorite/{userId}', [ApiController::class, 'getFavorite']);
     Route::get('/property/getPhoto/{propertyId}', [ApiController::class, 'getPropertyPhoto']);
     Route::get('/property/getFacility/{propertyId}', [ApiController::class, 'getFacility']);
     Route::get('/property/getReview/{propertyId}', [ApiController::class, 'getReview']);
+    
     Route::post('/property/pay/day', [ApiController::class, 'payDay']);
     Route::post('/property/pay/month', [ApiController::class, 'payMonth']);
     Route::post('/property/pay/year', [ApiController::class, 'payYear']);
+
     Route::get('/bill/get/{id}', [ApiController::class, 'getBill']);
+    Route::get('/review/get/{id}/{propertyId}', [ApiController::class, 'getReviewId']);
+    Route::post('/review/add', [ApiController::class, 'addReview']);
+
     Route::post('/saldo/topup', [ApiController::class, 'topupBalance']);
+    Route::post('/booking/get', [ApiController::class, 'getBookingData']);
 });
