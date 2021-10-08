@@ -168,21 +168,67 @@ class OwnerController extends Controller
         return ['facilitiesProperty' => $facilitiesProperty, 'facilities' => $facilities];
     }
 
+    public function getProperty($propertyId)
+    {
+        $property = DB::table('property')
+            ->where('id', $propertyId)->first();
+        if ($property->ownerId != Auth::user()->id) {
+            return response()->json(
+                ['message' => 'Forbidden Difference Owner'],
+                403
+            );
+        }
+        return $property;
+    }
+
+    public function updateProperty(Request $req, $propertyId)
+    {
+        $data = [
+            "vrooms" => $req->vrooms,
+            "ownerId" => Auth::user()->id,
+            "avaliable" => 1,
+            "date_created" => date('Y-m-d'),
+            "name" => $req->name,
+            "description" => $req->description,
+            "latitude" => $req->latitude,
+            "longitude" => $req->longitude,
+            "address" => $req->address,
+            "type" => $req->type,
+            "price_day" => $req->price_day,
+            "price_month" => $req->price_month,
+            "price_year" => $req->price_year,
+        ];
+        DB::table('property')->where('id', $propertyId)->update($data);
+        Session::flash('success', 'Properti telah diperbarui');
+        return redirect()->back();
+    }
+
+    public function deleteProperty($propertyId)
+    {
+        $isExist = DB::table('property')->where('id', $propertyId)->first();
+        if ($isExist) {
+            DB::table('property')->where('id', $propertyId)->delete();
+            Session::flash('success', 'Properti telah dihapus');
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
     public function triggerFacilityProperty(Request $req, $propertyId)
     {
         $isPropertyHaveFacility = DB::table('facility')
-        ->where('propertyId', $propertyId)
-        ->where('facilityId', $req->facilityId)
-        ->first();
-        $message = '';
-
-        if($isPropertyHaveFacility){
-            DB::table('facility')
             ->where('propertyId', $propertyId)
             ->where('facilityId', $req->facilityId)
-            ->delete();
+            ->first();
+        $message = '';
+
+        if ($isPropertyHaveFacility) {
+            DB::table('facility')
+                ->where('propertyId', $propertyId)
+                ->where('facilityId', $req->facilityId)
+                ->delete();
             $message = 'Trigger Deleted';
-        }else{
+        } else {
             DB::table('facility')->insert([
                 'propertyId' => $propertyId,
                 'facilityId' => $req->facilityId
