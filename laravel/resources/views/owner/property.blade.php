@@ -61,7 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              @foreach($property as $k => $data)
+                              @foreach($data['property'] as $k => $data)
                               <tr>
                                   <td>{{ $k + 1}}</td>
                                   <td>{{ $data->name }}</td>
@@ -70,7 +70,7 @@
                                   <td>{{ number_format($data->price_year, 0, ',', '.') }}</td>
                                   <td>
                                     <button class="btn btn-primary btn-circle btn-sm"><i class="fa fa-image"></i></button>
-                                    <button class="btn btn-success btn-circle btn-sm"><i class="fa fa-bed"></i></button>
+                                    <button class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#facilityDialog" onclick="editFacility({{$data->id}})"><i class="fa fa-bed"></i></button>
                                     <button class="btn btn-warning btn-circle btn-sm"><i class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger btn-circle btn-sm"><i class="fa fa-trash"></i></button>
                                   </td>
@@ -145,4 +145,62 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+<div class="modal fade" id="facilityDialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myCenterModalLabel">Tambah Fasilitas</h4>
+              <button type="button" class="close" data-dismiss="modal"
+                  aria-hidden="true">×</button>
+          </div>
+          <form action="" id="updateFacilityForm" method="post">
+            <input type="hidden" id="csrfToken" value="{{csrf_token()}}">
+            <div class="modal-body">
+                <div class="row">
+                  <div class="form-group col-md-12">
+                  
+                  <div class="col-md-12 row form-group mx-auto">
+                    @foreach($facilities as $i => $f)
+                    <div class="form-check col-md-4 col-6">
+                      <input class="form-check-input" type="checkbox" onclick="triggerFacility({{$f->id}})" value="" id="facility-{{$f->id}}">
+                      <label class="form-check-label" for="flexCheckDefault">
+                        <span> <i class="{{$f->webIcon}}" aria-hidden="true"></i> {{$f->name}}</span>
+                      </label>
+                    </div>
+                    @endforeach
+                  </div>
+                </div>
+            </div>
+          </form>
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<script>
+  let currentPropertyId = null
+  function editFacility(propertyId){
+    currentPropertyId = propertyId
+    fetch(`${window.location.pathname}/${propertyId}`).then(res => res.json())
+    .then(res => {
+      res.facilitiesProperty.map(facility => {
+        document.querySelector(`#facility-${facility.facilityId}`).setAttribute('checked', 'true')
+      })
+    })
+  }
+
+  function triggerFacility(facilityId){
+    let dataBody = {
+      facilityId
+    }
+    let header = {
+      'X-CSRF-TOKEN': document.querySelector('#csrfToken').value,
+      'content-type': "application/json",
+    }
+    fetch(`${window.location.pathname}/update/${currentPropertyId}`,{
+      method: "POST",
+      body: JSON.stringify(dataBody),
+      headers: header
+    }).then(res => res.json())
+    .then(res => console.log(res))
+  }
+</script>
 @endsection
