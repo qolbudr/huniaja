@@ -67,8 +67,11 @@ Route::group(['middleware' => 'owner.auth'], function () {
     Route::get('/owner/booking', [OwnerController::class, 'booking']);
     Route::get('/owner/bill', [OwnerController::class, 'bill']);
     Route::get('/owner/property', [OwnerController::class, 'property']);
-    Route::get('/owner/property/{propertyId}', [OwnerController::class, 'getFacilitiesProperty']);
-    Route::post('/owner/property/update/{propertyId}', [OwnerController::class, 'triggerFacilityProperty'])->name('triggerFacilityInProperty');
+    Route::get('/owner/property/{propertyId}/facility', [OwnerController::class, 'getFacilitiesProperty']);
+    Route::get('/owner/property/{propertyId}', [OwnerController::class, 'getProperty']);
+    Route::post('/owner/property/update/{propertyId}', [OwnerController::class, 'updateProperty']);
+    Route::post('/owner/property/update/{propertyId}/facility', [OwnerController::class, 'triggerFacilityProperty'])->name('triggerFacilityInProperty');
+    Route::get('/owner/property/delete/{propertyId}', [OwnerController::class, 'deleteProperty']);
     Route::get('/owner/chat', [OwnerController::class, 'chat'])->name('ownerChat');
     Route::post('owner/property/insert', [OwnerController::class, 'insertProperty']);
 });
