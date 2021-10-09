@@ -74,8 +74,9 @@ Route::group(['middleware' => 'owner.auth'], function () {
     Route::get('/owner/property/delete/{propertyId}', [OwnerController::class, 'deleteProperty']);
     Route::get('/owner/chat', [OwnerController::class, 'chat'])->name('ownerChat');
     Route::post('owner/property/insert', [OwnerController::class, 'insertProperty']);
-
     Route::post('owner/property/image/upload', [WebFunction::class, 'uploadImageMultiple']);
+    Route::get('/owner/property/image/delete/{imageId}', [WebFunction::class, 'deleteImage']);
+    Route::get('/owner/property/image/{propertyId}', [WebFunction::class, 'getImages']);
 });
 
 //route for admin without middleware
@@ -83,7 +84,7 @@ Route::get('/admin', function () {
     return redirect('/admin/dashboard');
 });
 
-Route::get('/admin/login', function(){
+Route::get('/admin/login', function () {
     return view('admin.login');
 })->name('adminLogin');
 
