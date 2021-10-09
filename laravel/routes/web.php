@@ -77,6 +77,8 @@ Route::group(['middleware' => 'owner.auth'], function () {
     Route::post('owner/property/image/upload', [WebFunction::class, 'uploadImageMultiple']);
     Route::get('/owner/property/image/delete/{imageId}', [WebFunction::class, 'deleteImage']);
     Route::get('/owner/property/image/{propertyId}', [WebFunction::class, 'getImages']);
+    Route::get('/owner/ticket-list', [OwnerController::class, 'ticketList']);
+    Route::post('/owner/withdraw', [OwnerController::class, 'requestWithdraw']);
 });
 
 //route for admin without middleware

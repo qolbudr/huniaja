@@ -241,4 +241,31 @@ class OwnerController extends Controller
             200
         );
     }
+
+    public function ticketList(){
+        $balance = DB::table('users')->where('id', Auth::user()->id)->first()->balance;
+        $withdraw = DB::table('withdraw')->where('ownerId', Auth::user()->id)->get();
+        return view('owner.withdraw', ['balance' => $balance, 'withdraws' => $withdraw]);
+    }
+
+    public function requestWithDraw(Request $req)
+    {
+        $balance = DB::table('users')->where('id', Auth::user()->id)->first()->balance;
+        if($req->amount > $balance){
+            Session::flash('error', 'Tidak Dapat Melakukan Permintaan Penarikan');
+            return redirect()->back();
+        }
+        DB::table('withdraw')->insert([
+            'ownerId' => Auth::user()->id,
+            'amount' => $req->amount,
+            'created' => date("Y-m-d")
+        ]);
+        
+        DB::table('users')->where('id', Auth::user()->id)->update([
+            'balance' => ($balance - $req->amount)
+        ]);
+
+        Session::flash('success', 'Berhasil Mengajukan Penarikan');
+            return redirect()->back();
+    }
 }
