@@ -453,6 +453,20 @@ class ApiController extends Controller
         return response()->json(['message' => "Password telah diubah silahkan login"], 200);
     }
 
+    public function getOwnerProperty(Request $req) {
+        $userId = $req->userId;
+        $property = DB::table('q_property')->where('ownerId', $userId)->get();
+        return response()->json(['message' => "Fetching data berhasil", "property" => $property], 200);
+    }
+
+    public function getOwnerBook(Request $req) {
+        $ownerId = $req->userId;
+        $data = [
+            "booking" => DB::table('q_booking')->where('ownerId', $ownerId)->get()
+        ];
+        return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
+    }
+
     // public function payBill(Request $req) {
     //     $userId = $req->userId;
     //     $bill = DB::table('bill')->where('id', $billId)->where('userId', Auth::user()->id)->first();

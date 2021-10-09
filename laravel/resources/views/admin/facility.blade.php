@@ -20,7 +20,7 @@
                   </nav>
               </div>
           </div>
-          
+        </div>
   </div>
   <!-- ============================================================== -->
   <!-- End Bread crumb and right sidebar toggle -->
@@ -47,7 +47,6 @@
                       <div class="col-md-6 my-2 text-lg-right">
                         <button class="btn btn-primary" data-toggle="modal" data-target="#addFacility">Tambah Fasilitas</button>
                       </div>
-                  </div>
                     </div>
                     <div class="table-responsive">
                         <table id="datatable" class="table table-striped table-bordered no-wrap">
@@ -76,7 +75,6 @@
             </div>
         </div>
     </div>
-  </div>
 </div>
 <!-- ============================================================== -->
 <!-- End Page wrapper  -->

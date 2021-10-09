@@ -20,7 +20,7 @@
                   </nav>
               </div>
           </div>
-          
+        </div>
   </div>
   <!-- ============================================================== -->
   <!-- End Bread crumb and right sidebar toggle -->
@@ -44,7 +44,6 @@
                           <h6 class="card-subtitle">Kelola Property</h6>
                         </div>
                       </div>
-                  </div>
                     </div>
                     <div class="table-responsive">
                         <table id="datatable" class="table table-striped table-bordered no-wrap">
@@ -78,11 +77,10 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
+              </div>
+          </div>
+      </div>
     </div>
-  </div>
-</div>
 <!-- ============================================================== -->
 <!-- End Page wrapper  -->
 <!-- ============================================================== -->
