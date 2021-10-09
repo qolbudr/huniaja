@@ -303,4 +303,21 @@ class WebFunction extends Controller
       $user = DB::table('users')->where('id', $id)->first();
       return response()->json($user);
     }
+
+    public function uploadImageMultiple(Request $req) {
+      $id = $req->propertyId;
+      $file = $req->file('images');
+
+      $property = DB::table('property')->where('id', $id)->first();
+      $path  = str_replace(' ', '-', $property->id.'-'.strtolower($property->name).'/');
+      $tujuan_upload = 'public/images/'.$path;
+      $rand = rand(9999, 99999);
+      $file->move($tujuan_upload, $rand.'.'.$file->getClientOriginalExtension());
+      DB::table('image')->where('id', $property->id)->insert([
+        'propertyId' => $property->id,
+        'image' => $rand.'.'.$file->getClientOriginalExtension()
+      ]);
+      
+      return $rand.'.'.$file->getClientOriginalExtension();
+    }
 }

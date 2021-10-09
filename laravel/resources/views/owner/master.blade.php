@@ -190,10 +190,10 @@
     <script src="{{ asset('admin/extra-libs/c3/d3.min.js') }}"></script>
     <script src="{{ asset('admin/extra-libs/c3/c3.min.js') }}"></script>
     <script src="{{ asset('admin/libs/chartist/dist/chartist.min.js') }}"></script>
-    <script src="{{ asset('admin/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
+    <!-- <script src="{{ asset('admin/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script> -->
     <script src="{{ asset('admin/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js') }}"></script>
     <script src="{{ asset('admin/extra-libs/jvector/jquery-jvectormap-world-mill-en.js') }}"></script>
-    <script src="{{ asset('admin/dist/js/pages/dashboards/dashboard1.min.js') }}"></script>
+    <!-- <script src="{{ asset('admin/dist/js/pages/dashboards/dashboard1.min.js') }}"></script> -->
     <script type="text/javascript" src="{{ asset('assets/js/slimscroll.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('admin/extra-libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
