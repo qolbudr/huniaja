@@ -352,7 +352,8 @@
     formData.append('propertyId', currentPropertyId)
     fetch(`${window.location.pathname}/image/upload`, {
       method: "POST",
-      body: formData
+      body: formData,
+      headers: header
     })
     .then(res => res.json())
     .then(res => {
