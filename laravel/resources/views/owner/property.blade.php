@@ -240,11 +240,8 @@
             <input type="file" name="images" id="imageChooser" onchange="handleUploadImage()" class="form-control" id="">
           </div>
           <div class="row col-md-12 mx-auto">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-12">
               <button type="button" class="btn btn-primary btn-block"  data-dismiss="modal" aria-hidden="true">Tutup</button>
-            </div>
-            <div class="form-group col-md-6">
-              <button type="submit" class="btn btn-primary btn-block"  data-dismiss="modal" aria-hidden="true">Simpan</button>
             </div>
           </div>
       </form>
