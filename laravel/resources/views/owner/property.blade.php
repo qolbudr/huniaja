@@ -69,7 +69,7 @@
                                   <td>{{ number_format($data->price_month, 0, ',', '.') }}</td>
                                   <td>{{ number_format($data->price_year, 0, ',', '.') }}</td>
                                   <td>
-                                    <button class="btn btn-primary btn-circle btn-sm"><i class="fa fa-image"></i></button>
+                                    <button class="btn btn-primary btn-circle btn-sm" data-toggle="modal" data-target="#uploadImage" onclick="uploadImage({{$data->id}})"><i class="fa fa-image"></i></button>
                                     <button class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#facilityDialog" onclick="editFacility({{$data->id}})"><i class="fa fa-bed"></i></button>
                                     <button class="btn btn-warning btn-circle btn-sm" data-toggle="modal" data-target="#EditProperty" onclick="editProperty({{$data->id}})"><i class="fa fa-edit"></i></button>
                                     <button class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#deletePropertyModal" onclick="deleteProperty({{$data->id}}, '{{$data->name}}')"><i class="fa fa-trash"></i></button>
@@ -225,6 +225,32 @@
       </div>
   </div>
 </div>
+<div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myCenterModalLabel">Kelola Gambar</h4>
+              <button type="button" class="close" data-dismiss="modal"
+                  aria-hidden="true">×</button>
+          </div>
+          <form action="{{ URL::to('owner/property/upload')  }}" id="deleteProperty" method="POST">
+            <div class="col-12" id="imagePlacer"></div>
+            <input type="hidden" id="csrfTokenImage" value="{{csrf_token()}}">
+          <div class="p-3">
+            <input type="file" name="images" id="imageChooser" onchange="handleUploadImage()" class="form-control" id="">
+          </div>
+          <div class="row col-md-12 mx-auto">
+          <div class="form-group col-md-6">
+              <button type="button" class="btn btn-primary btn-block"  data-dismiss="modal" aria-hidden="true">Tutup</button>
+            </div>
+            <div class="form-group col-md-6">
+              <button type="submit" class="btn btn-primary btn-block"  data-dismiss="modal" aria-hidden="true">Simpan</button>
+            </div>
+          </div>
+      </form>
+      </div>
+  </div>
+</div>
 <div class="modal fade" id="facilityDialog" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -296,6 +322,71 @@
       priceYear.value = res.price_year
       type.value = res.type
     })  
+  }
+
+  function uploadImage(propertyId){
+    let imagePlace = document.querySelector('#imagePlacer')
+    imagePlace.innerHTML = ""
+    currentPropertyId = propertyId
+    fetchImage()
+  }
+
+  function fetchImage(){
+    fetch(`${window.location.pathname}/image/${currentPropertyId}`)
+    .then(res => res.json())
+    .then(res => {
+      let pathName = res.path
+      res.images.map(image => {
+        appendImage(image.image, pathName, image.id)
+      })
+    })
+  }
+
+  function handleUploadImage(){
+    let imageForm = document.querySelector('#imageChooser')
+    let formData = new FormData()
+    let header = {
+      'X-CSRF-TOKEN': document.querySelector('#csrfTokenImage').value
+    }
+    formData.append('images', imageForm.files[0])
+    formData.append('propertyId', currentPropertyId)
+    fetch(`${window.location.pathname}/image/upload`, {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(res => {
+      appendImage(res.imageName, res.path, res.id)
+    })
+  }
+
+  function triggerDeleteImage(idImage){
+    let divEl = document.querySelector(`#images-${idImage}`)
+    fetch(`${window.location.pathname}/image/delete/${idImage}`)
+    .then(res => {
+      divEl.remove()
+    })
+  }
+  
+  function appendImage(imageName, pathFolder, idImage){
+    let imageForm = document.querySelector('#imageChooser')
+    let imagePlace = document.querySelector('#imagePlacer')
+    let imgTag = document.createElement('img')
+    let imgSource = `{{ asset('images/${pathFolder}/${imageName}') }}`
+    imgTag.setAttribute('src', imgSource)
+    imgTag.classList.add( 'col-12')
+    let div = document.createElement('div')
+    div.classList.add('col-12', 'row', 'mt-2')
+    div.setAttribute('id', `images-${idImage}`)
+    let deleteBtn = document.createElement('button')
+    deleteBtn.classList.add('posititon-absolute', 'btn', 'btn-danger', 'btn-sm')
+    deleteBtn.innerHTML = 'X'
+    deleteBtn.setAttribute('onclick', `triggerDeleteImage(${idImage})`)
+    deleteBtn.setAttribute('type', 'button')
+    div.appendChild(deleteBtn)
+    div.appendChild(imgTag)
+    imagePlace.appendChild(div)
+    imageForm.value = ""
   }
 
   function triggerFacility(facilityId){
