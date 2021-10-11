@@ -89,7 +89,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="ticket-list.html">
+                            <a class="sidebar-link" href="{{ URL::to('owner/ticket-list') }}">
                                 <i data-feather="credit-card" class="feather-icon"></i>
                                 <span class="hide-menu">Penarikan</span>
                             </a>
