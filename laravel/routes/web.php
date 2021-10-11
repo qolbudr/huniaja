@@ -115,4 +115,7 @@ Route::middleware(['middleware' => 'admin.auth'])->group(function () {
     Route::post('/admin/property/delete/{id}', [AdminController::class, 'deleteProperty'])->name('adminDeleteProperty');
     Route::get('/admin/credential', [AdminController::class, 'getCredential'])->name('adminGetCurrentCredential');
     Route::post('/admin/credential/update', [AdminController::class, 'updateAdminCredential'])->name('adminUpdateCurrentCredential');
+    Route::get("/admin/withdraw", [AdminController::class, 'withdraw'])->name('adminWithDraw');
+    Route::get('/admin/withdraw/information/{withdrawId}', [AdminController::class, 'withdrawInformation']);
+    Route::post('/admin/withdraw/confirmation/{withdrawId}', [AdminController::class, 'withdrawConfirmation']);
 });

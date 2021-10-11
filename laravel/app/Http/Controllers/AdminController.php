@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers;
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -192,6 +193,83 @@ class AdminController extends Controller
     public function deleteProperty($id)
     {
         DB::table('property')->where('id', $id)->delete();
+        return redirect()->back();
+    }
+
+    public function withdraw()
+    {
+        $withdrawDetail = DB::table('withdraw')
+        ->join('users', 'withdraw.ownerId', '=', 'users.id')
+        ->select(
+            'withdraw.id as id',
+            'users.name as owner',
+            'withdraw.amount',
+            'withdraw.status',
+            'withdraw.created'
+        )
+        ->get();
+        return view('admin.withdraw', ['withdraw' => $withdrawDetail]);
+    }
+
+    public function withdrawInformation($withdrawId)
+    {
+        $withdrawInformation = DB::table('withdraw')
+        ->where('withdraw.id', $withdrawId)
+        ->join('users', 'withdraw.ownerId', '=', 'users.id')
+        ->select(
+            'withdraw.amount',
+            'users.name',
+            'users.email',
+            'users.address',
+            'users.phone',
+        )
+        ->first();
+        $withdraw = [
+            'amount' => $withdrawInformation->amount
+        ];
+        $user = [
+            'name' => $withdrawInformation->name,
+            'email' => $withdrawInformation->email,
+            'address' => $withdrawInformation->address,
+            'phone' => $withdrawInformation->phone
+        ];
+        return response()->json([
+            'withdraw' => $withdraw,
+            'user' => $user
+        ]);
+    }
+
+    public function withdrawConfirmation(Request $req, $withdrawId)
+    {
+        $withdraw = DB::table('withdraw')
+        ->where('id', $withdrawId)->first();
+        $amount = $withdraw->amount;
+        $ownerId = $withdraw->ownerId; 
+        if($req->status == "accepted"){
+            DB::table('withdraw')
+            ->where('id', $withdrawId)
+            ->update([
+                'status' => 1,
+                'status_change' => date('Y-m-d')
+            ]);
+            Session::flash('success', 'Penarikan Diterima');
+        }else if($req->status == "deny"){
+            DB::table('withdraw')
+            ->where('id', $withdrawId)
+            ->update([
+                'status' => 2,
+                'status_change' => date('Y-m-d')
+            ]);
+            $user = DB::table('users')
+            ->where('id', $ownerId)->first();
+            $userBalance = $user->balance;
+            DB::table('users')
+            ->where('id', $ownerId)
+            ->update([
+                'balance' => $userBalance + $amount
+            ]);
+            Session::flash('success', 'Berhasil Menolak Penarikan');
+        }
         return redirect()->back();
     }
 }
