@@ -60,10 +60,18 @@ class OwnerController extends Controller
                     ->where('booking.status', 1)
                     ->where('bill.status', 1)->sum('bill.price')
             ),
-            "booking" => DB::table('booking')
-                ->join('property', 'property.id', '=', 'booking.propertyId')
-                ->where('ownerId', $ownerId)->get()
-
+            "booking" =>  DB::table('booking')
+            ->join('property', 'property.id', '=', 'booking.propertyId')
+            ->where('ownerId', $ownerId)
+            ->select(
+                'booking.id as id',
+                'property.id as propertyId',
+                'userId',
+                'booking.date as date',
+                'property.name as name',
+                'booking.status as status'
+            )
+            ->get()
         ];
 
         return view('owner/dashboard', $data);
@@ -102,9 +110,18 @@ class OwnerController extends Controller
         $data = [
             "booking" => DB::table('booking')
                 ->join('property', 'property.id', '=', 'booking.propertyId')
-                ->where('ownerId', $ownerId)->get()
+                ->where('ownerId', $ownerId)
+                ->select(
+                    'booking.id as id',
+                    'property.id as propertyId',
+                    'userId',
+                    'booking.date as date',
+                    'property.name as name',
+                    'booking.status as status'
+                )
+                ->get()
         ];
-
+        // return $data;
         return view('owner/booking', $data);
     }
 
@@ -267,5 +284,54 @@ class OwnerController extends Controller
 
         Session::flash('success', 'Berhasil Mengajukan Penarikan');
             return redirect()->back();
+    }
+
+    public function getUserIdentity($bookingTicket)
+    {
+        $booking  = DB::table('booking')
+        ->where('booking.id', $bookingTicket)
+        ->join('users', 'booking.userId', '=' , 'users.id')
+        ->join('property', 'booking.propertyId', '=', 'property.id')
+        ->select(
+            'property.name as propertyName',
+            'users.name as userName',
+            'users.phone as userPhone', 
+            'users.email as userEmail',
+            'users.face as userFace',
+            'users.address as userAddress'
+        )
+        ->first();
+
+        $property = [
+            'name' => $booking->propertyName
+        ];
+        $user = [
+            'name' => $booking->userName,
+            'phone' => $booking->userPhone,
+            'email' => $booking->userEmail,
+            'address' => $booking->userAddress,
+            'face' => $booking-> userFace
+        ];
+        return response()->json([
+            'property' => $property,
+            'user' => $user
+        ]);
+    }
+
+    public function confirmationBooking(Request $req, $bookingId)
+    {
+        $bookingStatusNumber = 0;
+        if($req->status == "accepted"){
+            $bookingStatusNumber = 1;
+        }else{
+            $bookingStatusNumber = 2;
+        }
+        DB::table('booking')
+        ->where('id', $bookingId)
+        ->update([
+            'status' => $bookingStatusNumber
+        ]);
+        Session::flash('success', 'Berhasil menyutujui permintaan');
+        return redirect()->back();
     }
 }
