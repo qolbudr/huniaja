@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::post('/saldo/topup', [ApiController::class, 'topupBalance']);
     Route::post('/booking/get', [ApiController::class, 'getBookingData']);
-
+    Route::post('/owner/property/insert', [ApiController::class, 'insertProperty']);
     Route::post('/owner/property/get', [ApiController::class, 'getOwnerProperty']);
     Route::post('/owner/booking/get', [ApiController::class, 'getOwnerBook']);
 });

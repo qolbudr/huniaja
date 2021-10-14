@@ -467,26 +467,60 @@ class ApiController extends Controller
         return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
     }
 
-    // public function payBill(Request $req) {
-    //     $userId = $req->userId;
-    //     $bill = DB::table('bill')->where('id', $billId)->where('userId', Auth::user()->id)->first();
+    public function insertProperty(Request $req)
+    {
+        $rules = [
+            'name'                  => 'required',
+            'description'           => 'required',
+            'address'               => 'required',
+            'price_day'             => 'required|integer',
+            'price_month'           => 'required|integer',
+            'price_year'            => 'required|integer',
+            'type'                  => 'required',
+        ];
 
-    //     if($users->balance < $bill->price) {
-    //         Session::flash('data', 'tagihan');
-    //         Session::flash('error', 'Saldo anda tidak cukup');
-    //         return redirect()->back();
-    //     }
+        $messages = [
+            'name.required'          => 'Nama property wajib diisi',
+            'description.required'   => 'Deskripsi wajib diisi',
+            'address.required'       => 'Alamat wajib diisi',
+            'price_day.confirmed'    => 'Harga harian wajib diisi',
+            'price_day.integer'      => 'Harga harian berupa angka',
+            'price_month.confirmed'  => 'Harga bulanan wajib diisi',
+            'price_month.integer'    => 'Harga bulanan berupa angka',
+            'price_year.confirmed'   => 'Harga tahunan wajib diisi',
+            'price_year.integer'     => 'Harga tahunan berupa angka',
+            'type.required'          => 'Tipe harus diisi',
+        ];
 
-    //     $balance_left = $users->balance - $bill->price;
+        $validator = Validator::make($req->all(), $rules, $messages);
+  
+        if($validator->fails()){
+            $data = $validator->messages()->toArray();
+            $output = "";
 
-    //     DB::table('users')->where('id', Auth::user()->id)->update([
-    //         "balance" => $balance_left
-    //     ]);
+            foreach($data as $k => $v) {
+                $output = str_replace(['[', ']'], ['', ''], $v[0]);
+                break;
+            } 
+            return response()->json(['message' => $output], 500);
+        }
 
-    //     DB::table('bill')->where('id', $billId)->update(['status' => 1]);
+        $id = DB::table('property')->insertGetId([
+            "vrooms" => $req->vrooms,
+            "ownerId" => $req->userId,
+            "avaliable" => 1,
+            "date_created" => date('Y-m-d'),
+            "name" => $req->name,
+            "description" => $req->description,
+            "latitude" => $req->latitude,
+            "longitude" => $req->longitude,
+            "address" => $req->address,
+            "type" => $req->type,
+            "price_day" => $req->price_day,
+            "price_month" => $req->price_month,
+            "price_year" => $req->price_year,
+        ]);
 
-    //     Session::flash('data', 'tagihan');
-    //     Session::flash('success', 'Pembayaran tagihan berhasil');
-    //     return redirect(URL::to('account'));
-    // }   
+        return response()->json(['message' => "Data berhasil ditambahkan", "id" => $id], 200);
+    }
 }
