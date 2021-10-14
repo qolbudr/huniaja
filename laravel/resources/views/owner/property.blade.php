@@ -370,7 +370,7 @@
     let imageForm = document.querySelector('#imageChooser')
     let imagePlace = document.querySelector('#imagePlacer')
     let imgTag = document.createElement('img')
-    let imgSource = `{{ asset('images/${pathFolder}/${imageName}') }}`
+    let imgSource = `{{ asset('assets/images/${pathFolder}/${imageName}') }}`
     imgTag.setAttribute('src', imgSource)
     imgTag.classList.add( 'col-12')
     let div = document.createElement('div')

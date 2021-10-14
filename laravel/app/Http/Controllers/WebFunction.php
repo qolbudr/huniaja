@@ -323,7 +323,7 @@ class WebFunction extends Controller
 
     $property = DB::table('property')->where('id', $id)->first();
     $path  = str_replace(' ', '-', $property->id . '-' . strtolower($property->name) . '/');
-    $tujuan_upload = 'public/images/' . $path;
+    $tujuan_upload = 'public/assets/images/' . $path;
     $rand = rand(9999, 99999);
     $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
     DB::table('image')->where('id', $property->id)->insert([
