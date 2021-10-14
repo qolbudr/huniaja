@@ -1,0 +1,6 @@
+package com.example.manpro
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}

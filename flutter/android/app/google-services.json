@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "815208910612",
+    "project_id": "huniaja",
+    "storage_bucket": "huniaja.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815208910612:android:24e86ae4ff429e08533c01",
+        "android_client_info": {
+          "package_name": "com.example.manpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815208910612-i1ptt8hcu8l1q54ao5l2urmfbeedmifc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcKfMzq8xtR5CYFEfQgcWwO_o-Y6CgPKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815208910612-i1ptt8hcu8l1q54ao5l2urmfbeedmifc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
