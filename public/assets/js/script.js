@@ -748,7 +748,6 @@ if($("#balance-card").length) {
                 let payToken = data;
                 snap.pay(data, {
                     onSuccess: function(data) {
-                        fetch(`${url}/account/add/balance/${balance}`);
                         swal({title: "Success", text: "Topup anda berhasil", icon: "success", buttons: { hapus: "OK" }})
                         location.reload();
                     },
@@ -774,14 +773,12 @@ if($("#balance-card").length) {
             onPending: function(data) { console.log(data) },
             onError: function(data) {
                 if(data.status_message[0] == 'transaction has been succeed') {
-                    fetch(`${url}/account/add/balance/${balance}`).then(data => {
                         swal({title: "Success", text: "Topup anda berhasil", icon: "success", buttons: { hapus: "OK" }});
                         localStorage.removeItem('transaction_id');
                         localStorage.removeItem('pendingBalance');
                         $("#balance-card .alert").addClass('d-none');
                         $(".form-topup .btn-topup").prop('disabled', false);
                         location.reload();
-                    })
                 } else {
                     swal({title: "Error", text: "Pembayaran Gagal", icon: "error", buttons: { hapus: "OK" }})
                 }

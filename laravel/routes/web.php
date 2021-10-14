@@ -40,6 +40,8 @@ Route::get('/user/info/{id}', [WebFunction::class, 'getUserInfo']);
 
 // Route::get('/test/{id}', [ApiController::class, 'getBookingData']);
 
+Route::post('/invoice/handler', [WebFunction::class, 'webHookHandler']);
+
 /* MUST BE USER AUTH */
 Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/detail/{id}/{name}', [WebController::class, 'detail'])->name('detail');
