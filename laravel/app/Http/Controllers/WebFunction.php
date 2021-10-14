@@ -275,10 +275,11 @@ class WebFunction extends Controller
     \Midtrans\Config::$isProduction = false;
     \Midtrans\Config::$isSanitized = true;
     \Midtrans\Config::$is3ds = true;
+    $orderId = time();
 
     $data = [
       "transaction_details" => [
-        "order_id" => time(),
+        "order_id" => $orderId,
         "gross_amount" => $request->balance
       ],
 
@@ -297,17 +298,52 @@ class WebFunction extends Controller
         "phone" => Auth::user()->phone
       ]
     ];
-
-    $snapToken = \Midtrans\Snap::getSnapToken($data);
-    print_r($snapToken);
+    $snap = \Midtrans\Snap::createTransaction($data);
+    DB::table('invoice')->insert([
+      'userId' => Auth::user()->id,
+      'orderId' => $orderId,
+      'snapToken' => $snap->token,
+      'snapUrl' => $snap->redirect_url,
+      'amount' => $request->balance
+    ]);
+    print_r($snap->token);
   }
 
-  public function addBalance($balance)
+  // public function addBalance($balance)
+  // {
+  //   $users = DB::table('users')->where('id', Auth::user()->id)->first();
+  //   DB::table('users')->where('id', Auth::user()->id)->update([
+  //     'balance' => $users->balance + $balance,
+  //   ]);
+  // }
+
+  public function webHookHandler(Request $req)
   {
-    $users = DB::table('users')->where('id', Auth::user()->id)->first();
-    DB::table('users')->where('id', Auth::user()->id)->update([
-      'balance' => $users->balance + $balance,
-    ]);
+      if($req->fraud_status == "accept"){
+          $status = 1;
+          $invoiceUser = DB::table('invoice')->where('orderId', $req->order_id)->first();
+          $user = DB::table('users')->where('id', $invoiceUser->userId)->first();
+          DB::table('users')
+          ->where('id', $invoiceUser->userId)
+          ->update([
+            'balance' => $user->balance + $invoiceUser->amount
+          ]);
+      }else{
+          $status = 2;
+      }
+      DB::table('invoice')
+      ->where('orderId', $req->order_id)
+      ->update([
+          'transactionId' => $req->transaction_id,
+          'payment_type' => $req->payment_type,
+          'settlement_time' => $req->settlement_time,
+          'transactionStatus' => $req->transaction_status,
+          'fraudStatus' => $req->fraud_status,
+          'status' => $status
+      ]);
+      return response([
+          'message' => "Success"
+      ], 200);
   }
 
   public function getUserInfo($id)
@@ -341,14 +377,16 @@ class WebFunction extends Controller
     return response()->json(['imageName' => $resImage, 'path' => $folderName, 'id' => $idImage]);
   }
 
-  public function deleteImage($imageId){
+  public function deleteImage($imageId)
+  {
     DB::table('image')->where('id', $imageId)->delete();
     return response()->json([
       'message' => 'success'
     ]);
   }
 
-  public function getImages($propertyId){
+  public function getImages($propertyId)
+  {
     $property = DB::table('property')->where('id', $propertyId)->first();
     $folderName = str_replace(' ', '-', $property->id . '-' . strtolower($property->name));
     $image = DB::table('image')->where('propertyId', $propertyId)->get();
