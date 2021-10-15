@@ -2,9 +2,10 @@ import 'package:manpro/config/app.dart';
 import 'package:flutter/material.dart';
 
 class InputIcon extends StatelessWidget {
-  InputIcon({this.hintText, this.icon, this.secure = false, this.controller, this.onTap = null, this.onChanged = null, this.readOnly = false});
+  InputIcon({this.hintText, this.icon, this.secure = false, this.controller, this.onTap = null, this.onChanged = null, this.readOnly = false, this.keyboardType = TextInputType.text});
   final String hintText;
   final IconData icon;
+  final TextInputType keyboardType;
   final bool secure, readOnly;
   final TextEditingController controller;
   final void Function() onTap;
@@ -14,6 +15,7 @@ class InputIcon extends StatelessWidget {
     return TextFormField(
       readOnly: readOnly,
       onTap: onTap,
+      keyboardType: keyboardType,
       onChanged: onChanged,
       controller: controller,
       obscureText: secure,
@@ -47,18 +49,20 @@ class InputIcon extends StatelessWidget {
 }
 
 class Input extends StatelessWidget {
-  Input({this.hintText, this.secure = false, this.controller, this.onTap = null, this.onChanged = null, this.readOnly = false});
+  Input({this.hintText, this.secure = false, this.controller, this.onTap = null, this.onChanged = null, this.readOnly = false, this.keyboardType = TextInputType.text});
   final String hintText;
   final bool secure, readOnly;
   final TextEditingController controller;
   final void Function() onTap;
   final void Function(String) onChanged;
+  final TextInputType keyboardType;
 
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: readOnly,
       onTap: onTap,
       onChanged: onChanged,
+      keyboardType: keyboardType,
       controller: controller,
       obscureText: secure,
       decoration: InputDecoration(

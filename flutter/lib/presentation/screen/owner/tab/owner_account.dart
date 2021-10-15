@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:manpro/config/app.dart';
-import 'package:manpro/presentation/screen/bill.dart';
 import 'package:manpro/presentation/screen/change_password.dart';
 import 'package:manpro/presentation/screen/edit_profile.dart';
 import 'package:manpro/presentation/screen/login.dart';
-import 'package:manpro/presentation/screen/saldo.dart';
+import 'package:manpro/presentation/screen/withdraw.dart';
 import 'package:manpro/provider/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:manpro/presentation/screen/income.dart';
 
 class TabOwnerAccount extends StatelessWidget {
   @override
@@ -57,7 +57,7 @@ class TabOwnerAccount extends StatelessWidget {
               title: Text("Pemasukan"),
               trailing: Icon(Icons.chevron_right),
               onTap: () => Navigator.push(context, MaterialPageRoute(
-                builder: (context) => Bill() 
+                builder: (context) => Incomes() 
               )),
             ),
             Divider(height: 0),
@@ -66,7 +66,7 @@ class TabOwnerAccount extends StatelessWidget {
               title: Text("Penarikan"),
               trailing: Icon(Icons.chevron_right),
               onTap: () => Navigator.push(context, MaterialPageRoute(
-                builder: (context) => Saldo() 
+                builder: (context) => Withdraw() 
               )),
             ),
             SizedBox(height: 10),

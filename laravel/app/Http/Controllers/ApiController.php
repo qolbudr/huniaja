@@ -462,7 +462,7 @@ class ApiController extends Controller
     public function getOwnerBook(Request $req) {
         $ownerId = $req->userId;
         $data = [
-            "booking" => DB::table('q_booking')->where('ownerId', $ownerId)->get()
+            "booking" => DB::table('q_booking')->where('status', 0)->where('ownerId', $ownerId)->get()
         ];
         return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
     }
@@ -523,4 +523,35 @@ class ApiController extends Controller
 
         return response()->json(['message' => "Data berhasil ditambahkan", "id" => $id], 200);
     }
+
+    public function getIncome(Request $req) {
+        $ownerId = $req->userId;
+
+        $income = DB::table('bill')
+            ->join('property', 'property.id', '=', 'bill.propertyId')
+            ->join('q_bill', 'q_bill.id', '=', 'bill.id')
+            ->join('booking', 'booking.id', '=', 'bill.bookingId')
+            ->where('ownerId', $ownerId)
+            ->where('bill.status', 1)
+            ->where('booking.status', 1)
+            ->orderBy('bill.date')->get();
+
+        return response()->json($income, 200);
+    }
+
+    public function requestWithdraw(Request $req) {
+        $balance = DB::table('users')->where('id', $req->userId)->first()->balance;
+        DB::table('withdraw')->insert([
+            'ownerId' => $req->userId,
+            'amount' => $req->amount,
+            'description' => $req->description,
+            'created' => date("Y-m-d")
+        ]);
+        
+        DB::table('users')->where('id', $req->userId)->update([
+            'balance' => ($balance - $req->amount)
+        ]);
+
+        return response()->json(['message' => "Successfully create withdrawal request"], 200);
+    }  
 }

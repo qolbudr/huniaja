@@ -9,6 +9,7 @@ import 'package:manpro/model/owner_booking.dart';
 import 'package:manpro/model/review.dart';
 import 'package:manpro/model/user.dart';
 import 'package:manpro/model/booking.dart';
+import 'package:manpro/model/income.dart';
 
 class ApiService  {
   static final _apiURL = apiURL;
@@ -489,6 +490,42 @@ class ApiService  {
       return data;
     } else {
       return throw data['message'];
+    }
+  }
+
+  Future<List<Income>> getIncome(token, userId) async {
+    final response = await http.post(
+      Uri.parse(_apiURL + "/api/owner/income/get"),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: {
+        "userId": userId.toString(),
+      },
+    );
+
+    if(response.statusCode == 200) {
+      return incomeFromJson(response.body);
+    } else {
+      return throw 'Failed to fetch income';
+    }
+  } 
+
+  Future requestWithdraw(token, userId, amount, description) async {
+    final response = await http.post(
+      Uri.parse(_apiURL + "/api/owner/withdraw/insert"),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: {
+        "userId": userId.toString(),
+        "amount": amount,
+        "description": description
+      },
+    );
+
+    if(response.statusCode != 200) {
+      return throw 'Failed to withdraw';
     }
   }
 }

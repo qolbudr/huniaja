@@ -61,11 +61,14 @@ class TabHome extends StatelessWidget {
                 } else {
                   return Column(
                     children: List.generate(data.data.property.length, 
-                      (index) => CardHotel(
-                        property: data.data.property[index], 
-                        onTap: () => Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => Detail(property: data.data.property[index])
-                        ))
+                      (index) => Padding( 
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: CardHotel(
+                          property: data.data.property[index], 
+                          onTap: () => Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => Detail(property: data.data.property[index])
+                          ))
+                        )
                       ) 
                     ),
                   );
