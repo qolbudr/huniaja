@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:manpro/config/app.dart';
 import 'package:manpro/model/auth_login.dart';
+import 'package:manpro/model/facility.dart';
 import 'package:manpro/model/list_property.dart';
 import 'package:manpro/model/location_item.dart';
 import 'package:manpro/model/hotel_photo.dart';
@@ -460,6 +461,22 @@ class ApiService  {
       return OwnerListBook.fromJson(data);
     } else {
       return throw data['message'];
+    }
+  }
+
+  Future<List<Facility>> getFacility(token, userId) async {
+    final res = await http.get(
+      Uri.parse("${_apiURL}/api/property/facility"),
+      headers: {
+        'Authorization': "Bearer ${token}"
+      }
+    );
+    print(res.body);
+    List<dynamic> data = jsonDecode(res.body);
+     if(res.statusCode == 200) {
+      return (data as List).map((e) => Facility.fromJson(e)).toList();
+    } else {
+      return throw jsonDecode(res.body)['message'];
     }
   }
 
