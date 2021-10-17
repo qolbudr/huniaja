@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -17,24 +18,24 @@ class ApiController extends Controller
             'email'                 => 'required|email',
             'password'              => 'required|string'
         ];
-  
+
         $messages = [
             'email.required'        => 'Email wajib diisi',
             'email.email'           => 'Email tidak valid',
             'password.required'     => 'Password wajib diisi',
             'password.string'       => 'Password harus berupa string'
         ];
-  
+
         $validator = Validator::make($request->all(), $rules, $messages);
-  
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             $data = $validator->messages()->toArray();
             $output = "";
 
-            foreach($data as $k => $v) {
+            foreach ($data as $k => $v) {
                 $output = str_replace(['[', ']'], ['', ''], $v[0]);
                 break;
-            } 
+            }
             return response()->json(['message' => $output], 500);
         }
 
@@ -42,7 +43,7 @@ class ApiController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ];
- 
+
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
             return response()->json(['token' => $token, 'user' => auth()->user()], 200);
@@ -51,19 +52,21 @@ class ApiController extends Controller
         }
     }
 
-    public function getUserData($id) {
+    public function getUserData($id)
+    {
         $user = DB::table('users')->where('id', $id)->first();
         return response()->json(['user' => $user], 200);
     }
 
-    public function validateRegisterForm(Request $request) {
+    public function validateRegisterForm(Request $request)
+    {
         $rules = [
             'name'                  => 'required|min:6|max:35',
             'email'                 => 'required|email|unique:users,email',
             'password'              => 'required|min:6|confirmed',
             'role'                  => 'required',
         ];
-  
+
         $messages = [
             'name.required'         => 'Nama Lengkap wajib diisi',
             'name.min'              => 'Nama lengkap minimal 6 karakter',
@@ -79,21 +82,22 @@ class ApiController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $data = $validator->messages()->toArray();
             $output = "";
 
-            foreach($data as $k => $v) {
+            foreach ($data as $k => $v) {
                 $output = str_replace(['[', ']'], ['', ''], $v[0]);
                 break;
-            } 
+            }
             return response()->json(['message' => $output], 500);
         } else {
             return response()->json(['message' => 'Validasi sukses'], 200);
         }
     }
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $user = new User;
         $user->name = ucwords(strtolower($request->name));
         $user->email = strtolower($request->email);
@@ -103,27 +107,29 @@ class ApiController extends Controller
         $user->face = $request->face;
         $simpan = $user->save();
 
-  
-        if($simpan){
+
+        if ($simpan) {
             return response()->json(['message' => 'Registrasi berhasil silahkan login'], 200);
         } else {
             return response()->json(['message' => 'Registrasi gagal silahkan ulangi lagi'], 500);
         }
     }
 
-    public function getProperty(Request $request) {
+    public function getProperty(Request $request)
+    {
         $house = DB::table('q_property')->get();
         return response()->json(['message' => 'Fetching data berhasil', 'property' => $house], 200);
     }
 
-    public function filterSearch($place, $type) {
-        $query = DB::table('q_property')->where('address', 'like', '%'.$place.'%');
+    public function filterSearch($place, $type)
+    {
+        $query = DB::table('q_property')->where('address', 'like', '%' . $place . '%');
 
-        if($type != 'undefined') {
+        if ($type != 'undefined') {
             $query->where('type', $type);
         }
 
-        if($_GET['filter'] = 'newest') {
+        if ($_GET['filter'] = 'newest') {
             $query->orderBy('date_created', 'desc');
         } else if ($_GET['filter'] = 'cheapest') {
             $query->orderBy('price', 'asc');
@@ -137,33 +143,38 @@ class ApiController extends Controller
         return response()->json(['message' => 'Fetching data berhasil', 'property' => $result], 200);
     }
 
-    public function getFavorite($userId) {
+    public function getFavorite($userId)
+    {
         $result = DB::table('favorite')->select('q_property.*')->join('q_property', 'favorite.propertyId', '=', 'q_property.id')->where('favorite.userId', $userId)->get();
         return response()->json(['message' => 'Fetching data berhasil', 'property' => $result], 200);
     }
 
-    public function getPropertyPhoto($propertyId) {
+    public function getPropertyPhoto($propertyId)
+    {
         $result = DB::table('image')->where('propertyId', $propertyId)->get();
         return response()->json(['message' => 'Fetching data berhasil', 'property' => $result], 200);
     }
 
-    public function getFacility($propertyId) {
+    public function getFacility($propertyId)
+    {
         $result = DB::table('q_facility')->where('propertyId', $propertyId)->get();
         return response()->json(['message' => 'Fetching data berhasil', 'facility' => $result], 200);
     }
 
-    public function getReview($propertyId) {
+    public function getReview($propertyId)
+    {
         $result = DB::table('q_review')->where('propertyId', $propertyId)->get();
         return response()->json(['message' => 'Fetching data berhasil', 'review' => $result], 200);
     }
 
-    public function payDay(Request $request) {
+    public function payDay(Request $request)
+    {
         $user = DB::table('users')->where('id', $request->userId)->first();
         $property = DB::table('property')->where('id', $request->propertyId)->first();
         $duration = $request->duration;
 
 
-        if($user->balance < $property->price_day * $duration) {
+        if ($user->balance < $property->price_day * $duration) {
             return response()->json(['message' => "Saldo anda tidak cukup untuk memesan property"], 500);
         }
 
@@ -179,7 +190,7 @@ class ApiController extends Controller
         DB::table('bill')->insert([
             'userId' => $user->id,
             'propertyId' => $request->propertyId,
-            'date' => date('Y-m-d', strtotime('+'.$duration.' day')),
+            'date' => date('Y-m-d', strtotime('+' . $duration . ' day')),
             'price' => $property->price_day * $duration,
             'status' => 1,
             'bookingId' => $bookingId
@@ -192,111 +203,114 @@ class ApiController extends Controller
         return response()->json(['message' => "Booking berhasil menunggu persetujuan pemilik"], 200);
     }
 
-    public function payMonth(Request $request) {
-      $users = DB::table('users')->where('id', $request->userId)->first();
-      $property = DB::table('property')->where('id', $request->propertyId)->first();
-      $duration = (int) $request->duration;
-      $price = (int) $request->price;
+    public function payMonth(Request $request)
+    {
+        $users = DB::table('users')->where('id', $request->userId)->first();
+        $property = DB::table('property')->where('id', $request->propertyId)->first();
+        $duration = (int) $request->duration;
+        $price = (int) $request->price;
 
-      if($users->balance < $price) {
-        return response()->json(['message' => "Saldo anda tidak cukup untuk memesan property"], 500);
-      }
-
-      $balance_left = $users->balance - $price;
-
-      $bookingId = DB::table('booking')->insertGetId([
-        'userId' => $users->id,
-        'propertyId' => $request->propertyId,
-        'date' => date('Y-m-d'),
-        'status' => 0
-      ]);
-
-      for($i = 0; $i < $duration; $i++) {
-        $date = date('Y-m-d', strtotime('+'.$i.' month'));
-        $insert = [
-          'userId' => $users->id,
-          'propertyId' => $request->propertyId,
-          'date' => $date,
-          'price' => $price,
-          'bookingId' => $bookingId
-        ];
-
-        if($i == 0) {
-          $insert['status'] = 1;
-        } else {
-          $insert['status'] = 0;
+        if ($users->balance < $price) {
+            return response()->json(['message' => "Saldo anda tidak cukup untuk memesan property"], 500);
         }
 
-        DB::table('bill')->insert($insert);
-      }
+        $balance_left = $users->balance - $price;
 
-      DB::table('users')->where('id', $users->id)->update([
-        "balance" => $balance_left
-      ]);
-
-      return response()->json(['message' => "Booking berhasil menunggu persetujuan pemilik"], 200);
-    } 
-
-    public function payYear(Request $request) {
-      $users = DB::table('users')->where('id', Auth::user()->id)->first();
-      $property = DB::table('property')->where('id', $request->propertyId)->first();
-      $duration = $request->duration == "penuh" ? 1 : (int) $request->duration;
-      $year = (int) $request->year;
-      $price =  (int) $request->price;
-
-      if($users->balance < $price) {
-        return response()->json(['message' => "Saldo anda tidak cukup untuk memesan property"], 500);
-      }
-
-      $balance_left = $users->balance - $price;
-
-      $bookingId = DB::table('booking')->insertGetId([
-        'userId' => $users->id,
-        'propertyId' => $request->propertyId,
-        'date' => date('Y-m-d'),
-        'status' => 0
-      ]);
-
-      for($i = 0; $i < 12 * $year; $i++) {
-        $date = date('Y-m-d', strtotime('+'.$i.' month'));
-
-        if($i % $duration == 0) {
-          $insert = [
+        $bookingId = DB::table('booking')->insertGetId([
             'userId' => $users->id,
             'propertyId' => $request->propertyId,
-            'date' => $date,
-            'price' => $request->price,
-            'bookingId' => $bookingId
-          ];
+            'date' => date('Y-m-d'),
+            'status' => 0
+        ]);
 
-          if($i == 0) {
-            $insert['status'] = 1;
-          } else {
-            $insert['status'] = 0;
-          }
+        for ($i = 0; $i < $duration; $i++) {
+            $date = date('Y-m-d', strtotime('+' . $i . ' month'));
+            $insert = [
+                'userId' => $users->id,
+                'propertyId' => $request->propertyId,
+                'date' => $date,
+                'price' => $price,
+                'bookingId' => $bookingId
+            ];
 
-          DB::table('bill')->insert($insert);
+            if ($i == 0) {
+                $insert['status'] = 1;
+            } else {
+                $insert['status'] = 0;
+            }
+
+            DB::table('bill')->insert($insert);
         }
-      }
 
-      DB::table('users')->where('id', $users->id)->update([
-        "balance" => $balance_left
-      ]);
+        DB::table('users')->where('id', $users->id)->update([
+            "balance" => $balance_left
+        ]);
 
-      return response()->json(['message' => "Booking berhasil menunggu persetujuan pemilik"], 200);
+        return response()->json(['message' => "Booking berhasil menunggu persetujuan pemilik"], 200);
     }
 
-    public function updateUserAccount(Request $request) {
+    public function payYear(Request $request)
+    {
+        $users = DB::table('users')->where('id', Auth::user()->id)->first();
+        $property = DB::table('property')->where('id', $request->propertyId)->first();
+        $duration = $request->duration == "penuh" ? 1 : (int) $request->duration;
+        $year = (int) $request->year;
+        $price =  (int) $request->price;
+
+        if ($users->balance < $price) {
+            return response()->json(['message' => "Saldo anda tidak cukup untuk memesan property"], 500);
+        }
+
+        $balance_left = $users->balance - $price;
+
+        $bookingId = DB::table('booking')->insertGetId([
+            'userId' => $users->id,
+            'propertyId' => $request->propertyId,
+            'date' => date('Y-m-d'),
+            'status' => 0
+        ]);
+
+        for ($i = 0; $i < 12 * $year; $i++) {
+            $date = date('Y-m-d', strtotime('+' . $i . ' month'));
+
+            if ($i % $duration == 0) {
+                $insert = [
+                    'userId' => $users->id,
+                    'propertyId' => $request->propertyId,
+                    'date' => $date,
+                    'price' => $request->price,
+                    'bookingId' => $bookingId
+                ];
+
+                if ($i == 0) {
+                    $insert['status'] = 1;
+                } else {
+                    $insert['status'] = 0;
+                }
+
+                DB::table('bill')->insert($insert);
+            }
+        }
+
+        DB::table('users')->where('id', $users->id)->update([
+            "balance" => $balance_left
+        ]);
+
+        return response()->json(['message' => "Booking berhasil menunggu persetujuan pemilik"], 200);
+    }
+
+    public function updateUserAccount(Request $request)
+    {
         $userId = $request->userId;
 
         $rules = [
             'name'                  => 'required|min:6|max:15',
-            'email'                 => 'required|email|unique:users,email,'.$userId,
+            'email'                 => 'required|email|unique:users,email,' . $userId,
             'dob'                   => 'required',
             'address'               => 'required',
             'phone'                 => 'required|numeric|min:12'
         ];
-  
+
         $messages = [
             'name.required'         => 'Nama Lengkap wajib diisi',
             'name.min'              => 'Nama lengkap minimal 6 karakter',
@@ -312,15 +326,15 @@ class ApiController extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
-  
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             $data = $validator->messages()->toArray();
             $output = "";
 
-            foreach($data as $k => $v) {
+            foreach ($data as $k => $v) {
                 $output = str_replace(['[', ']'], ['', ''], $v[0]);
                 break;
-            } 
+            }
             return response()->json(['message' => $output], 500);
         }
 
@@ -337,81 +351,88 @@ class ApiController extends Controller
         return response()->json(['message' => "User berhasil diupdate", "user" => $users], 200);
     }
 
-    public function getBooking(Request $req) {
+    public function getBooking(Request $req)
+    {
         $userId = $req->userId;
         $data = DB::table('q_booking')->where('userId', $userId)->first();
         return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
     }
 
-    public function getBill($userId) {
+    public function getBill($userId)
+    {
         $data = DB::table('q_bill')->where('userId', $userId)->get();
         // dd($data);
         return response()->json(['message' => "Fetching data berhasil", "bill" => $data], 200);
     }
 
-    public function topupBalance(Request $req) {
-      \Midtrans\Config::$serverKey = 'SB-Mid-server-zF2jvA9m2dmnatNsgA7VQgqX';
-      \Midtrans\Config::$isProduction = false;
-      \Midtrans\Config::$isSanitized = true;
-      \Midtrans\Config::$is3ds = true;
+    public function topupBalance(Request $req)
+    {
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-zF2jvA9m2dmnatNsgA7VQgqX';
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
 
-      $users = DB::table('users')->where('id', $req->userId)->first();
+        $users = DB::table('users')->where('id', $req->userId)->first();
 
-      $data = [
-        "transaction_details" => [
-          "order_id" => time(),
-          "gross_amount" => 5
-        ],
+        $data = [
+            "transaction_details" => [
+                "order_id" => time(),
+                "gross_amount" => 5
+            ],
 
-        "item_details" => [
-          [
-            "id" => time(),
-            "price" => $req->price,
-            "quantity" => 1,
-            "name" => "Topup Saldo"
-          ]
-        ],
+            "item_details" => [
+                [
+                    "id" => time(),
+                    "price" => $req->price,
+                    "quantity" => 1,
+                    "name" => "Topup Saldo"
+                ]
+            ],
 
-        "customer_details" => [
-          "first_name" => $users->name,
-          "email" => $users->email,
-          "phone" => $users->phone
-        ]
-      ];
+            "customer_details" => [
+                "first_name" => $users->name,
+                "email" => $users->email,
+                "phone" => $users->phone
+            ]
+        ];
 
-      $snapToken = \Midtrans\Snap::createTransaction($data)->redirect_url;
-      return $snapToken;
+        $snapToken = \Midtrans\Snap::createTransaction($data)->redirect_url;
+        return $snapToken;
     }
 
-    public function getBookingData(Request $req) {
+    public function getBookingData(Request $req)
+    {
         $data = DB::table('q_booking')
-                ->where('userId', $req->userId)
-                ->where('status', '!=', 2)->first();
+            ->where('userId', $req->userId)
+            ->where('status', '!=', 2)->first();
         return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
     }
 
-    public function getReviewId($userId, $propertyId) {
+    public function getReviewId($userId, $propertyId)
+    {
         $data = DB::table('review')
-                ->where('userId', $userId)
-                ->where('propertyId', $propertyId)->first();
+            ->where('userId', $userId)
+            ->where('propertyId', $propertyId)->first();
         return response()->json($data, 200);
     }
 
-    public function addReview(Request $req) {
-      $userId = $req->userId;
+    public function addReview(Request $req)
+    {
+        $userId = $req->userId;
 
-      DB::table('review')->upsert([
-        "date" => date('Y-m-d'),
-        "userId" => $userId,
-        "propertyId" => $req->propertyId,
-        "rating" => $req->rating,
-        "review" => $req->review,
-      ], ['userId', 'propertyId'], ['date', 'rating', 'review']);
+        DB::table('review')->upsert([
+            "date" => date('Y-m-d'),
+            "userId" => $userId,
+            "propertyId" => $req->propertyId,
+            "rating" => $req->rating,
+            "review" => $req->review,
+        ], ['userId', 'propertyId'], ['date', 'rating', 'review']);
 
-      return response()->json(['message' => "Review has been added"], 200);
+        return response()->json(['message' => "Review has been added"], 200);
     }
 
-    public function changePassword(Request $req) {
+    public function changePassword(Request $req)
+    {
         $userId = $req->userId;
         $users = DB::table('users')->where('id', $userId)->first();
 
@@ -428,19 +449,19 @@ class ApiController extends Controller
         ];
 
         $validator = Validator::make($req->all(), $rules, $messages);
-  
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             $data = $validator->messages()->toArray();
             $output = "";
 
-            foreach($data as $k => $v) {
+            foreach ($data as $k => $v) {
                 $output = str_replace(['[', ']'], ['', ''], $v[0]);
                 break;
-            } 
+            }
             return response()->json(['message' => $output], 500);
         }
 
-        if(!Hash::check($req->current_password, $users->password)) {
+        if (!Hash::check($req->current_password, $users->password)) {
             return response()->json(['message' => "Password lama salah"], 500);
         }
 
@@ -453,13 +474,15 @@ class ApiController extends Controller
         return response()->json(['message' => "Password telah diubah silahkan login"], 200);
     }
 
-    public function getOwnerProperty(Request $req) {
+    public function getOwnerProperty(Request $req)
+    {
         $userId = $req->userId;
         $property = DB::table('q_property')->where('ownerId', $userId)->get();
         return response()->json(['message' => "Fetching data berhasil", "property" => $property], 200);
     }
 
-    public function getOwnerBook(Request $req) {
+    public function getOwnerBook(Request $req)
+    {
         $ownerId = $req->userId;
         $data = [
             "booking" => DB::table('q_booking')->where('ownerId', $ownerId)->get()
@@ -493,15 +516,15 @@ class ApiController extends Controller
         ];
 
         $validator = Validator::make($req->all(), $rules, $messages);
-  
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             $data = $validator->messages()->toArray();
             $output = "";
 
-            foreach($data as $k => $v) {
+            foreach ($data as $k => $v) {
                 $output = str_replace(['[', ']'], ['', ''], $v[0]);
                 break;
-            } 
+            }
             return response()->json(['message' => $output], 500);
         }
 
@@ -522,5 +545,41 @@ class ApiController extends Controller
         ]);
 
         return response()->json(['message' => "Data berhasil ditambahkan", "id" => $id], 200);
+    }
+
+    public function deleteImage($imageId)
+  {
+    DB::table('image')->where('id', $imageId)->delete();
+    return response()->json([
+      'message' => 'success'
+    ]);
+  }
+
+    public function updateFacility(Request $req, $propertyId)
+    {
+        $isPropertyHaveFacility = DB::table('facility')
+            ->where('propertyId', $propertyId)
+            ->where('facilityId', $req->facilityId)
+            ->first();
+        $message = '';
+
+        if ($isPropertyHaveFacility) {
+            DB::table('facility')
+                ->where('propertyId', $propertyId)
+                ->where('facilityId', $req->facilityId)
+                ->delete();
+            $message = 'Trigger Deleted';
+        } else {
+            DB::table('facility')->insert([
+                'propertyId' => $propertyId,
+                'facilityId' => $req->facilityId
+            ]);
+            $message = 'Trigger Created';
+        }
+
+        return response()->json(
+            ['message' => $message],
+            200
+        );
     }
 }
