@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:manpro/config/app.dart';
 import 'package:manpro/model/auth_login.dart';
 import 'package:manpro/model/facility.dart';
+import 'package:manpro/model/image_picker.dart';
 import 'package:manpro/model/list_property.dart';
 import 'package:manpro/model/location_item.dart';
 import 'package:manpro/model/hotel_photo.dart';
@@ -435,7 +438,6 @@ class ApiService  {
     // print(response.body);
 
     Map<String, dynamic> data = jsonDecode(response.body);
-
     if(response.statusCode == 200) {
       return ListProperty.fromJson(data);
     } else {
@@ -475,6 +477,49 @@ class ApiService  {
      if(res.statusCode == 200) {
       return (data as List).map((e) => Facility.fromJson(e)).toList();
     } else {
+      return throw jsonDecode(res.body)['message'];
+    }
+  }
+
+  Future<ImagePickerApp> uploadImage(File file, token, propertyId, userId) async {
+    print("hit");
+    var request = http.MultipartRequest("POST", Uri.parse("${_apiURL}/api/property/image/upload"));
+    final img = await http.MultipartFile.fromPath("images", file.path);
+    request.headers['Authorization'] = "Bearer ${token}";
+    request.fields['userId'] = userId.toString();
+    request.fields['propertyId'] = propertyId.toString();
+    request.files.add(img);
+    final res = await request.send();
+    final resData = await res.stream.toBytes();
+    final resBody = String.fromCharCodes(resData);
+    print(resBody);
+    if(res.statusCode == 200){
+      Map<String, dynamic> jsonbody = jsonDecode(resBody);
+      return ImagePickerApp.fromJson(jsonbody);
+    }else{
+      return throw jsonDecode(resBody)['message'];
+    }
+  }
+
+  Future<void> deleteImage(imageId, token) async {
+    print("hit");
+    final res = await http.post(Uri.parse("${_apiURL}/api/property/image/${imageId}/delete"), headers: {
+      'Authorization': "Bearer ${token}"
+    });
+    print(res.body);
+  }
+
+  Future<Map<String, dynamic>> triggerFacility(facilityid, propertyId,token, userId)async{
+    final res = await http.post(Uri.parse("${_apiURL}/api/owner/property/${propertyId}/updateFacility"), headers: {
+      'Authorization': "Bearer ${token}"
+    },
+    body: {
+      "facilityId": facilityid  
+    });
+
+    if(res.statusCode == 200){
+      return jsonDecode(res.body);
+    }else{
       return throw jsonDecode(res.body)['message'];
     }
   }
