@@ -395,4 +395,9 @@ class WebFunction extends Controller
       'images' => $image
     ]);
   }
+
+  public function getFacility(){
+    $facilityList = DB::table('facility_list')->get();
+    return $facilityList;
+  }
 }
