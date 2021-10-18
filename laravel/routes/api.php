@@ -53,4 +53,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/owner/property/insert', [ApiController::class, 'insertProperty']);
     Route::post('/owner/property/{propertyId}/updateFacility', [ApiController::class, 'updateFacility']);
     Route::post('/owner/booking/get', [ApiController::class, 'getOwnerBook']);
+
+    Route::post('/owner/income/get', [ApiController::class, 'getIncome']);
+    Route::post('/owner/withdraw/insert', [ApiController::class, 'requestWithdraw']);
 });
