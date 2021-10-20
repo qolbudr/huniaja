@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manpro/model/auth_login.dart';
 import 'package:manpro/model/location_item.dart';
-import 'package:manpro/presentation/screen/owner/edit_property.dart';
+import 'package:manpro/presentation/screen/owner/next_form_property.dart';
 import 'package:manpro/presentation/screen/owner/location_picker.dart';
 import 'package:manpro/presentation/widget/input.dart';
 import 'package:manpro/presentation/widget/link.dart';
@@ -89,7 +89,7 @@ class _AddPropertyState extends State<AddProperty> {
                           type: _currentType,
                         );
                         print(data['id']);
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditProperty(id: data['id'],)));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NextFormProperty(id: data['id'],)));
                       } catch (e) {
                         return showSnackbar(context, e.toString());
                       }

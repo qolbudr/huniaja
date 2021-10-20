@@ -547,6 +547,64 @@ class ApiController extends Controller
         return response()->json(['message' => "Data berhasil ditambahkan", "id" => $id], 200);
     }
 
+    public function updateProperty(Request $req, $propertyId)
+    {
+        $rules = [
+            'name'                  => 'required',
+            'description'           => 'required',
+            'address'               => 'required',
+            'price_day'             => 'required|integer',
+            'price_month'           => 'required|integer',
+            'price_year'            => 'required|integer',
+            'type'                  => 'required',
+        ];
+
+        $messages = [
+            'name.required'          => 'Nama property wajib diisi',
+            'description.required'   => 'Deskripsi wajib diisi',
+            'address.required'       => 'Alamat wajib diisi',
+            'price_day.confirmed'    => 'Harga harian wajib diisi',
+            'price_day.integer'      => 'Harga harian berupa angka',
+            'price_month.confirmed'  => 'Harga bulanan wajib diisi',
+            'price_month.integer'    => 'Harga bulanan berupa angka',
+            'price_year.confirmed'   => 'Harga tahunan wajib diisi',
+            'price_year.integer'     => 'Harga tahunan berupa angka',
+            'type.required'          => 'Tipe harus diisi',
+        ];
+
+        $validator = Validator::make($req->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            $data = $validator->messages()->toArray();
+            $output = "";
+
+            foreach ($data as $k => $v) {
+                $output = str_replace(['[', ']'], ['', ''], $v[0]);
+                break;
+            }
+            return response()->json(['message' => $output], 500);
+        }
+
+        DB::table('property')->where('id', $propertyId)
+        ->update([
+            "vrooms" => $req->vrooms,
+            "ownerId" => $req->userId,
+            "avaliable" => 1,
+            "date_created" => date('Y-m-d'),
+            "name" => $req->name,
+            "description" => $req->description,
+            "latitude" => $req->latitude,
+            "longitude" => $req->longitude,
+            "address" => $req->address,
+            "type" => $req->type,
+            "price_day" => $req->price_day,
+            "price_month" => $req->price_month,
+            "price_year" => $req->price_year,
+        ]);
+
+        return response()->json(['message' => "Data berhasil diupdate"], 200);
+    }
+
     public function deleteImage($imageId)
   {
     DB::table('image')->where('id', $imageId)->delete();
@@ -582,7 +640,39 @@ class ApiController extends Controller
             200
         );
     }
-    public function getIncome(Request $req) {
+  
+  public function getPropertyDetails($propertyId)
+    {
+        $facilityProperty = DB::table('facility')
+        ->where('propertyId', $propertyId)
+        ->get();
+
+        $facilityList = DB::table('facility_list')
+        ->get();
+
+        $property = DB::table('property')
+        ->where('id', $propertyId)
+        ->first();
+
+        $images = DB::table('image')
+        ->where('propertyId', $propertyId)
+        ->get();
+
+        $imagePath = str_replace(' ', '-', $property->id . '-' . strtolower($property->name));        
+        $data = [
+            'facility' => $facilityProperty,
+            'facilityList' => $facilityList,
+            'property' => $property,
+            'image' => [
+                'path' => $imagePath,
+                'images' => $images
+            ]
+        ];
+
+        return response()->json($data);
+    }
+  
+   public function getIncome(Request $req) {
         $ownerId = $req->userId;
 
         $income = DB::table('bill')

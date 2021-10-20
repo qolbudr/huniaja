@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manpro/presentation/screen/owner/edit_property.dart';
 import 'package:manpro/provider/auth.dart';
 import 'package:manpro/service/api_service.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,9 @@ import 'package:manpro/model/list_property.dart';
 import 'package:manpro/presentation/screen/detail.dart';
 
 class TabOwnerHome extends StatelessWidget {
+
+  
+
   @override 
   Widget build(BuildContext context) {
     return Consumer<AuthNotifier>(
@@ -53,7 +57,7 @@ class TabOwnerHome extends StatelessWidget {
                         child: CardHotel(
                           property: data.data.property[index], 
                           onTap: () => Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => Detail(property: data.data.property[index])
+                            builder: (context) => EditProperty(propertyId: data.data.property[index].id)
                           ))
                         ),
                       ) 
