@@ -8,7 +8,7 @@ class Property {
   String longitude;
   int type;
   int avaliable;
-  Null vrooms;
+  String vrooms;
   String dateCreated;
   int priceDay;
   int priceMonth;
