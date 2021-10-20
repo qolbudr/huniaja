@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\WebFunction;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,9 @@ use App\Http\Controllers\ApiController;
 Route::post('/login', [ApiController::class, 'login']);
 Route::post('/register/validate', [ApiController::class, 'validateRegisterForm']);
 Route::post('/register', [ApiController::class, 'register']);
+Route::get('/property/facility', [WebFunction::class, 'getFacility']);
+Route::post('/owner/property/get', [ApiController::class, 'getOwnerProperty']);
+
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/user/get/{id}', [ApiController::class, 'getUserData']);
@@ -32,6 +37,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/property/getPhoto/{propertyId}', [ApiController::class, 'getPropertyPhoto']);
     Route::get('/property/getFacility/{propertyId}', [ApiController::class, 'getFacility']);
     Route::get('/property/getReview/{propertyId}', [ApiController::class, 'getReview']);
+    Route::post('/property/image/upload', [WebFunction::class, 'uploadImageMultiple']);
+    Route::post('/property/image/{imageId}/delete', [WebFunction::class, 'deleteImage']);
     
     Route::post('/property/pay/day', [ApiController::class, 'payDay']);
     Route::post('/property/pay/month', [ApiController::class, 'payMonth']);
@@ -44,7 +51,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/saldo/topup', [ApiController::class, 'topupBalance']);
     Route::post('/booking/get', [ApiController::class, 'getBookingData']);
     Route::post('/owner/property/insert', [ApiController::class, 'insertProperty']);
-    Route::post('/owner/property/get', [ApiController::class, 'getOwnerProperty']);
+    Route::post('/owner/property/{propertyId}/updateFacility', [ApiController::class, 'updateFacility']);
     Route::post('/owner/booking/get', [ApiController::class, 'getOwnerBook']);
 
     Route::post('/owner/income/get', [ApiController::class, 'getIncome']);
