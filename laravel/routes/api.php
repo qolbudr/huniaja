@@ -22,7 +22,7 @@ Route::post('/login', [ApiController::class, 'login']);
 Route::post('/register/validate', [ApiController::class, 'validateRegisterForm']);
 Route::post('/register', [ApiController::class, 'register']);
 Route::get('/property/facility', [WebFunction::class, 'getFacility']);
-Route::post('/owner/property/get', [ApiController::class, 'getOwnerProperty']);
+Route::get('/owner/property/{propertyId}/details', [ApiController::class, 'getPropertyDetails']);
 
 
 Route::group(['middleware' => 'auth:api'], function() {
@@ -50,7 +50,10 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::post('/saldo/topup', [ApiController::class, 'topupBalance']);
     Route::post('/booking/get', [ApiController::class, 'getBookingData']);
+    Route::post('/owner/property/get', [ApiController::class, 'getOwnerProperty']);
     Route::post('/owner/property/insert', [ApiController::class, 'insertProperty']);
+    Route::post('/owner/property/{propertyId}/update', [ApiController::class, 'updateProperty']);
+    
     Route::post('/owner/property/{propertyId}/updateFacility', [ApiController::class, 'updateFacility']);
     Route::post('/owner/booking/get', [ApiController::class, 'getOwnerBook']);
 });
