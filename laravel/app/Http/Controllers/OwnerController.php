@@ -62,11 +62,12 @@ class OwnerController extends Controller
             ),
             "booking" =>  DB::table('booking')
             ->join('property', 'property.id', '=', 'booking.propertyId')
+            ->join('bill', 'bill.bookingId', '=', 'booking.id')
             ->where('ownerId', $ownerId)
             ->select(
                 'booking.id as id',
                 'property.id as propertyId',
-                'userId',
+                'bill.userId',
                 'booking.date as date',
                 'property.name as name',
                 'booking.status as status'
@@ -320,9 +321,15 @@ class OwnerController extends Controller
 
     public function confirmationBooking(Request $req, $bookingId)
     {
+        $userId = Auth::user()->id;
+        $users = DB::table('users')->where('id', $userId)->first();
+        $bill = DB::table('bill')->where('bookingId', $bookingId)->where('status', 1)->first();
+
         $bookingStatusNumber = 0;
         if($req->status == "accepted"){
             $bookingStatusNumber = 1;
+            $balance = $users->balance + $bill->price;
+            DB::table('users')->where('id', $userId)->update(['balance' => $balance]);
         }else{
             $bookingStatusNumber = 2;
         }
