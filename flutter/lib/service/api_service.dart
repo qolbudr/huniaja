@@ -3,13 +3,17 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:manpro/config/app.dart';
+import 'package:manpro/model/ImageProperty.dart';
 import 'package:manpro/model/auth_login.dart';
 import 'package:manpro/model/facility.dart';
+import 'package:manpro/model/facilityProperty.dart';
 import 'package:manpro/model/image_picker.dart';
 import 'package:manpro/model/list_property.dart';
 import 'package:manpro/model/location_item.dart';
 import 'package:manpro/model/hotel_photo.dart';
 import 'package:manpro/model/owner_booking.dart';
+import 'package:manpro/model/propertyDetails.dart';
+import 'package:manpro/model/propertyOwner.dart';
 import 'package:manpro/model/review.dart';
 import 'package:manpro/model/user.dart';
 import 'package:manpro/model/booking.dart';
@@ -435,7 +439,6 @@ class ApiService  {
       },
     );
 
-    // print(response.body);
 
     Map<String, dynamic> data = jsonDecode(response.body);
     if(response.statusCode == 200) {
@@ -527,6 +530,54 @@ class ApiService  {
   Future insertProperty({token, userId, name, description, address, latitude, longitude, vrooms, priceMonth, priceDay, priceYear, type}) async {
     final response = await http.post(
       Uri.parse(_apiURL + "/api/owner/property/insert"),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: {
+        "userId": userId.toString(),
+        'name': name,       
+        'description': description, 
+        'address': address,
+        'latitude': latitude,
+        'longitude': longitude,  
+        'price_day': priceDay, 
+        'price_month': priceMonth,
+        'price_year': priceYear,
+        'vrooms': vrooms,
+        'type': type,
+      },
+    );
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+
+    if(response.statusCode == 200) {
+      return data;
+    } else {
+      return throw data['message'];
+    }
+  }
+
+  Future<PropertyDetails> getPropertyDetails(String token, int propertyId) async {
+    final res = await http.get(Uri.parse("$_apiURL/api/owner/property/$propertyId/details"));
+    Map<String, dynamic> body = jsonDecode(res.body);
+
+    if(res.statusCode == 200){
+    List<ImageProperty> images = (body['image']['images'] as List).map((e) => ImageProperty.fromJson(e)).toList();
+      
+    PropertyOwner property = PropertyOwner.fromJson(body['property']);
+    List<FacilityProperty> facility = (body['facility'] as List).map((e) => FacilityProperty.fromJson(e)).toList();
+    List<Facility> facilityList = (body['facilityList'] as List).map((e) => Facility.fromJson(e)).toList();
+    Images img = Images(path: body['image']['path'], imageProperty: images);
+    PropertyDetails _property = PropertyDetails(propertyOwner: property,facility: facility, facilityList: facilityList, img: img);
+    return _property;
+    }else{
+      return throw body['message'];
+    }
+  }
+
+    Future updateProperty({token, userId, propertyId, name, description, address, latitude, longitude, vrooms, priceMonth, priceDay, priceYear, type}) async {
+    final response = await http.post(
+      Uri.parse(_apiURL + "/api/owner/property/$propertyId/update"),
       headers: {
         'Authorization': 'Bearer ' + token,
       },
