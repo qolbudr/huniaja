@@ -218,6 +218,7 @@ class AdminController extends Controller
         ->join('users', 'withdraw.ownerId', '=', 'users.id')
         ->select(
             'withdraw.amount',
+            'withdraw.description',
             'users.name',
             'users.email',
             'users.address',
@@ -225,7 +226,8 @@ class AdminController extends Controller
         )
         ->first();
         $withdraw = [
-            'amount' => $withdrawInformation->amount
+            'amount' => $withdrawInformation->amount,
+            'description' => $withdrawInformation->description
         ];
         $user = [
             'name' => $withdrawInformation->name,

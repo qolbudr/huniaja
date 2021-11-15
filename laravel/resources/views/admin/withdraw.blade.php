@@ -121,6 +121,11 @@
                       <th>:</th>
                       <th><span id="address"></span></th>
                   </tr>
+                  <tr>
+                    <th>Deskripsi</th>
+                    <th>:</th>
+                    <th><textarea id="descriptionwd" readonly class="form-control"></textarea></th>
+                  </tr>
               </table>
           <div class="row col-md-12 mx-auto">
           <div class="form-group col-md-12">
@@ -195,6 +200,7 @@
             document.querySelector('#email').innerText = res.user.email
             document.querySelector('#number').innerText = res.user.phone
             document.querySelector('#address').innerText = res.user.address
+            document.querySelector("#descriptionwd").innerText = res.withdraw.description
     })
   }
 
