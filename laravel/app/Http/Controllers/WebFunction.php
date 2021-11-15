@@ -319,6 +319,12 @@ class WebFunction extends Controller
 
   public function webHookHandler(Request $req)
   {
+      $isPay = DB::table('invoice')->where('orderId', $req->order_id)->first();
+      if($isPay->status != 0){
+        return response()->json([
+          'message' => "data has been stored no store again"
+        ], 200);
+      }
       if($req->fraud_status == "accept"){
           $status = 1;
           $invoiceUser = DB::table('invoice')->where('orderId', $req->order_id)->first();
