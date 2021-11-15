@@ -66,7 +66,7 @@
                 <div class="row justify-content-between align-items-center">
                   <div class="col-12 col-md-6 mb-1">
                     <h6 class="font-weight-bold mb-2">{{ $detail->ownerName }}</h6>
-                    <p class="no-margin">{{ $detail->email }}</p>
+                    <p class="no-margin">{{ $detail->phone }}</p>
                   </div>
                   <div class="col-12 col-md-6 mb-1 text-right">
                     <button class="btn btn-primary px-4" id="chat-owner" ownerId="{{ $detail->ownerId }}" ownerName="{{ $detail->ownerName }}">Chat</button>

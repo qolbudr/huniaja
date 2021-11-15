@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const apiURL = "http://192.168.43.20/rizal-manpro";
+const apiURL = "http://192.168.43.184/huniaja-master";
 
 const Color primaryColor = Color(0xff325baf);
 const Color accentColor = Color(0xfff1f5fb);

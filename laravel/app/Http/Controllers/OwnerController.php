@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Session;
+use Illuminate\Support\Str;
 
 class OwnerController extends Controller
 {
@@ -134,6 +135,17 @@ class OwnerController extends Controller
         ];
         $facilities = DB::table('facility_list')->get();
         return view('owner/property', ['data' => $data, 'facilities' => $facilities]);
+    }
+
+    public function discount()
+    {
+        $ownerId = Auth::user()->id;
+        $data = [
+            "property" => DB::table('property')->where('ownerId', $ownerId)->get(),
+            "discount" => DB::table('property')->join('discount', 'discount.propertyId', '=', 'property.id')->where('discount.ownerId', $ownerId)->get(),
+        ];
+
+        return view('owner/discount', $data);
     }
 
     public function bill()
@@ -339,6 +351,31 @@ class OwnerController extends Controller
             'status' => $bookingStatusNumber
         ]);
         Session::flash('success', 'Berhasil menyutujui permintaan');
+        return redirect()->back();
+    }
+
+    public function insertDiscount(Request $req) {
+        $data = [
+            'propertyId' => $req->propertyId,
+            'ownerId' => Auth::user()->id,
+        ];
+
+        if($req->type == 'percent') {
+            $data['percent'] = $req->nominal;
+        } else {
+            $data['value'] = $req->nominal;
+        }
+
+        $data['code'] = Str::random(10);
+
+        DB::table('discount')->insert($data);
+        Session::flash('success', 'Berhasil menambahkan kode diskon');
+        return redirect()->back();
+    }
+
+    public function deleteDiscount($id) {
+        DB::table('discount')->where('id', $id)->delete();
+        Session::flash('success', 'Berhasil menghapus kode diskon');
         return redirect()->back();
     }
 }

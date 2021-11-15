@@ -117,6 +117,11 @@
                                         <span class="hide-menu">Tagihan</span
                                     ></a>
                                 </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ URL::to('owner/discount') }}" class="sidebar-link">
+                                        <span class="hide-menu">Diskon</span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="sidebar-item">

@@ -207,7 +207,7 @@
       </div>
     </div>
 
-    <div class="account-card col-12 my-2" id="balance-card">
+    <div class="account-card col-12 my-2 d-none" id="balance-card">
       <div class="card p-4">
         <div class="card-title">
           <h5 class="font-weight-bold">SALDO AKUN</h5>

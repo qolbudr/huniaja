@@ -66,6 +66,7 @@ Route::get('/owner', function () {
 Route::group(['middleware' => 'owner.auth'], function () {
     Route::get('/owner/dashboard', [OwnerController::class, 'dashboard'])->name('ownerDashboard');
     Route::get('/owner/income', [OwnerController::class, 'income']);
+    Route::get('/owner/discount', [OwnerController::class, 'discount']);
     Route::get('/owner/booking', [OwnerController::class, 'booking']);
     Route::get('/owner/bill', [OwnerController::class, 'bill']);
     Route::get('/owner/property', [OwnerController::class, 'property']);
@@ -83,6 +84,8 @@ Route::group(['middleware' => 'owner.auth'], function () {
     Route::post('/owner/withdraw', [OwnerController::class, 'requestWithdraw']);
     Route::get('/owner/booking/information/{userId}', [OwnerController::class, 'getUserIdentity']);
     Route::post('/owner/booking/confirmation/{bookingId}', [OwnerController::class, 'confirmationBooking']);
+    Route::post('/owner/discount/insert', [OwnerController::class, 'insertDiscount']);
+    Route::get('/owner/discount/delete/{id}', [OwnerController::class, 'deleteDiscount']);
 });
 
 //route for admin without middleware
