@@ -288,6 +288,7 @@ class OwnerController extends Controller
         DB::table('withdraw')->insert([
             'ownerId' => Auth::user()->id,
             'amount' => $req->amount,
+            'description' => $req->description,
             'created' => date("Y-m-d")
         ]);
         
