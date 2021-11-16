@@ -162,10 +162,15 @@ class OwnerController extends Controller
     public function insertProperty(Request $req)
     {
         if(!$req->price_day && !$req->price_month && !$req->price_year){
-            Session::flash("error", "Salah Satu Opsional Harga Harus di isi");
+            Session::flash("error", "Salah Satu Opsional Harga Harus di isi !");
             return redirect()->back();
         }
-        DB::table('property')->insert([
+        if(!$req->file('ownership_proof')){
+            Session::flash("error", "Butki kepemilikan wajib ada !");
+            return redirect()->back();
+        }
+
+        $id = DB::table('property')->insertGetId([
             "vrooms" => $req->vrooms,
             "ownerId" => Auth::user()->id,
             "avaliable" => 1,
@@ -179,6 +184,16 @@ class OwnerController extends Controller
             "price_day" => $req->price_day,
             "price_month" => $req->price_month,
             "price_year" => $req->price_year,
+        ]);
+
+        $file = $req->file('ownership_proof');
+        $path  = str_replace(' ', '-', $id . '-' . strtolower($req->name) . '/');
+        $tujuan_upload = 'public/ownership/' . $path;
+        $rand = rand(9999, 99999);
+        $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
+
+        DB::table('property')->where('id', $id)->update([
+            "ownership_proof" => $rand . '.' . $file->getClientOriginalExtension()
         ]);
 
         Session::flash('success', 'Properti telah ditambahkan');
@@ -221,6 +236,29 @@ class OwnerController extends Controller
             Session::flash("error", "Salah Satu Opsional Harga Harus di isi");
             return redirect()->back();
         }
+        if(!$req->file("ownership_proof")){
+            $data = [
+                "vrooms" => $req->vrooms,
+                "ownerId" => Auth::user()->id,
+                "avaliable" => 1,
+                "date_created" => date('Y-m-d'),
+                "name" => $req->name,
+                "description" => $req->description,
+                "latitude" => $req->latitude,
+                "longitude" => $req->longitude,
+                "address" => $req->address,
+                "type" => $req->type,
+                "price_day" => $req->price_day,
+                "price_month" => $req->price_month,
+                "price_year" => $req->price_year,
+            ];
+        }else{
+          $file = $req->file('ownership_proof');
+        $path  = str_replace(' ', '-', $propertyId . '-' . strtolower($req->name) . '/');
+        $tujuan_upload = 'public/ownership/' . $path;
+        $rand = rand(9999, 99999);
+        $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
+
         $data = [
             "vrooms" => $req->vrooms,
             "ownerId" => Auth::user()->id,
@@ -235,7 +273,11 @@ class OwnerController extends Controller
             "price_day" => $req->price_day,
             "price_month" => $req->price_month,
             "price_year" => $req->price_year,
-        ];
+            "ownership_proof" => $rand . '.' . $file->getClientOriginalExtension()
+        ];  
+        }
+        
+
         DB::table('property')->where('id', $propertyId)->update($data);
         Session::flash('success', 'Properti telah diperbarui');
         return redirect()->back();
