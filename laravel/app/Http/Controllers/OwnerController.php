@@ -161,6 +161,10 @@ class OwnerController extends Controller
 
     public function insertProperty(Request $req)
     {
+        if(!$req->price_day && !$req->price_month && !$req->price_year){
+            Session::flash("error", "Salah Satu Opsional Harga Harus di isi");
+            return redirect()->back();
+        }
         DB::table('property')->insert([
             "vrooms" => $req->vrooms,
             "ownerId" => Auth::user()->id,
@@ -213,6 +217,10 @@ class OwnerController extends Controller
 
     public function updateProperty(Request $req, $propertyId)
     {
+        if(!$req->price_day && !$req->price_month && !$req->price_year){
+            Session::flash("error", "Salah Satu Opsional Harga Harus di isi");
+            return redirect()->back();
+        }
         $data = [
             "vrooms" => $req->vrooms,
             "ownerId" => Auth::user()->id,
