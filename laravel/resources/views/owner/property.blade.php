@@ -98,7 +98,7 @@
                 <button type="button" class="close" data-dismiss="modal"
                     aria-hidden="true">×</button>
             </div>
-            <form action="{{ URL::to('owner/property/insert') }}" method="post">
+            <form action="{{ URL::to('owner/property/insert') }}" method="post"  enctype="multipart/form-data">
               @csrf
               <div class="modal-body">
                   <div class="row">
@@ -136,6 +136,10 @@
                         <option value="2">Kontrakan</option>
                       </select>
                     </div>
+                    <div class="form-group col-12">
+                      <label for="ownership_proof">Bukti Kepemilikan</label>
+                      <input type="file" class="form-control" placeholder="Bukti Kepemilikan" name="ownership_proof" id="ownership_proof" required>
+                    </div>
                     <div class="form-group col-md-12">
                       <button type="submit" class="btn btn-primary btn-block">Simpan</button>
                     </div>
@@ -153,7 +157,7 @@
               <button type="button" class="close" data-dismiss="modal"
                   aria-hidden="true">×</button>
           </div>
-          <form action="" method="post" id="updateForm">
+          <form action="" method="post" id="updateForm" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
                 <div class="row">
@@ -190,6 +194,10 @@
                       <option value="1">Apartemen</option>
                       <option value="2">Kontrakan</option>
                     </select>
+                  </div>
+                  <div class="form-group col-12">
+                    <label for="ownership_proof">Bukti Kepemilikan</label>
+                    <input type="file" class="form-control" placeholder="Bukti Kepemilikan" name="ownership_proof" id="ownership_proof_edit">
                   </div>
                   <div class="form-group col-md-12">
                     <button type="submit" class="btn btn-primary btn-block">Simpan</button>

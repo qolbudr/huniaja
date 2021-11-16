@@ -176,6 +176,7 @@ class AdminController extends Controller
         $properties = DB::table('property')
             ->join('users', 'property.ownerId', '=', 'users.id')
             ->select(
+                'property.ownership_proof',
                 'property.id',
                 'property.ownerId',
                 'users.name as owner',
