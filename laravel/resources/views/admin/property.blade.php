@@ -55,6 +55,7 @@
                                     <th>Harga harian</th>
                                     <th>Harga bulanan</th>
                                     <th>Harga Tahunan</th>
+                                    <th>Bukti Kepemilikan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -67,7 +68,7 @@
                                   <td>{{ $p->price_day}}</td>
                                   <td>{{ $p->price_month}}</td>
                                   <td>{{ $p->price_month}}</td>
-
+                                  <td><a href="{{asset(str_replace(' ', '-', 'ownership/' . $p->id . '-' . strtolower($p->name) . '/' . $p->ownership_proof))}}" target="_blank" class="btn btn-primary">Lihat Bukti Kepemilikan</a></td>
                                   <td>
                                     <button class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#deletePropertyModal" onclick="deleteProperty({{$p->id}},'{{$p->name}}','{{$p->owner}}')"><i class="fa fa-trash"></i></button>
                                   </td>
