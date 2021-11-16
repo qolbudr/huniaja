@@ -276,8 +276,6 @@ class OwnerController extends Controller
             "ownership_proof" => $rand . '.' . $file->getClientOriginalExtension()
         ];  
         }
-        
-
         DB::table('property')->where('id', $propertyId)->update($data);
         Session::flash('success', 'Properti telah diperbarui');
         return redirect()->back();
