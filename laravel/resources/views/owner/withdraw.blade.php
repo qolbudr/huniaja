@@ -120,6 +120,10 @@
                         <label for="final_balance">Saldo Akhir</label>
                         <input type="number" class="form-control" placeholder="Sisa Saldo" name="final_balance" id="final_balance" readonly>
                       </div>
+                      <div class="form-group col-md-12">
+                        <label for="amount">Deskripsi</label>
+                        <textarea name="description" class="form-control" id="description" rows="5" placeholder="keterangan tambahan seperti nomor rekening dan atas nama"></textarea>
+                    </div>
                     <div class="form-group col-md-12">
                       <button type="submit" class="btn btn-primary btn-block">Ajukan</button>
                     </div>
@@ -134,6 +138,7 @@
     let amount = document.querySelector('#amount')
     let formWithdraw = document.querySelector('#withdrawForm')
     let finalBalance = document.querySelector('#final_balance')
+    let description = document.querySelector("#description")
     function countFinalBalance(){
         let intAmount = parseInt(amount.value)
         if(!intAmount){

@@ -121,13 +121,13 @@
                       <input type="text" class="form-control" placeholder="Virtual Room" name="vrooms">
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="number" class="form-control" placeholder="Harga (Harian)" name="price_day" required>
+                      <input type="number" class="form-control" placeholder="Harga (Harian)" name="price_day">
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month" required>
+                      <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month">
                     </div>
                     <div class="form-group col-12">
-                      <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year" required>
+                      <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year">
                     </div>
                     <div class="form-group col-md-12" required>
                       <select class="form-control" name="type">
@@ -176,13 +176,13 @@
                     <input type="text" class="form-control" placeholder="Virtual Room" id="editVrooms" name="vrooms">
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="number" class="form-control" placeholder="Harga (Harian)" name="price_day" id="editPriceDay" required>
+                    <input type="number" class="form-control" placeholder="Harga (Harian)" name="price_day" id="editPriceDay">
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month" id="editPriceMonth" required>
+                    <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month" id="editPriceMonth">
                   </div>
                   <div class="form-group col-12">
-                    <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year" id="editPriceYear" required>
+                    <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year" id="editPriceYear">
                   </div>
                   <div class="form-group col-md-12" required>
                     <select class="form-control" id="editType" name="type">
