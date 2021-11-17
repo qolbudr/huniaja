@@ -427,4 +427,13 @@ class OwnerController extends Controller
         Session::flash('success', 'Berhasil menghapus kode diskon');
         return redirect()->back();
     }
+
+    public function stopBooking($id){
+        DB::table('booking')->where('id', $id)
+        ->update([
+            'status' => 2
+        ]);
+        Session::flash('success', 'Berhasil menhentikan penyewaan');
+        return redirect()->back();
+    }
 }
