@@ -9,6 +9,8 @@ use Validator;
 use Hash;
 use Session;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
 
 class AuthController extends Controller
 {
@@ -18,27 +20,27 @@ class AuthController extends Controller
             'email'                 => 'required|email',
             'password'              => 'required|string'
         ];
-  
+
         $messages = [
             'email.required'        => 'Email wajib diisi',
             'email.email'           => 'Email tidak valid',
             'password.required'     => 'Password wajib diisi',
             'password.string'       => 'Password harus berupa string'
         ];
-  
+
         $validator = Validator::make($request->all(), $rules, $messages);
-  
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
-  
+
         $data = [
             'email'     => $request->input('email'),
             'password'  => $request->input('password'),
         ];
-  
+
         Auth::attempt($data);
-  
+
         if (Auth::check() && Auth::user()->role == 0) {
             return redirect()->route('/');
         } else {
@@ -54,27 +56,27 @@ class AuthController extends Controller
             'email'                 => 'required|email',
             'password'              => 'required|string'
         ];
-  
+
         $messages = [
             'email.required'        => 'Email wajib diisi',
             'email.email'           => 'Email tidak valid',
             'password.required'     => 'Password wajib diisi',
             'password.string'       => 'Password harus berupa string'
         ];
-  
+
         $validator = Validator::make($request->all(), $rules, $messages);
-  
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
-  
+
         $data = [
             'email'     => $request->input('email'),
             'password'  => $request->input('password'),
         ];
-  
+
         Auth::attempt($data);
-  
+
         if (Auth::check() && Auth::user()->role == 1) {
             return redirect()->route('ownerDashboard');
         } else {
@@ -91,7 +93,7 @@ class AuthController extends Controller
             'email'                 => 'required|email|unique:users,email',
             'password'              => 'required|min:6|confirmed',
         ];
-  
+
         $messages = [
             'name.required'         => 'Nama Lengkap wajib diisi',
             'name.min'              => 'Nama lengkap minimal 6 karakter',
@@ -103,17 +105,17 @@ class AuthController extends Controller
             'password.required'     => 'Password wajib diisi',
             'password.confirmed'    => 'Password tidak sama dengan konfirmasi password',
         ];
-  
+
         $validator = Validator::make($request->all(), $rules, $messages);
-  
-        if($validator->fails()){
-            if($request->role == 1) {
+
+        if ($validator->fails()) {
+            if ($request->role == 1) {
                 return redirect()->back()->withErrors($validator)->withInput($request->all);
             } else {
                 return redirect()->route('register')->withErrors($validator)->withInput($request->all);
             }
         }
-  
+
         $user = new User;
         $user->name = ucwords(strtolower($request->name));
         $user->email = strtolower($request->email);
@@ -124,17 +126,17 @@ class AuthController extends Controller
         $user->face = $request->face;
         $simpan = $user->save();
 
-  
-        if($simpan){
+
+        if ($simpan) {
             Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
-            if($request->role == 1) {
+            if ($request->role == 1) {
                 return redirect()->route('ownerLogin');
             } else {
                 return redirect()->route('login');
             }
         } else {
             Session::flash('errors', ['' => 'Register gagal! Silahkan ulangi beberapa saat lagi']);
-            if($request->role == 1) {
+            if ($request->role == 1) {
                 return redirect()->route('ownerRegister');
             } else {
                 return redirect()->route('register');
@@ -142,13 +144,14 @@ class AuthController extends Controller
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         $role = Auth::user()->role;
         Auth::logout();
 
-        if($role == 0) {
+        if ($role == 0) {
             return redirect()->route('/');
-        } else if($role == 1) {
+        } else if ($role == 1) {
             return redirect()->route('ownerLogin');
         } else {
             return redirect()->route('adminLogin');
@@ -161,27 +164,27 @@ class AuthController extends Controller
             'email'                 => 'required|email',
             'password'              => 'required|string'
         ];
-  
+
         $messages = [
             'email.required'        => 'Email wajib diisi',
             'email.email'           => 'Email tidak valid',
             'password.required'     => 'Password wajib diisi',
             'password.string'       => 'Password harus berupa string'
         ];
-  
+
         $validator = Validator::make($request->all(), $rules, $messages);
-  
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
-  
+
         $data = [
             'email'     => $request->input('email'),
             'password'  => $request->input('password'),
         ];
-  
+
         Auth::attempt($data);
-  
+
         if (Auth::check() && Auth::user()->role == 2) {
             return redirect()->route('adminDashboard');
         } else {
@@ -189,5 +192,34 @@ class AuthController extends Controller
             Session::flash('error', 'Email atau password salah');
             return redirect()->back();
         }
+    }
+
+    public function getCurrentUser()
+    {
+        $idUser = Auth::user()->id;
+        $user = DB::table('users')->where('id', $idUser)
+            ->select(
+                'name',
+                'email',
+                'dob',
+                'address',
+                'phone'
+            )->first();
+
+        return response()->json($user);
+    }
+
+    public function updateUser(Request $req){
+        $idUser = Auth::user()->id;
+        DB::table('users')->where('id', $idUser)
+        ->update([
+            'name' => $req->name,
+            'email' => $req->email,
+            'dob' => $req->dob,
+            'phone' => $req->phone,
+            'address' => $req->address
+        ]);
+        Session::flash('success', 'Berhasil mengubah akun');
+        return redirect()->back();
     }
 }
