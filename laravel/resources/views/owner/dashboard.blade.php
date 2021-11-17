@@ -107,17 +107,22 @@
                                           Pending
                                     @elseif($data->status == 1)
                                         diterima
+                                    @elseif($data->status == 2)
+                                        selesai
                                     @else
                                         ditolak
                                     @endif
                                   </td>
-                                  @if($data->status == 0)
                                   <td>
                                     <button onclick="fetchInfo({{ $data->id }})" data-toggle="modal" data-target="#showUser" class="btn btn-primary btn-circle btn-sm viewUser"><i class="fa fa-user"></i></button>
+                                    @if($data->status == 0)
                                     <button data-toggle="modal" data-target="#confirmationModal" onclick="confirmation({{$data->id}})" class="btn btn-success btn-circle btn-sm"><i class="fa fa-check"></i></button>
                                     <button data-toggle="modal" data-target="#confirmationDenyModal" onclick="denyConfirmation({{$data->id}})" class="btn btn-danger btn-circle btn-sm"><i class="fa fa-times"></i></button>
-                                  </td>
-                                  @endif
+                                    @elseif($data->status == 1)
+                                    <button data-toggle="modal" data-target="#stopSewa" onclick="stopBooking({{$data->id}})" class="btn btn-danger btn-circle btn-sm"><i class="fa fa-stop"></i></button>
+                                    @endif
+                                    
+                                </td>
                               </tr>
                               @endforeach
                             </tbody>
@@ -186,7 +191,6 @@
                 
               @csrf
               <input type="hidden" name="status" value="accepted">
-
             <div class="p-3">
             Yakin ingin menyutujuhi penyewaan <span id="bookingDetail"></span> ?
             </div>
@@ -213,7 +217,7 @@
             </div>
             <form action="" id="denyBookingForm" method="POST">
               @csrf
-              <input type="hidden" name="status" value="deny">
+
             <div class="p-3">
             Yakin ingin menolak penyewaan <span id="bookingDetailDeny"></span> ?
             </div>
@@ -223,6 +227,33 @@
               </div>
               <div class="form-group col-md-6">
                 <button type="submit" class="btn btn-danger btn-block">Tolak</button>
+              </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="stopSewa" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myCenterModalLabel">Konfirmasi penghentian Penyewaan</h4>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">×</button>
+            </div>
+            <form action="" id="stopBookingForm" method="GET">
+              @csrf            
+              <input type="hidden" name="id" id="idStop">
+
+            <div class="p-3">
+            Yakin ingin menghentikan Peyewaan <span id="stopSewaSpan"></span> ?
+            </div>
+            <div class="row col-md-12 mx-auto">
+            <div class="form-group col-md-6">
+                <button type="submit" class="btn btn-primary btn-block"  data-dismiss="modal" aria-hidden="true">Tidak</button>
+              </div>
+              <div class="form-group col-md-6">
+                <button type="submit" class="btn btn-danger btn-block">Hentikan</button>
               </div>
             </div>
         </form>
@@ -260,6 +291,11 @@
         .then(res => {
             document.querySelector('#bookingDetailDeny').innerText = `${res.property.name} oleh ${res.user.name}`
         })
+    }
+
+    function stopBooking(bookingId){
+        document.querySelector('#idStop').value = bookingId
+        document.querySelector('#stopBookingForm').setAttribute('action', `${currentUrl}/stop/${bookingId}`)
     }
     
 </script>

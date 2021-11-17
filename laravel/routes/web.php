@@ -84,6 +84,8 @@ Route::group(['middleware' => 'owner.auth'], function () {
     Route::post('/owner/withdraw', [OwnerController::class, 'requestWithdraw']);
     Route::get('/owner/booking/information/{userId}', [OwnerController::class, 'getUserIdentity']);
     Route::post('/owner/booking/confirmation/{bookingId}', [OwnerController::class, 'confirmationBooking']);
+    Route::get('/owner/booking/stop/{id}', [OwnerController::class, 'stopBooking']);
+
     Route::post('/owner/discount/insert', [OwnerController::class, 'insertDiscount']);
     Route::get('/owner/discount/delete/{id}', [OwnerController::class, 'deleteDiscount']);
 });
