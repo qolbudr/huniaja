@@ -701,5 +701,10 @@ class ApiController extends Controller
         ]);
 
         return response()->json(['message' => "Successfully create withdrawal request"], 200);
+    }
+
+    public function getBillByProperty($propertyId) {
+        $bill = DB::table('q_bill')->where('propertyId', $propertyId)->get();
+        return response()->json($bill, 200);
     }  
 }

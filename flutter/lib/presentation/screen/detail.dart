@@ -96,7 +96,7 @@ class _DetailState extends State<Detail> {
                                 maxLines: 1,
                               ),
                               SizedBox(height: 10),
-                              RatingStar(count: widget.property.avgRating),
+                              RatingStar(count: widget.property.avgRating ?? 0),
                               SizedBox(height: 10),
                               Row(
                                 children: [

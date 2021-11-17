@@ -50,5 +50,17 @@ IconData icon(String webIcon) {
     case "fa fa-tint":
       return Icons.waves;
     break;
+
+    case "fa fa-tv":
+      return Icons.live_tv;
+    break;
+
+    case "fa fa-lightbulb-o":
+      return Icons.flash_on;
+    break;
+
+    case "fa fa-wifi":
+      return Icons.network_wifi;
+    break;
   }
 }

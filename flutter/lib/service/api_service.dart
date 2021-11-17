@@ -18,6 +18,7 @@ import 'package:manpro/model/review.dart';
 import 'package:manpro/model/user.dart';
 import 'package:manpro/model/booking.dart';
 import 'package:manpro/model/income.dart';
+import 'package:manpro/model/bill.dart';
 
 class ApiService  {
   static final _apiURL = apiURL;
@@ -640,6 +641,21 @@ class ApiService  {
 
     if(response.statusCode != 200) {
       return throw 'Failed to withdraw';
+    }
+  }
+
+  Future<List<Bill>>getBillByPropertyId(String propertyId, String token) async {
+    final response = await http.get(
+      Uri.parse(_apiURL + "/api/owner/bill/" + propertyId),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    );
+
+    if(response.statusCode == 200) {
+      return billFromJson(response.body);
+    } else {
+      return throw 'Failed to fetch bill';
     }
   }
 }

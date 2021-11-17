@@ -59,4 +59,6 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::post('/owner/income/get', [ApiController::class, 'getIncome']);
     Route::post('/owner/withdraw/insert', [ApiController::class, 'requestWithdraw']);
+
+    Route::get('/owner/bill/{id}', [ApiController::class, 'getBillByProperty']);
 });
