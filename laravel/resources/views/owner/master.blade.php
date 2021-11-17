@@ -132,7 +132,7 @@
                         </li>
                         <li class="list-divider"></li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" type="button" data-toggle="modal" data-target="#settingAccountDialog">
+                            <a role="button" onclick="getUser('{{URL::to('/user/info')}}')" class="sidebar-link sidebar-link" type="button" data-toggle="modal" data-target="#settingAccountDialog">
                                 <i data-feather="settings" class="feather-icon"></i>
                                 <span class="hide-menu">Pengaturan Akun</span>
                             </a>
@@ -153,11 +153,11 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myCenterModalLabel">Pengaturan Akun</h4>
+                        <h4 class="modal-title" id="myCenterModalLabel">Ubah Akun</h4>
                         <button type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">×</button>
                     </div>
-                    <form action="{{URL::to('updateUserCredential')}}" id="updateAccount" method="POST">
+                    <form action="{{URL::to('/user/update')}}" id="updateAccount" method="POST">
                       @csrf
                       <div class="form-group col-md-12">
                         <input type="text" id="namaSettingAccount" class="form-control" placeholder="nama" name="name" required>
@@ -172,7 +172,7 @@
                         <input type="date" id="dobSettingAccount" class="form-control" placeholder="Tanggal Lahir" name="dob" required>
                       </div>
                       <div class="form-group col-md-12">
-                        <textarea name="address" id="address" cols="30" rows="3" class="form-control" placeholder="Alamat"></textarea>
+                        <textarea name="address" id="addressSettingAccount" cols="30" rows="3" class="form-control" placeholder="Alamat"></textarea>
                       </div>
                       <div class="form-group col-md-12">
                         <button type="submit" class="btn btn-success btn-block">Simpan</button>
@@ -214,6 +214,18 @@
         };
         const app = firebase.initializeApp(firebaseConfig);
         var db = firebase.firestore();
+
+        function getUser(url){
+            fetch(url).then(res => res.json())
+            .then(res => {
+                document.querySelector('#namaSettingAccount').value = res.name
+                document.querySelector('#emailSettingAccount').value = res.email
+                document.querySelector('#phoneSettingAccount').value = res.phone
+                document.querySelector('#dobSettingAccount').value = res.dob
+                document.querySelector('#addressSettingAccount').value = res.address
+                
+            })
+        }
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/script.js') }}"></script>
     @if(Session::has('error'))

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Session;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class OwnerController extends Controller
@@ -427,4 +428,15 @@ class OwnerController extends Controller
         Session::flash('success', 'Berhasil menghapus kode diskon');
         return redirect()->back();
     }
+
+    public function stopBooking($id){
+        DB::table('booking')->where('id', $id)
+        ->update([
+            'status' => 2
+        ]);
+        Session::flash('success', 'Berhasil menhentikan penyewaan');
+        return redirect()->back();
+    }
+
+    
 }
