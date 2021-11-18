@@ -128,6 +128,7 @@ Route::middleware(['middleware' => 'admin.auth'])->group(function () {
     Route::get("/admin/withdraw", [AdminController::class, 'withdraw'])->name('adminWithDraw');
     Route::get('/admin/withdraw/information/{withdrawId}', [AdminController::class, 'withdrawInformation']);
     Route::get('/admin/withdraw/details/{id}', [AdminController::class, 'withdrawDetail']);
-
     Route::post('/admin/withdraw/confirmation/{withdrawId}', [AdminController::class, 'withdrawConfirmation']);
+    Route::get('/admin/transaction', [AdminController::class, 'showTransaction']);
+
 });
