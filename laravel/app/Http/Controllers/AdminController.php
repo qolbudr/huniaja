@@ -275,4 +275,25 @@ class AdminController extends Controller
         }
         return redirect()->back();
     }
+
+    public function withdrawDetail($id){
+        $data = DB::table('withdraw')
+        ->select(
+            'withdraw.amount',
+            'withdraw.status',
+            'withdraw.id',
+            'withdraw.created',
+            'withdraw.status_change',
+            'withdraw.description',
+            'withdraw.ownerId',
+            'name',
+            'email',
+            'phone',
+            'address',
+            'face',
+        )
+        ->where('withdraw.id', $id)
+        ->join('users', 'withdraw.ownerId', '=', 'users.id')->first();
+        return response()->json($data);
+    }
 }

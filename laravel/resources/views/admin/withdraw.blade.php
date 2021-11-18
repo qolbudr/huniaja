@@ -65,19 +65,23 @@
                                   <td>
                                     @if($p->status == null)
                                       pending
-                                    @elseif($p->status = 1)
+                                    @elseif($p->status == 1)
                                       accepted
                                     @else
                                       deny
                                     @endif
                                   </td>
-                                  @if($p->status == null)
                                   <td>
+                                  @if($p->status == null)
+
                                     <button onclick="fetchInfo({{ $p->id }})" data-toggle="modal" data-target="#showUser" class="btn btn-primary btn-circle btn-sm viewUser"><i class="fa fa-user"></i></button>
                                     <button data-toggle="modal" data-target="#confirmationModal" onclick="confirmation({{$p->id}})" class="btn btn-success btn-circle btn-sm"><i class="fa fa-check"></i></button>
                                     <button data-toggle="modal" data-target="#confirmationDenyModal" onclick="denyConfirmation({{$p->id}})" class="btn btn-danger btn-circle btn-sm"><i class="fa fa-times"></i></button>
+                                    @else
+                                    <button data-toggle="modal" data-target="#showDetail" onclick="getWithdrawDetail({{$p->id}})" class="btn btn-success">Detail Penarikan</button>
+                                    @endif
+                                    
                                   </td>
-                                  @endif
                               </tr>
                               @endforeach
                             </tbody>
@@ -125,6 +129,67 @@
                     <th>Deskripsi</th>
                     <th>:</th>
                     <th><textarea id="descriptionwd" readonly class="form-control"></textarea></th>
+                  </tr>
+              </table>
+          <div class="row col-md-12 mx-auto">
+          <div class="form-group col-md-12">
+              <button type="button" class="btn btn-primary btn-block"  data-dismiss="modal" aria-hidden="true">Tutup</button>
+            </div>
+          </div>
+      </div>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="showDetail" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myCenterModalLabel">Informasi Owner</h4>
+              <button type="button" class="close" data-dismiss="modal"
+                  aria-hidden="true">×</button>
+          </div>
+          <div id="detailWithdraw">
+              <table class="table table-responsive">
+                
+                <tr>
+                  <th>Jumlah Penarikan</th>
+                  <th>:</th>
+                  <th><span id="amountWithdrawDetail"></span></th>
+                </tr>
+                  <tr>
+                      <th>Nama Penarik</th>
+                      <th>:</th>
+                      <th><span id="nameWithdrawDetail"></span></th>
+                  </tr>
+                  <tr>
+                      <th>Email</th>
+                      <th>:</th>
+                      <th><span id="emailWithdrawDetail"></span></th>
+                  </tr>
+                  <tr>
+                      <th>Nomor Telepon</th>
+                      <th>:</th>
+                      <th><span id="numberWithdrawDetail"></span></th>
+                  </tr>
+                  <tr>
+                      <th>Alamat</th>
+                      <th>:</th>
+                      <th><span id="addressWithdrawDetail"></span></th>
+                  </tr>
+                  <tr>
+                    <th>Tanggal Pengajuan</th>
+                    <th>:</th>
+                    <th><span id="dateWithdrawDetail"></span></th>
+                  </tr>
+                  <tr>
+                    <th>Tanggal Konfirmasi</th>
+                    <th>:</th>
+                    <th><span id="confirmdateWithdrawDetail"></span></th>
+                  </tr>
+                  <tr>
+                    <th>Deskripsi</th>
+                    <th>:</th>
+                    <th><textarea id="descriptionWithdrawDetail" readonly class="form-control"></textarea></th>
                   </tr>
               </table>
           <div class="row col-md-12 mx-auto">
@@ -221,6 +286,22 @@
     .then(res => res.json())
     .then(res => {
       document.querySelector('#withdrawMessageDeny').innerText = `${res.user.name} dengan jumlah penarikan ${res.withdraw.amount}`
+    })
+  }
+
+  function getWithdrawDetail(withdrawId){
+    fetch(`${currentUrl}/details/${withdrawId}`)
+    .then(res => res.json())
+    .then(res => {
+      document.querySelector('#nameWithdrawDetail').innerText = res.name
+      document.querySelector('#emailWithdrawDetail').innerText = res.email
+      document.querySelector('#numberWithdrawDetail').innerText = res.phone
+      document.querySelector('#addressWithdrawDetail').innerText = res.address
+      document.querySelector('#amountWithdrawDetail').innerText = res.amount
+      document.querySelector('#dateWithdrawDetail').innerText = res.created
+      document.querySelector('#confirmdateWithdrawDetail').innerText = res.status_change
+      document.querySelector('#descriptionWithdrawDetail').innerText = description
+
     })
   }
 </script>
