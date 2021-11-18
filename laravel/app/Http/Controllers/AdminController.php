@@ -296,4 +296,15 @@ class AdminController extends Controller
         ->join('users', 'withdraw.ownerId', '=', 'users.id')->first();
         return response()->json($data);
     }
+
+    public function showTransaction(){
+        $query = 'SELECT users.name AS user, bill.id, bill.date, bill.price, bill.status, property.name as propertyName,
+        property.id AS propertyId,
+        (SELECT users.name FROM property INNER JOIN users ON property.ownerId = users.id WHERE property.id IN (propertyId)) AS owner
+        FROM bill INNER JOIN users ON 
+        users.id = bill.userId
+        INNER JOIN property ON bill.propertyId = property.id';
+        $data = DB::select($query);
+        return view('admin.transaction', ['data' => $data]);
+    }
 }
