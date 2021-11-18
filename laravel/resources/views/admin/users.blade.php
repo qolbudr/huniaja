@@ -52,6 +52,9 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Email</th>
+                                    <th>Nomor Telepon</th>
+                                    <th>Tanggal Lahir</th>
+                                    <th>Alamat</th>
                                     <th>Balance</th>
                                     <th>Action</th>
                                 </tr>
@@ -62,6 +65,9 @@
                                   <td>{{ $i + 1}}</td>
                                   <td>{{ $user->name }}</td>
                                   <td>{{ $user->email }}</td>
+                                  <td>{{ $user->phone }}</td>
+                                  <td>{{ $user->dob }}</td>
+                                  <td>{{ $user->address }}</td>
                                   <td>{{ $user->balance | 0 }}</td>
                                   <td>
                                     <button class="btn btn-warning btn-circle btn-sm"  data-toggle="modal" data-target="#editUser" onclick="fetchUser({{$user->id}})"><i class="fa fa-edit"></i></button>
