@@ -29,13 +29,10 @@
                     <div class="navbar-brand">
                         <a href="index.html">
                             <b class="logo-icon">
-                                <img src="{{ asset('admin/images/logo-icon.png') }}" alt="homepage" class="dark-logo" />
-                                <img src="{{ asset('admin/images/logo-icon.png') }}" alt="homepage" class="light-logo" />
+                                <img src="{{ asset('admin/images/huniicon.png') }}" alt="homepage" class="dark-logo" />
+                                <img src="{{ asset('admin/images/huniicon.png') }}" alt="homepage" class="light-logo" />
                             </b>
-                            <span class="logo-text">
-                                <img src="{{ asset('admin/images/logo-text.png') }}" alt="homepage" class="dark-logo" />
-                                <img src="{{ asset('admin/images/logo-light-text.png') }}" class="light-logo" alt="homepage" />
-                            </span>
+
                         </a>
                     </div>
 
