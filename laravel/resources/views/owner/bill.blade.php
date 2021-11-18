@@ -53,7 +53,7 @@
                                     <th>No</th>
                                     <th>Properti</th>
                                     <th>Penghuni</th>
-                                    <th>Tanggal</th>
+                                    <th>Tenggat Pembayaran</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
