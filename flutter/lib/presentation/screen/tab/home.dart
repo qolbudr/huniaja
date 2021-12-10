@@ -27,7 +27,7 @@ class TabHome extends StatelessWidget {
                 children: [
                   Text("Selamat Datang, ", style: textWhiteTheme.headline6),
                   SizedBox(height: 20),
-                  Text("Pages that you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the.", style: textWhiteTheme.subtitle1),
+                  Text("HuniAja menawarkan berbagai property berkualitas dengan harga terjangkau segera pesan property anda sekarang", style: textWhiteTheme.subtitle1),
                 ],
               ),
             ),
