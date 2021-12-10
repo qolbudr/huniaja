@@ -14,6 +14,7 @@ import 'package:manpro/service/api_service.dart';
 import 'package:manpro/model/hotel_photo.dart';
 import 'package:manpro/presentation/widget/shimmer.dart';
 import 'package:manpro/presentation/screen/book.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Detail extends StatefulWidget {
   @override
@@ -116,6 +117,29 @@ class _DetailState extends State<Detail> {
                               SizedBox(height: 10),
                               Text(widget.property.description, style: textTheme.subtitle1),
                               SizedBox(height: 10),
+                              if(widget.property.vrooms != null)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Divider(),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      "Virtual Room", 
+                                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 0.1, color: Colors.black),
+                                      maxLines: 1,
+                                    ),
+                                    SizedBox(height: 10),
+                                    Container(
+                                      width: double.infinity,
+                                      height: 250,
+                                      child: WebView(
+                                        initialUrl: widget.property.vrooms,
+                                        javascriptMode: JavascriptMode.unrestricted,
+                                      )
+                                    ),
+                                    SizedBox(height: 10),
+                                  ]
+                                ),
                               Divider(),
                               SizedBox(height: 10),
                               Text(
@@ -137,7 +161,7 @@ class _DetailState extends State<Detail> {
                                   } else {
                                     var data = facility.data["facility"];
                                     return Row(
-                                      children: List.generate(data.length, (index) => Padding(
+                                      children: List.generate(data.length > 4 ? 4 : data.length, (index) => Padding(
                                         padding: const EdgeInsets.only(right: 8),
                                         child: SquareIconFacility(icons: data[index]["webIcon"], text: data[index]["name"])
                                       ))

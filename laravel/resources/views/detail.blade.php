@@ -44,6 +44,13 @@
             <h5 class="font-weight-bold mb-2">Tentang</h5>
             <p class="no-margin text-justify">{{ $detail->description }}</p>
           </div>
+          @if($detail->vrooms != null)
+          <hr class="my-4">
+          <div class="place-about">
+            <h5 class="font-weight-bold mb-4">Virtual Rooms</h5>
+            <iframe class="w-100" height="250" allow="fullscreen" src="{{ $detail->vrooms }}" frameborder="0"></iframe>
+          </div>
+          @endif
           <hr class="my-3">
           <div class="place-facilities">
             <h5 class="font-weight-bold mb-3">Fasilitas</h5>

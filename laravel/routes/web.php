@@ -51,6 +51,8 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/detail/{id}/{name}', [WebController::class, 'detail'])->name('detail');
     Route::get('/account', [WebController::class, 'account'])->name('account');
     Route::post('/account/user/update', [AccountController::class, 'updateUserAccount'])->name('updateUserAccount');
+    Route::post('/account/change/password', [AccountController::class, 'changePassword'])->name('changeUserPassword');
+    Route::get('/account/delete', [AccountController::class, 'deleteAccount'])->name('deleteUserAccount');
     Route::get('/favorite/add/{id}', [WebFunction::class, 'addFavorite'])->name('addFavorite');
     Route::get('/favorite/remove/{id}', [WebFunction::class, 'removeFavorite'])->name('removeFavorite');
     Route::post('/review/add', [WebFunction::class, 'addReview'])->name('addReview');

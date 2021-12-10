@@ -73,7 +73,7 @@
             <p class="no-margin">Ganti kredensial password login anda</p>
           </div>
           <div class="col-12 col-md-6 text-right my-2">
-            <button class="btn btn-primary">Ganti Password</button>
+            <button data-toggle="modal" data-target="#changepassword" class="btn btn-primary">Ganti Password</button>
           </div>
         </div>
         <hr>
@@ -83,7 +83,7 @@
             <p class="no-margin">Semua data anda akan hilang, dan anda tidak bisa mengembalikan akun anda</p>
           </div>
           <div class="col-12 col-md-6 text-right my-2">
-            <button class="btn btn-danger px-4">Hapus Akun</button>
+            <button data-toggle="modal" data-target="#deleteaccount" class="btn btn-danger px-4">Hapus Akun</button>
           </div>
         </div>
       </div>
@@ -310,4 +310,61 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title" id="myCenterModalLabel">Ganti Password</h6>
+              <button type="button" class="close" data-dismiss="modal"
+                  aria-hidden="true">×</button>
+          </div>
+          <form action="{{ URL::to('account/change/password') }}" method="post">
+            @csrf
+            <div class="modal-body">
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label>Password Saat Ini</label>
+                    <input class="form-control" type="password" name="current_password" placeholder="Password saat ini" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label>Password Baru</label>
+                    <input class="form-control" type="password" name="password" placeholder="Password baru" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label>Konfirmasi Password</label>
+                    <input class="form-control" type="password" name="password_confirmation" placeholder="Konfirmasi password" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-primary btn-block">Simpan</button>
+                  </div>
+                </div>
+            </div>
+          </form>
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h6 class="modal-title" id="myCenterModalLabel">Hapus Akun</h6>
+              <button type="button" class="close" data-dismiss="modal"
+                  aria-hidden="true">×</button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                <div class="col-12 text-center">
+                  Yakin ingin menghapus account ?
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-danger">Batal</button>
+            <a href="{{ URL::to('account/delete') }}" class="btn btn-primary">Hapus</a>
+          </div>
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
