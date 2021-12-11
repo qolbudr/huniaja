@@ -1,0 +1,15 @@
+admin:
+adminrahma@mail.com | 123123
+eko@mail.com | 123123
+hasan@mail.com | 123123
+
+user:
+rahmairawan@mail.com | 123123
+imam@mail.com | 123123
+ibnu@mail.com | 123123
+
+
+owner:
+srihandayani@mail.com | 123123
+bambang@mail.com | 123123
+tahar@mail.com | 123123
