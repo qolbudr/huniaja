@@ -32,6 +32,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/user/changePassword', [ApiController::class, 'changePassword']);
     
     Route::get('/property/get', [ApiController::class, 'getProperty']);
+    Route::post('/property/add/favorite', [ApiController::class, 'addFavorite']);
+    Route::post('/property/remove/favorite', [ApiController::class, 'removeFavorite']);
     Route::get('/property/filter/{place}/{type}', [ApiController::class, 'filterSearch']);
     Route::get('/property/favorite/{userId}', [ApiController::class, 'getFavorite']);
     Route::get('/property/getPhoto/{propertyId}', [ApiController::class, 'getPropertyPhoto']);

@@ -32,11 +32,11 @@ class _LoginState extends State<Login> {
       context.read<AuthNotifier>().setAuthData(loginData);
       if(loginData.token.isNotEmpty) {
         if(loginData.user.role == 0) {
-          Navigator.push(_, MaterialPageRoute(
+          Navigator.pushReplacement(_, MaterialPageRoute(
             builder: (_) => Home()
           ));
         } else {
-          Navigator.push(_, MaterialPageRoute(
+          Navigator.pushReplacement(_, MaterialPageRoute(
             builder: (_) => OwnerHome()
           ));
         }

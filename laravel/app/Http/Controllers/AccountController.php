@@ -65,7 +65,7 @@ class AccountController extends Controller
 
     public function deleteAccount() {
         $userId = Auth::user()->id;
-        DB::table('users')->where('id', $id)->delete();
+        DB::table('users')->where('id', $userId)->delete();
         Auth::logout();
         Session::flash('success', 'Akun telah berhasil dihapus');
         return redirect()->to('/login');

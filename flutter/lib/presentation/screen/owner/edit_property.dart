@@ -155,7 +155,7 @@ class _EditPropertyState extends State<EditProperty> {
                       Container(
                         alignment: Alignment.center,
                         child: Image.network(
-                            "${apiURL}/public/assets/images/${path}/${e.imageName}"),
+                            "${apiURL}/public/assets/images/${this.widget.propertyId}/${e.imageName}"),
                       ),
                       Align(
                           alignment: Alignment.topRight,

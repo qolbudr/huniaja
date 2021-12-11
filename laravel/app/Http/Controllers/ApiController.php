@@ -707,4 +707,20 @@ class ApiController extends Controller
         $bill = DB::table('q_bill')->where('propertyId', $propertyId)->get();
         return response()->json($bill, 200);
     }  
+
+    public function addFavorite(Request $req)
+    {
+        DB::table('favorite')->insert([
+          "propertyId" => $req->propertyId,
+          "userId" => $req->userId
+        ]);
+
+        return response()->json(['message' => "Successfully added to favorite"], 200);
+    }
+
+    public function removeFavorite(Request $req)
+    {
+        DB::table('favorite')->where("propertyId", $req->propertyId)->where("userId", $req->userId)->delete();
+        return response()->json(['message' => "Successfully removed from favorite"], 200);
+    }
 }

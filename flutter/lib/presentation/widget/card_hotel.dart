@@ -20,7 +20,7 @@ class CardHotel extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
-              apiURL + '/public/assets/images/' + property.id.toString() + '-' + property.name.replaceAll(' ', '-').toLowerCase() + '/' + property.image, 
+              apiURL + '/public/assets/images/' + property.id.toString() + '/' + property.image, 
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover
@@ -90,7 +90,7 @@ class CardHotelBooking extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
-              apiURL + '/public/assets/images/' + property.id.toString() + '-' + property.name.replaceAll(' ', '-').toLowerCase() + '/' + property.image, 
+              apiURL + '/public/assets/images/' + property.id.toString()  + '/' + property.image, 
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover
