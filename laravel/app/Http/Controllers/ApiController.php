@@ -401,8 +401,8 @@ class ApiController extends Controller
         DB::table('invoice')->insert([
             'userId' => $userId,
             'orderId' => $orderId,
-            'snapToken' => $snap->token,
-            'snapUrl' => $snap->redirect_url,
+            'snapToken' => $snapToken->token,
+            'snapUrl' => $snapToken->redirect_url,
             'amount' => $req->price
         ]);
         return $snapToken->redirect_url;
