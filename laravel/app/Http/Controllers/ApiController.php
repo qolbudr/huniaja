@@ -373,16 +373,17 @@ class ApiController extends Controller
         \Midtrans\Config::$is3ds = true;
 
         $users = DB::table('users')->where('id', $req->userId)->first();
+        $orderId = time();
 
         $data = [
             "transaction_details" => [
-                "order_id" => time(),
+                "order_id" => $orderId,
                 "gross_amount" => 5
             ],
 
             "item_details" => [
                 [
-                    "id" => time(),
+                    "id" => $orderId,
                     "price" => $req->price,
                     "quantity" => 1,
                     "name" => "Topup Saldo"
@@ -396,8 +397,15 @@ class ApiController extends Controller
             ]
         ];
 
-        $snapToken = \Midtrans\Snap::createTransaction($data)->redirect_url;
-        return $snapToken;
+        $snapToken = \Midtrans\Snap::createTransaction($data);
+        DB::table('invoice')->insert([
+            'userId' => $req->userId,
+            'orderId' => $orderId,
+            'snapToken' => $snapToken->token,
+            'snapUrl' => $snapToken->redirect_url,
+            'amount' => $req->price
+        ]);
+        return $snapToken->redirect_url;
     }
 
     public function getBookingData(Request $req)
@@ -586,32 +594,32 @@ class ApiController extends Controller
         }
 
         DB::table('property')->where('id', $propertyId)
-        ->update([
-            "vrooms" => $req->vrooms,
-            "ownerId" => $req->userId,
-            "avaliable" => 1,
-            "date_created" => date('Y-m-d'),
-            "name" => $req->name,
-            "description" => $req->description,
-            "latitude" => $req->latitude,
-            "longitude" => $req->longitude,
-            "address" => $req->address,
-            "type" => $req->type,
-            "price_day" => $req->price_day,
-            "price_month" => $req->price_month,
-            "price_year" => $req->price_year,
-        ]);
+            ->update([
+                "vrooms" => $req->vrooms,
+                "ownerId" => $req->userId,
+                "avaliable" => 1,
+                "date_created" => date('Y-m-d'),
+                "name" => $req->name,
+                "description" => $req->description,
+                "latitude" => $req->latitude,
+                "longitude" => $req->longitude,
+                "address" => $req->address,
+                "type" => $req->type,
+                "price_day" => $req->price_day,
+                "price_month" => $req->price_month,
+                "price_year" => $req->price_year,
+            ]);
 
         return response()->json(['message' => "Data berhasil diupdate"], 200);
     }
 
     public function deleteImage($imageId)
-  {
-    DB::table('image')->where('id', $imageId)->delete();
-    return response()->json([
-      'message' => 'success'
-    ]);
-  }
+    {
+        DB::table('image')->where('id', $imageId)->delete();
+        return response()->json([
+            'message' => 'success'
+        ]);
+    }
 
     public function updateFacility(Request $req, $propertyId)
     {
@@ -640,25 +648,25 @@ class ApiController extends Controller
             200
         );
     }
-  
-  public function getPropertyDetails($propertyId)
+
+    public function getPropertyDetails($propertyId)
     {
         $facilityProperty = DB::table('facility')
-        ->where('propertyId', $propertyId)
-        ->get();
+            ->where('propertyId', $propertyId)
+            ->get();
 
         $facilityList = DB::table('facility_list')
-        ->get();
+            ->get();
 
         $property = DB::table('property')
-        ->where('id', $propertyId)
-        ->first();
+            ->where('id', $propertyId)
+            ->first();
 
         $images = DB::table('image')
-        ->where('propertyId', $propertyId)
-        ->get();
+            ->where('propertyId', $propertyId)
+            ->get();
 
-        $imagePath = str_replace(' ', '-', $property->id . '-' . strtolower($property->name));        
+        $imagePath = str_replace(' ', '-', $property->id . '-' . strtolower($property->name));
         $data = [
             'facility' => $facilityProperty,
             'facilityList' => $facilityList,
@@ -671,8 +679,9 @@ class ApiController extends Controller
 
         return response()->json($data);
     }
-  
-   public function getIncome(Request $req) {
+
+    public function getIncome(Request $req)
+    {
         $ownerId = $req->userId;
 
         $income = DB::table('bill')
@@ -687,7 +696,8 @@ class ApiController extends Controller
         return response()->json($income, 200);
     }
 
-    public function requestWithdraw(Request $req) {
+    public function requestWithdraw(Request $req)
+    {
         $balance = DB::table('users')->where('id', $req->userId)->first()->balance;
         DB::table('withdraw')->insert([
             'ownerId' => $req->userId,
@@ -695,7 +705,7 @@ class ApiController extends Controller
             'description' => $req->description,
             'created' => date("Y-m-d")
         ]);
-        
+
         DB::table('users')->where('id', $req->userId)->update([
             'balance' => ($balance - $req->amount)
         ]);
@@ -703,16 +713,17 @@ class ApiController extends Controller
         return response()->json(['message' => "Successfully create withdrawal request"], 200);
     }
 
-    public function getBillByProperty($propertyId) {
+    public function getBillByProperty($propertyId)
+    {
         $bill = DB::table('q_bill')->where('propertyId', $propertyId)->get();
         return response()->json($bill, 200);
-    }  
+    }
 
     public function addFavorite(Request $req)
     {
         DB::table('favorite')->insert([
-          "propertyId" => $req->propertyId,
-          "userId" => $req->userId
+            "propertyId" => $req->propertyId,
+            "userId" => $req->userId
         ]);
 
         return response()->json(['message' => "Successfully added to favorite"], 200);
