@@ -6,8 +6,10 @@ import 'package:manpro/model/review.dart';
 import 'package:manpro/presentation/screen/chat_page.dart';
 import 'package:manpro/presentation/widget/button.dart';
 import 'package:manpro/presentation/widget/rating.dart';
+import 'package:manpro/presentation/widget/snackbar.dart';
 import 'package:manpro/presentation/widget/squareicon.dart';
 import 'package:manpro/provider/auth.dart';
+import 'package:manpro/provider/favorite.dart';
 import 'package:manpro/service/firebase_service.dart';
 import 'package:provider/provider.dart';
 import 'package:manpro/service/api_service.dart';
@@ -24,7 +26,13 @@ class Detail extends StatefulWidget {
 
 }
 
-class _DetailState extends State<Detail> {
+class _DetailState extends State<Detail> { 
+  @override
+  void initState() {
+    super.initState();
+    context.read<FavoriteNotifier>().checkFavorite(widget.property.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthNotifier>(
@@ -35,7 +43,23 @@ class _DetailState extends State<Detail> {
             title: Text(widget.property.name),
             elevation: 0,
             actions: [
-              IconButton(icon: Icon(Icons.favorite))
+              !context.watch<FavoriteNotifier>().isFavorite ? 
+              IconButton(icon: Icon(Icons.favorite), onPressed: () async {
+                try {
+                  await ApiService().addFavorite(authLogin.authLogin.token, authLogin.authLogin.user.id.toString(), widget.property.id.toString());
+                  context.read<FavoriteNotifier>().addFavorite(widget.property.id);
+                } catch(e) {
+                  showSnackbar(context, "An error occured");
+                }
+              }) :
+              IconButton(icon: Icon(Icons.favorite, color: primaryColor), onPressed: () async {
+                try {
+                  await ApiService().removeFavorite(authLogin.authLogin.token, authLogin.authLogin.user.id.toString(), widget.property.id.toString());
+                  context.read<FavoriteNotifier>().removeFavorite(widget.property.id);
+                } catch(e) {
+                  showSnackbar(context, "An error occured");
+                }
+              })
             ],
           ),
           body: Column(
@@ -160,11 +184,17 @@ class _DetailState extends State<Detail> {
                                     );
                                   } else {
                                     var data = facility.data["facility"];
-                                    return Row(
-                                      children: List.generate(data.length > 4 ? 4 : data.length, (index) => Padding(
-                                        padding: const EdgeInsets.only(right: 8),
-                                        child: SquareIconFacility(icons: data[index]["webIcon"], text: data[index]["name"])
-                                      ))
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 80,
+                                      child: ListView.separated(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: data.length,
+                                        separatorBuilder: (context, index) => SizedBox(width: 10),
+                                        itemBuilder: (context, index) {
+                                          return SquareIconFacility(icons: data[index]["webIcon"], text: data[index]["name"]);
+                                        },
+                                      ),
                                     );
                                   }
                                 },

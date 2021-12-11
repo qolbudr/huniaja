@@ -78,12 +78,12 @@ class TabOwnerAccount extends StatelessWidget {
                 builder: (context) => ChangePassword() 
               )),
             ),
-            Divider(height: 0),
-            ListTile(
-              tileColor: Colors.white,
-              title: Text("Hapus Akun", style: TextStyle(color: Colors.red)),
-              onTap: () {},
-            ),
+            // Divider(height: 0),
+            // ListTile(
+            //   tileColor: Colors.white,
+            //   title: Text("Hapus Akun", style: TextStyle(color: Colors.red)),
+            //   onTap: () {},
+            // ),
             SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

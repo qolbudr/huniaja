@@ -1,4 +1,4 @@
-package com.example.manpro
+package com.app.huniaja
 
 import io.flutter.embedding.android.FlutterActivity
 

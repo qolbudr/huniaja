@@ -6,7 +6,7 @@
   @foreach($image as $data)
     <div class="item">
       <div class="item-slide">
-        <img class="w-100" src="{{ asset('assets/images/'.str_replace(' ', '-', $detail->id.'-'.strtolower($detail->name).'/'.$data->image)) }}">
+        <img class="w-100" src="{{ asset('assets/images/'.$detail->id.'/'.$data->image) }}">
         <div class="overlay"></div>
       </div>
     </div>

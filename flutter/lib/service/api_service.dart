@@ -658,4 +658,38 @@ class ApiService  {
       return throw 'Failed to fetch bill';
     }
   }
+
+  Future addFavorite(token, userId, propertyId) async {
+    final response = await http.post(
+      Uri.parse(_apiURL + "/api/property/add/favorite"),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: {
+        "userId": userId.toString(),
+        "propertyId": propertyId,
+      },
+    );
+
+    if(response.statusCode != 200) {
+      return throw 'Failed to fetch';
+    }
+  }
+
+  Future removeFavorite(token, userId, propertyId) async {
+    final response = await http.post(
+      Uri.parse(_apiURL + "/api/property/remove/favorite"),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: {
+        "userId": userId,
+        "propertyId": propertyId,
+      },
+    );
+
+    if(response.statusCode != 200) {
+      return throw 'Failed to fetch';
+    }
+  }
 }

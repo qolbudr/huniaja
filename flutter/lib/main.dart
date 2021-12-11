@@ -1,14 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:manpro/presentation/screen/login.dart';
 import 'package:manpro/config/theme.dart';
 import 'package:manpro/presentation/screen/owner/owner_home.dart';
 import 'package:provider/provider.dart';
 import 'package:manpro/provider/auth.dart';
+import 'package:manpro/provider/favorite.dart';
 import 'package:manpro/presentation/screen/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
+
 void main() async {
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -16,6 +28,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthNotifier>(create: (_) => AuthNotifier()),
+        ChangeNotifierProvider<FavoriteNotifier>(create: (_) => FavoriteNotifier()),
       ],
       child: HuniAja(),
     )

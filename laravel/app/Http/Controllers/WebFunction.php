@@ -364,7 +364,7 @@ class WebFunction extends Controller
     $file = $req->file('images');
 
     $property = DB::table('property')->where('id', $id)->first();
-    $path  = str_replace(' ', '-', $property->id . '-' . strtolower($property->name) . '/');
+    $path  = $property->id . '/';
     $tujuan_upload = 'public/assets/images/' . $path;
     $rand = rand(9999, 99999);
     $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
@@ -378,7 +378,7 @@ class WebFunction extends Controller
       ->where('propertyId', $id)
       ->first();
     $resImage = $rand . '.' . $file->getClientOriginalExtension();
-    $folderName = str_replace(' ', '-', $property->id . '-' . strtolower($property->name));
+    $folderName = $property->id . '/';
     $idImage = $getCurrentImage->id;
     return response()->json(['imageName' => $resImage, 'path' => $folderName, 'id' => $idImage]);
   }
@@ -394,7 +394,7 @@ class WebFunction extends Controller
   public function getImages($propertyId)
   {
     $property = DB::table('property')->where('id', $propertyId)->first();
-    $folderName = str_replace(' ', '-', $property->id . '-' . strtolower($property->name));
+    $folderName = $property->id . '/';
     $image = DB::table('image')->where('propertyId', $propertyId)->get();
     return response()->json([
       'path' => $folderName,
