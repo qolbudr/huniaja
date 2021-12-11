@@ -62,19 +62,19 @@ class OwnerController extends Controller
                     ->where('booking.status', 1)
                     ->where('bill.status', 1)->sum('bill.price')
             ),
-            "booking" =>  DB::table('booking')
-            ->join('property', 'property.id', '=', 'booking.propertyId')
-            ->join('bill', 'bill.bookingId', '=', 'booking.id')
-            ->where('ownerId', $ownerId)
-            ->select(
-                'booking.id as id',
-                'property.id as propertyId',
-                'bill.userId',
-                'booking.date as date',
-                'property.name as name',
-                'booking.status as status'
-            )
-            ->get()
+            "booking" => DB::table('booking')
+                ->join('property', 'property.id', '=', 'booking.propertyId')
+                ->join('bill', 'bill.bookingId', '=', 'booking.id')
+                ->where('ownerId', $ownerId)
+                ->select(
+                    'booking.id as id',
+                    'property.id as propertyId',
+                    'bill.userId',
+                    'booking.date as date',
+                    'property.name as name',
+                    'booking.status as status'
+                )->get(),
+            "withdrawCount" => DB::table('withdraw')->where('ownerId', $ownerId)->where('status', NULL)->sum('amount')
         ];
 
         return view('owner/dashboard', $data);
@@ -162,11 +162,11 @@ class OwnerController extends Controller
 
     public function insertProperty(Request $req)
     {
-        if(!$req->price_day && !$req->price_month && !$req->price_year){
+        if (!$req->price_day && !$req->price_month && !$req->price_year) {
             Session::flash("error", "Salah Satu Opsional Harga Harus di isi !");
             return redirect()->back();
         }
-        if(!$req->file('ownership_proof')){
+        if (!$req->file('ownership_proof')) {
             Session::flash("error", "Butki kepemilikan wajib ada !");
             return redirect()->back();
         }
@@ -233,11 +233,11 @@ class OwnerController extends Controller
 
     public function updateProperty(Request $req, $propertyId)
     {
-        if(!$req->price_day && !$req->price_month && !$req->price_year){
+        if (!$req->price_day && !$req->price_month && !$req->price_year) {
             Session::flash("error", "Salah Satu Opsional Harga Harus di isi");
             return redirect()->back();
         }
-        if(!$req->file("ownership_proof")){
+        if (!$req->file("ownership_proof")) {
             $data = [
                 "vrooms" => $req->vrooms,
                 "ownerId" => Auth::user()->id,
@@ -253,29 +253,29 @@ class OwnerController extends Controller
                 "price_month" => $req->price_month,
                 "price_year" => $req->price_year,
             ];
-        }else{
-          $file = $req->file('ownership_proof');
-        $path  = str_replace(' ', '-', $propertyId . '-' . strtolower($req->name) . '/');
-        $tujuan_upload = 'public/ownership/' . $path;
-        $rand = rand(9999, 99999);
-        $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
+        } else {
+            $file = $req->file('ownership_proof');
+            $path  = str_replace(' ', '-', $propertyId . '-' . strtolower($req->name) . '/');
+            $tujuan_upload = 'public/ownership/' . $path;
+            $rand = rand(9999, 99999);
+            $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
 
-        $data = [
-            "vrooms" => $req->vrooms,
-            "ownerId" => Auth::user()->id,
-            "avaliable" => 1,
-            "date_created" => date('Y-m-d'),
-            "name" => $req->name,
-            "description" => $req->description,
-            "latitude" => $req->latitude,
-            "longitude" => $req->longitude,
-            "address" => $req->address,
-            "type" => $req->type,
-            "price_day" => $req->price_day,
-            "price_month" => $req->price_month,
-            "price_year" => $req->price_year,
-            "ownership_proof" => $rand . '.' . $file->getClientOriginalExtension()
-        ];  
+            $data = [
+                "vrooms" => $req->vrooms,
+                "ownerId" => Auth::user()->id,
+                "avaliable" => 1,
+                "date_created" => date('Y-m-d'),
+                "name" => $req->name,
+                "description" => $req->description,
+                "latitude" => $req->latitude,
+                "longitude" => $req->longitude,
+                "address" => $req->address,
+                "type" => $req->type,
+                "price_day" => $req->price_day,
+                "price_month" => $req->price_month,
+                "price_year" => $req->price_year,
+                "ownership_proof" => $rand . '.' . $file->getClientOriginalExtension()
+            ];
         }
         DB::table('property')->where('id', $propertyId)->update($data);
         Session::flash('success', 'Properti telah diperbarui');
@@ -321,7 +321,8 @@ class OwnerController extends Controller
         );
     }
 
-    public function ticketList(){
+    public function ticketList()
+    {
         $balance = DB::table('users')->where('id', Auth::user()->id)->first()->balance;
         $withdraw = DB::table('withdraw')->where('ownerId', Auth::user()->id)->get();
         return view('owner.withdraw', ['balance' => $balance, 'withdraws' => $withdraw]);
@@ -330,7 +331,7 @@ class OwnerController extends Controller
     public function requestWithDraw(Request $req)
     {
         $balance = DB::table('users')->where('id', Auth::user()->id)->first()->balance;
-        if($req->amount > $balance){
+        if ($req->amount > $balance) {
             Session::flash('error', 'Tidak Dapat Melakukan Permintaan Penarikan');
             return redirect()->back();
         }
@@ -340,30 +341,30 @@ class OwnerController extends Controller
             'description' => $req->description,
             'created' => date("Y-m-d")
         ]);
-        
+
         DB::table('users')->where('id', Auth::user()->id)->update([
             'balance' => ($balance - $req->amount)
         ]);
 
         Session::flash('success', 'Berhasil Mengajukan Penarikan');
-            return redirect()->back();
+        return redirect()->back();
     }
 
     public function getUserIdentity($bookingTicket)
     {
         $booking  = DB::table('booking')
-        ->where('booking.id', $bookingTicket)
-        ->join('users', 'booking.userId', '=' , 'users.id')
-        ->join('property', 'booking.propertyId', '=', 'property.id')
-        ->select(
-            'property.name as propertyName',
-            'users.name as userName',
-            'users.phone as userPhone', 
-            'users.email as userEmail',
-            'users.face as userFace',
-            'users.address as userAddress'
-        )
-        ->first();
+            ->where('booking.id', $bookingTicket)
+            ->join('users', 'booking.userId', '=', 'users.id')
+            ->join('property', 'booking.propertyId', '=', 'property.id')
+            ->select(
+                'property.name as propertyName',
+                'users.name as userName',
+                'users.phone as userPhone',
+                'users.email as userEmail',
+                'users.face as userFace',
+                'users.address as userAddress'
+            )
+            ->first();
 
         $property = [
             'name' => $booking->propertyName
@@ -373,7 +374,7 @@ class OwnerController extends Controller
             'phone' => $booking->userPhone,
             'email' => $booking->userEmail,
             'address' => $booking->userAddress,
-            'face' => $booking-> userFace
+            'face' => $booking->userFace
         ];
         return response()->json([
             'property' => $property,
@@ -388,29 +389,30 @@ class OwnerController extends Controller
         $bill = DB::table('bill')->where('bookingId', $bookingId)->where('status', 1)->first();
 
         $bookingStatusNumber = 0;
-        if($req->status == "accepted"){
+        if ($req->status == "accepted") {
             $bookingStatusNumber = 1;
             $balance = $users->balance + $bill->price;
             DB::table('users')->where('id', $userId)->update(['balance' => $balance]);
-        }else{
+        } else {
             $bookingStatusNumber = 2;
         }
         DB::table('booking')
-        ->where('id', $bookingId)
-        ->update([
-            'status' => $bookingStatusNumber
-        ]);
+            ->where('id', $bookingId)
+            ->update([
+                'status' => $bookingStatusNumber
+            ]);
         Session::flash('success', 'Berhasil menyutujui permintaan');
         return redirect()->back();
     }
 
-    public function insertDiscount(Request $req) {
+    public function insertDiscount(Request $req)
+    {
         $data = [
             'propertyId' => $req->propertyId,
             'ownerId' => Auth::user()->id,
         ];
 
-        if($req->type == 'percent') {
+        if ($req->type == 'percent') {
             $data['percent'] = $req->nominal;
         } else {
             $data['value'] = $req->nominal;
@@ -423,20 +425,20 @@ class OwnerController extends Controller
         return redirect()->back();
     }
 
-    public function deleteDiscount($id) {
+    public function deleteDiscount($id)
+    {
         DB::table('discount')->where('id', $id)->delete();
         Session::flash('success', 'Berhasil menghapus kode diskon');
         return redirect()->back();
     }
 
-    public function stopBooking($id){
+    public function stopBooking($id)
+    {
         DB::table('booking')->where('id', $id)
-        ->update([
-            'status' => 2
-        ]);
+            ->update([
+                'status' => 2
+            ]);
         Session::flash('success', 'Berhasil menhentikan penyewaan');
         return redirect()->back();
     }
-
-    
 }
