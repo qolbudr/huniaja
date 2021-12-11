@@ -399,7 +399,7 @@ class ApiController extends Controller
 
         $snapToken = \Midtrans\Snap::createTransaction($data);
         DB::table('invoice')->insert([
-            'userId' => $userId,
+            'userId' => $req->userId,
             'orderId' => $orderId,
             'snapToken' => $snapToken->token,
             'snapUrl' => $snapToken->redirect_url,
