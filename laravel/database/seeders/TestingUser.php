@@ -41,7 +41,7 @@ class TestingUser extends Seeder
             'phone' => "08123123428",
             'address' => "Jl. Jakarta No.2",
             'email_verified_at' => date('Y-m-d H:i:s'),
-            'role' => 2
+            'role' => 1
         ];
 
         DB::table('users')->insert($admin1);
@@ -73,7 +73,7 @@ class TestingUser extends Seeder
             'phone' => "08123123428",
             'address' => "Jl. Jakarta No.2",
             'email_verified_at' => date('Y-m-d H:i:s'),
-            'role' => 2
+            'role' => 1
         ];
 
         DB::table('users')->insert($admin2);
@@ -104,7 +104,7 @@ class TestingUser extends Seeder
             'phone' => "08123123428",
             'address' => "Jl. Jakarta No.2",
             'email_verified_at' => date('Y-m-d H:i:s'),
-            'role' => 2
+            'role' => 1
         ];
 
         DB::table('users')->insert($admin3);
