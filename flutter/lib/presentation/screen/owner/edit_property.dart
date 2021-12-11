@@ -192,9 +192,10 @@ class _EditPropertyState extends State<EditProperty> {
                           secondary: Icon(IconData(facility.mobileIcon,
                               fontFamily: 'MaterialIcons')),
                           onChanged: (bool val) {
-                            if (propertyDetails.facility.where((element) =>
-                                    element.facilityId ==
-                                    facility.facilityId).isNotEmpty) {
+                            if (propertyDetails.facility
+                                .where((element) =>
+                                    element.facilityId == facility.facilityId)
+                                .isNotEmpty) {
                               int i = propertyDetails.facility.indexWhere(
                                   (element) =>
                                       element.facilityId ==
