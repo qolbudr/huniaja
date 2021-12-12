@@ -570,7 +570,7 @@ class ApiService  {
     PropertyOwner property = PropertyOwner.fromJson(body['property']);
     List<FacilityProperty> facility = (body['facility'] as List).map((e) => FacilityProperty.fromJson(e)).toList();
     List<Facility> facilityList = (body['facilityList'] as List).map((e) => Facility.fromJson(e)).toList();
-    Images img = Images(path: body['image']['path'], imageProperty: images);
+    Images img = Images(path: body['image']['path'].toString(), imageProperty: images);
     PropertyDetails _property = PropertyDetails(propertyOwner: property,facility: facility, facilityList: facilityList, img: img);
     return _property;
     }else{
