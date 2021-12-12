@@ -80,7 +80,7 @@ class _DetailState extends State<Detail> {
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     Image.network(
-                                      apiURL + '/public/assets/images/' + widget.property.id.toString() + '-' + widget.property.name.replaceAll(' ', '-').toLowerCase() + '/' + widget.property.image, 
+                                      apiURL + '/public/assets/images/' + widget.property.id.toString() + '/' + widget.property.image, 
                                       // width: double.infinity,
                                       height: 200,
                                       fit: BoxFit.cover
@@ -98,7 +98,7 @@ class _DetailState extends State<Detail> {
                                   itemCount: data.length,
                                   itemBuilder: (context, index) {
                                     return Image.network(
-                                      apiURL + '/public/assets/images/' + widget.property.id.toString() + '-' + widget.property.name.replaceAll(' ', '-').toLowerCase() + '/' + data[index].image, 
+                                      apiURL + '/public/assets/images/' + widget.property.id.toString() + '/' + data[index].image, 
                                       // width: double.infinity,
                                       height: 200,
                                       fit: BoxFit.cover
