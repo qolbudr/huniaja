@@ -666,7 +666,7 @@ class ApiController extends Controller
             ->where('propertyId', $propertyId)
             ->get();
 
-        $imagePath = str_replace(' ', '-', $property->id . '-' . strtolower($property->name));
+        $imagePath = $property->id;        
         $data = [
             'facility' => $facilityProperty,
             'facilityList' => $facilityList,
