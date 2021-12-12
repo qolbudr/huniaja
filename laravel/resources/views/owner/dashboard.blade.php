@@ -67,7 +67,7 @@
                   <div class="d-flex d-lg-flex d-md-block align-items-center">
                       <div>
                           <div class="d-inline-flex align-items-center">
-                              <h2 class="text-dark mb-1 font-weight-medium">Rp. 100.000</h2>
+                              <h2 class="text-dark mb-1 font-weight-medium">Rp. {{$withdrawCount}}</h2>
                           </div>
                           <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Jumlah Penarikan</h6>
                       </div>
