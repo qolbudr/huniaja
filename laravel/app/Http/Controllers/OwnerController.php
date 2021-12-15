@@ -384,24 +384,25 @@ class OwnerController extends Controller
 
     public function confirmationBooking(Request $req, $bookingId)
     {
-        $userId = Auth::user()->id;
-        $users = DB::table('users')->where('id', $userId)->first();
         $bill = DB::table('bill')->where('bookingId', $bookingId)->where('status', 1)->first();
+        $userId = $bill->userId;
+        $users = DB::table('users')->where('id', $userId)->first();
 
         $bookingStatusNumber = 0;
         if ($req->status == "accepted") {
             $bookingStatusNumber = 1;
-            $balance = $users->balance + $bill->price;
-            DB::table('users')->where('id', $userId)->update(['balance' => $balance]);
+            Session::flash('success', 'Berhasil menyutujui permintaan');
         } else {
             $bookingStatusNumber = 2;
+            $balance = $users->balance + $bill->price;
+            DB::table('users')->where('id', $userId)->update(['balance' => $balance]);
+            Session::flash('success', 'Berhasil membatalkan permintaan');
         }
         DB::table('booking')
             ->where('id', $bookingId)
             ->update([
                 'status' => $bookingStatusNumber
             ]);
-        Session::flash('success', 'Berhasil menyutujui permintaan');
         return redirect()->back();
     }
 
