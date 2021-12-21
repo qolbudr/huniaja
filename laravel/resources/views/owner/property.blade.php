@@ -118,7 +118,7 @@
                       </div>
                     </div>
                     <div class="form-group col-12">
-                      <input type="number" class="form-control" placeholder="Jumlah Kamar" min="1" name="rooms">
+                      <input type="number" class="form-control" placeholder="Jumlah Kamar" min="1" name="rooms" required>
                     </div>
                     <div class="form-group col-12">
                       <input type="text" class="form-control" placeholder="Virtual Room" name="vrooms">
@@ -183,7 +183,7 @@
                     </div>
                   </div>
                   <div class="form-group col-12">
-                    <input type="number" class="form-control" placeholder="Jumlah Kamar" min="1" id="editRooms" name="rooms">
+                    <input type="number" class="form-control" placeholder="Jumlah Kamar" min="1" id="editRooms" name="rooms" required>
                   </div>
                   <div class="form-group col-12">
                     <input type="text" class="form-control" placeholder="Virtual Room" id="editVrooms" name="vrooms">
