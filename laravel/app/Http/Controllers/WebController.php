@@ -48,11 +48,14 @@ class WebController extends Controller
             $data['place'] = $_GET['q'];
             $data['latitude'] = $_GET['latitude'];
             $data['longitude'] = $_GET['longitude'];
+            $data['price']= $_GET['price'];
         } else {
             $data = $query[0];
+            $data['price'] = null;
         }
 
-        $data['property'] = DB::table('q_property')->where('address', 'like', '%'.$data['place'].'%')->get();
+        $data['property'] = DB::table('q_property')->where('address', 'like', '%'.$data['place'].'%')->
+        where('price_month', '>=', $data['price'])->get();
         return view('search', $data);
     }
 

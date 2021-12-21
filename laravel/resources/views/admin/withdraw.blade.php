@@ -126,7 +126,7 @@
                       <th><span id="address"></span></th>
                   </tr>
                   <tr>
-                    <th>Deskripsi</th>
+                    <th>Nomor Rekening</th>
                     <th>:</th>
                     <th><textarea id="descriptionwd" readonly class="form-control"></textarea></th>
                   </tr>

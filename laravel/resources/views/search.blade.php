@@ -7,7 +7,10 @@
     <div class="col-12 col-md-4 py-3">
       <div class="form-group">
         <form id="search-form" action="{{ URL::to('search') }}" method="get">
-          <div class="d-flex position-relative">
+          <div class="d-flex position-relative mt-3">
+            <input class="form-control mr-3 w-100" placeholder="Harga" name="price" value="{{$price}}" type="number">
+          </div>
+          <div class="d-flex position-relative mt-3">
             <input class="form-control mr-3 search-property w-100" placeholder="Cari rumah, apartemen dan kost terdekat" required>
             <input type="hidden" name="q" value="{{ $place }}" required>
             <input type="hidden" name="latitude" value="{{ $latitude }}" required>
@@ -15,19 +18,10 @@
             <div class="place-result bg-white position-absolute">
             </div>
           </div>
+         
+
         </form>
         <hr class="my-3">
-        <div class="filter-box pt-2 d-flex">
-          <button class="btn filter-type-btn px-4 mr-2 mb-2 btn-outline-primary" type="0">Rumah</button>
-          <button class="btn filter-type-btn px-4 mr-2 mb-2 btn-outline-primary" type="1">Kontrakan</button>
-          <button class="btn filter-type-btn px-4 mr-2 mb-2 btn-outline-primary" type="2">Apartement</button>
-        </div>
-        <div class="filter-box py-2 mb-5 d-flex">
-          <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" filter="newest">Terbaru</button>
-          <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" filter="cheapest">Harga</button>
-          <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" filter="facility">Fasilitas</button>
-          <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" filter="rating">Rating</button>
-        </div>
         <h6 class="mb-3">Ditemukan <span id="total-property">{{ count($property) }}</span> kos di sekitar {{ $place }}</h6>
         <div class="list-place">
           @if(count($property) > 0)
