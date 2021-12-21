@@ -386,7 +386,8 @@ class OwnerController extends Controller
     {
         $bill = DB::table('bill')->where('bookingId', $bookingId)->where('status', 1)->first();
         $userId = $bill->userId;
-        $users = DB::table('users')->where('id', $userId)->first();    
+        
+        $users = DB::table('users')->where('id', $userId)->first();
 
         $bookingStatusNumber = 0;
         if ($req->status == "accepted") {
