@@ -41,8 +41,11 @@
                     <h6 class="card-subtitle">Kelola Sewa property anda</h6>
                     <div class="my-4">
                       <select class="form-control" id="property">
+                        <option value="{{$property[0]->propertyId}}">{{ $property[0]->name}}</option>
                         @foreach($property as $data)
+                        @if ($data->id != $property[0]->propertyId)
                         <option value="{{ $data->id }}">{{ $data->name }}</option>
+                        @endif
                         @endforeach
                       </select>
                     </div>
@@ -79,4 +82,11 @@
 <!-- ============================================================== -->
 <!-- End Page wrapper  -->
 <!-- ============================================================== -->
+
+<script>
+    const p = document.querySelector('#property')
+    p.addEventListener('change', () => {
+        window.location.href = `{{ URL::to('owner/bill/${p.value}') }}`
+    })
+</script>
 @endsection

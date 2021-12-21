@@ -160,6 +160,17 @@ class OwnerController extends Controller
         return view('owner/bill', $data);
     }
 
+    public function getbill($propertyId)
+    {
+        $ownerId = Auth::user()->id;
+        $property = DB::table('q_property')->where('ownerId', $ownerId)->get();
+        $bill = DB::table('q_bill')->where('propertyId', $propertyId)->get();
+
+        $data = compact('property', 'bill');
+
+        return view('owner/bill', $data);
+    }
+
     public function insertProperty(Request $req)
     {
         if (!$req->price_day && !$req->price_month && !$req->price_year) {
