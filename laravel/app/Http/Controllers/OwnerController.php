@@ -185,6 +185,8 @@ class OwnerController extends Controller
             "price_day" => $req->price_day,
             "price_month" => $req->price_month,
             "price_year" => $req->price_year,
+            "total_rooms" => $req->rooms,
+            "discount_price" => $req->discount_price
         ]);
 
         $file = $req->file('ownership_proof');
@@ -252,6 +254,8 @@ class OwnerController extends Controller
                 "price_day" => $req->price_day,
                 "price_month" => $req->price_month,
                 "price_year" => $req->price_year,
+                "total_rooms" => $req->rooms,
+                "discount_price" => $req->discount_price
             ];
         } else {
             $file = $req->file('ownership_proof');
@@ -274,7 +278,9 @@ class OwnerController extends Controller
                 "price_day" => $req->price_day,
                 "price_month" => $req->price_month,
                 "price_year" => $req->price_year,
-                "ownership_proof" => $rand . '.' . $file->getClientOriginalExtension()
+                "ownership_proof" => $rand . '.' . $file->getClientOriginalExtension(),
+                "total_rooms" => $req->rooms,
+                "discount_price" => $req->discount_price
             ];
         }
         DB::table('property')->where('id', $propertyId)->update($data);

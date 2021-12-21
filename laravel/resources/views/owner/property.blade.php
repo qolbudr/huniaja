@@ -118,6 +118,9 @@
                       </div>
                     </div>
                     <div class="form-group col-12">
+                      <input type="number" class="form-control" placeholder="Jumlah Kamar" min="1" name="rooms">
+                    </div>
+                    <div class="form-group col-12">
                       <input type="text" class="form-control" placeholder="Virtual Room" name="vrooms">
                     </div>
                     <div class="form-group col-md-6">
@@ -128,6 +131,9 @@
                     </div>
                     <div class="form-group col-12">
                       <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year">
+                    </div>
+                    <div class="form-group col-12">
+                      <input type="number" class="form-control" placeholder="Harga Promo (bulanan)" name="discount_price">
                     </div>
                     <div class="form-group col-md-12" required>
                       <select class="form-control" name="type">
@@ -177,6 +183,9 @@
                     </div>
                   </div>
                   <div class="form-group col-12">
+                    <input type="number" class="form-control" placeholder="Jumlah Kamar" min="1" id="editRooms" name="rooms">
+                  </div>
+                  <div class="form-group col-12">
                     <input type="text" class="form-control" placeholder="Virtual Room" id="editVrooms" name="vrooms">
                   </div>
                   <div class="form-group col-md-6">
@@ -187,6 +196,9 @@
                   </div>
                   <div class="form-group col-12">
                     <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year" id="editPriceYear">
+                  </div>
+                  <div class="form-group col-12">
+                    <input type="number" class="form-control" placeholder="Harga Promo (bulanan)" id="editDiscount_price" name="discount_price">
                   </div>
                   <div class="form-group col-md-12" required>
                     <select class="form-control" id="editType" name="type">
@@ -315,6 +327,8 @@
     let priceMonth = document.querySelector('#editPriceMonth')
     let priceYear = document.querySelector('#editPriceYear')
     let type = document.querySelector('#editType')
+    let rooms =document.querySelector('#editRooms')
+    let discountPrice = document.querySelector('#editDiscount_price')
     fetch(`${window.location.pathname}/${propertyId}`)
     .then(res => res.json())
     .then(res => {
@@ -326,6 +340,8 @@
       priceMonth.value = res.price_month
       priceYear.value = res.price_year
       type.value = res.type
+      rooms.value = res.total_rooms
+      discountPrice.value = res.discount_price
     })  
   }
 
