@@ -100,7 +100,7 @@
               <div class="card-hotel">
                 <a class="click-target" href="{{ URL::to('detail/'.$booking->id.'/'.str_replace(' ', '-', strtolower($booking->name))) }}"></a>
                 <div class="place-img w-100">
-                  <img src="{{ asset('assets/images/'.str_replace(' ', '-', $booking->id.'-'.strtolower($booking->name).'/'.$booking->image)) }}">
+                  <img src="{{ asset('assets/images/'. $booking->id .'/'.$booking->image) }}">
                 </div>
                 <div class="content py-3">
                   <div class="place-description d-flex justify-content-between align-items-start mb-1">
@@ -130,8 +130,10 @@
               </div>
               @if($booking->status == 0)
                 <div class="alert alert-warning">Status sewa menunggu persetujuan pemilik</div>
-              @else
+              @elseif($booking->status == 1)
                 <div class="alert alert-success">Status sewa telah disetujui pemilik</div>
+              @else
+            	<div class="alert alert-danger">Sewa ditolak pemilik</div>
               @endif
             </div>
             <div class="col-12 col-md-8">
@@ -247,7 +249,7 @@
             <div class="form-topup">
               <div class="row">
                 <div class="col-12 col-md-8">
-                  <input class="form-control my-1" placeholder="Nominal Saldo" value="500000" name="balance" disabled>
+                  <input class="form-control my-1" type="number" placeholder="Nominal Saldo" value="500000" name="balance">
                 </div>
                 <div class="col-12 col-md-4">
                   <button class="btn btn-primary btn-block btn-topup my-1">Topup</button>

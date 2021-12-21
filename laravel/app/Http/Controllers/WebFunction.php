@@ -59,7 +59,7 @@ class WebFunction extends Controller
                 <div class="card-hotel">
                     <a class="click-target" href="' . URL::to('detail/' . $data->id . '/' . str_replace(' ', '-', strtolower($data->name))) . '"></a>
                     <div class="place-img w-100">
-                      <img src="' . asset('assets/images/' . str_replace(' ', '-', $data->id . '-' . strtolower($data->name) . '/' . $data->image)) . '">
+                      <img src="' . asset('assets/images/' .  $data->id . '/' . $data->image) . '">
                     </div>
                     <div class="content py-3">
                       <div class="place-description d-flex justify-content-between align-items-start mb-1">

@@ -1,6 +1,6 @@
 @extends('owner/master')
 
-@section('title', 'HuniAja - Halaman Pemilik : Dashboard')
+@section('title', 'HuniAja - Halaman Pemilik : Dasbor')
 
 @section('content')
 <div class="page-wrapper">
@@ -14,7 +14,7 @@
               <div class="d-flex align-items-center">
                   <nav aria-label="breadcrumb">
                       <ol class="breadcrumb m-0 p-0">
-                          <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+                          <li class="breadcrumb-item"><a href="#">Dasbor</a>
                           </li>
                       </ol>
                   </nav>
@@ -93,7 +93,7 @@
                                     <th>Properti</th>
                                     <th>Tanggal</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

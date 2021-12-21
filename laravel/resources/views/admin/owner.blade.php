@@ -10,12 +10,12 @@
   <div class="page-breadcrumb">
       <div class="row">
           <div class="col-7 align-self-center">
-              <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Owner</h4>
+              <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Pemilik</h4>
               <div class="d-flex align-items-center">
                   <nav aria-label="breadcrumb">
                       <ol class="breadcrumb m-0 p-0">
-                          <li class="breadcrumb-item"><a href="{{ URL::to('owner/dashboard') }}" class="text-muted">Dashboard</a></li>
-                          <li class="breadcrumb-item text-muted active" aria-current="page">Owner</li>
+                          <li class="breadcrumb-item"><a href="{{ URL::to('owner/dashboard') }}" class="text-muted">Dasbor</a></li>
+                          <li class="breadcrumb-item text-muted active" aria-current="page">Pemilik</li>
                       </ol>
                   </nav>
               </div>
@@ -40,8 +40,8 @@
                     <div class="row justify-content-between">
                       <div class="col-md-6 my-2">
                         <div class="title">
-                          <h4 class="card-title">Owner</h4>
-                          <h6 class="card-subtitle">Kelola Owner property anda</h6>
+                          <h4 class="card-title">Pemilik</h4>
+                          <h6 class="card-subtitle">Kelola Pemilik properti anda</h6>
                         </div>
                       </div>
                     </div>
@@ -52,8 +52,8 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Email</th>
-                                    <th>Balance</th>
-                                    <th>Action</th>
+                                    <th>Saldo</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,7 +85,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myCenterModalLabel">Update Owner</h4>
+                <h4 class="modal-title" id="myCenterModalLabel">Perbarui Pemilik</h4>
                 <button type="button" class="close" data-dismiss="modal"
                     aria-hidden="true">×</button>
             </div>
@@ -121,7 +121,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myCenterModalLabel">Hapus Owner</h4>
+                <h4 class="modal-title" id="myCenterModalLabel">Hapus Pemilik</h4>
                 <button type="button" class="close" data-dismiss="modal"
                     aria-hidden="true">×</button>
             </div>
@@ -129,7 +129,7 @@
               @csrf
                 <input type="hidden" name="idDelete" id="userIdDelete">
             <div class="p-3">
-            Yakin Owner ingin dihapus ?
+            Yakin Pemilik ingin dihapus ?
             </div>
             <div class="row col-md-12 mx-auto">
             <div class="form-group col-md-6">

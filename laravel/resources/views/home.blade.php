@@ -15,11 +15,11 @@
   <div class="row">
     <div class="col-12 col-lg-6 py-3">
       <div class="card card-greeting outline-none bg-primary py-4 px-5 is-shadow text-white">
-        <h5 class="mb-4">Welcome Aboard!</h5>
+        <h5 class="mb-4">HuniAja!</h5>
         <p class=" mb-4 description no-margin">
-          Pages that you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the.
+          HuniAja adalah sebuah platform penyewaan properti berkualitas dengan harga murah dan terjangkau yang cocok untuk berbagai kalangan
         </p>
-        <a class="text-white" href="#">Lets Start</a>
+        <a class="text-white" href="#">Mulai Sekarang</a>
       </div>
     </div>
     <div class="col-12 col-lg-6 hide-mobile step">
@@ -29,16 +29,16 @@
             <h3 class="mb-4 text-primary"><i class="fa fa-search"></i></h3>
             <h6 class="mb-3">Cari Tempat</h6>
             <p class=" mb-4 description no-margin">
-              Pages that you view in this window won't appear
+              Mulai mencari tempat dengan klik menu cari
             </p>
           </div>
         </div>
         <div class="item">
           <div class="card card-step outline-none is-shadow-thin py-4 px-5">
             <h3 class="mb-4 text-primary"><i class="fa fa-dollar"></i></h3>
-            <h6 class="mb-3">Booking Tempat</h6>
+            <h6 class="mb-3">Pesan Tempat</h6>
             <p class=" mb-4 description no-margin">
-              Pages that you view in this window won't appear
+              Pilih properti dengan mengklik tombol pesan
             </p>
           </div>
         </div>
@@ -47,7 +47,7 @@
             <h3 class="mb-4 text-primary"><i class="fa fa-home"></i></h3>
             <h6 class="mb-3">Huni Tempat</h6>
             <p class=" mb-4 description no-margin">
-              Pages that you view in this window won't appear
+              Silahkan huni tempat anda dengan nyaman
             </p>
           </div>
         </div>

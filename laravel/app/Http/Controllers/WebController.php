@@ -84,9 +84,9 @@ class WebController extends Controller
         $userId = Auth::user()->id;
         $data['user'] = DB::table('users')->where('id', $userId)->first();
         $data['property'] = DB::table('favorite')->join('q_property', 'favorite.propertyId', '=', 'q_property.id')->where('favorite.userId', $userId)->get();
-        $data['booking'] = DB::table('q_booking')->where('userId', $userId)->first();
-        $data['review'] = DB::table('q_review')->where('userId', $userId)->first();
-        $data['bill'] = DB::table('q_bill')->where('userId', $userId)->get();
+        $data['booking'] = DB::table('q_booking')->where('userId', $userId)->orderBy('id', 'DESC')->first();
+        $data['review'] = DB::table('q_review')->where('userId', $userId)->orderBy('id', 'DESC')->first();
+        $data['bill'] = DB::table('q_bill')->join('booking', 'booking.id', '=', 'q_bill.bookingId')->where('q_bill.userId', $userId)->where('booking.status', 1)->get();
         return view('account', $data);
     }
 

@@ -1,6 +1,6 @@
 @extends('admin/master')
 
-@section('title', 'HuniAja - Halaman Pemilik : Kelola User')
+@section('title', 'HuniAja - Halaman Pemilik : Kelola Pengguna')
 
 @section('content')
 <div class="page-wrapper">
@@ -10,12 +10,12 @@
   <div class="page-breadcrumb">
       <div class="row">
           <div class="col-7 align-self-center">
-              <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">User</h4>
+              <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Pengguna</h4>
               <div class="d-flex align-items-center">
                   <nav aria-label="breadcrumb">
                       <ol class="breadcrumb m-0 p-0">
-                          <li class="breadcrumb-item"><a href="{{ URL::to('owner/dashboard') }}" class="text-muted">Dashboard</a></li>
-                          <li class="breadcrumb-item text-muted active" aria-current="page">User</li>
+                          <li class="breadcrumb-item"><a href="{{ URL::to('owner/dashboard') }}" class="text-muted">Dasbor</a></li>
+                          <li class="breadcrumb-item text-muted active" aria-current="page">Pengguna</li>
                       </ol>
                   </nav>
               </div>
@@ -40,8 +40,8 @@
                     <div class="row justify-content-between">
                       <div class="col-md-6 my-2">
                         <div class="title">
-                          <h4 class="card-title">User</h4>
-                          <h6 class="card-subtitle">Kelola User property anda</h6>
+                          <h4 class="card-title">Pengguna</h4>
+                          <h6 class="card-subtitle">Kelola Pengguna property anda</h6>
                         </div>
                       </div>
                     </div>
@@ -55,8 +55,8 @@
                                     <th>Nomor Telepon</th>
                                     <th>Tanggal Lahir</th>
                                     <th>Alamat</th>
-                                    <th>Balance</th>
-                                    <th>Action</th>
+                                    <th>Saldo</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,7 +91,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myCenterModalLabel">Update User</h4>
+                <h4 class="modal-title" id="myCenterModalLabel">Perbarui Pengguna</h4>
                 <button type="button" class="close" data-dismiss="modal"
                     aria-hidden="true">×</button>
             </div>

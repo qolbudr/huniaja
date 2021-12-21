@@ -57,7 +57,7 @@
                                     <th>Harga Harian</th>
                                     <th>Harga Bulanan</th>
                                     <th>Harga Tahunan</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

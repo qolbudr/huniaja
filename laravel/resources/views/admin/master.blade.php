@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 <head>
@@ -88,12 +87,12 @@
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
                                 <li class="sidebar-item">
                                     <a href="{{ URL::to('admin/user') }}" class="sidebar-link">
-                                        <span class="hide-menu">Users</span>
+                                        <span class="hide-menu">Pengguna</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="{{ URL::to('admin/owner') }}" class="sidebar-link">
-                                        <span class="hide-menu">Owner</span>
+                                        <span class="hide-menu">Pemilik</span>
                                     </a>
                                 </li>
                             </ul>
@@ -107,7 +106,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ URL::to('admin/property') }}">
                                 <i data-feather="home" class="feather-icon"></i>
-                                <span class="hide-menu">Property</span>
+                                <span class="hide-menu">Properti</span>
                             </a>
                         </li>
                         <li class="sidebar-item">

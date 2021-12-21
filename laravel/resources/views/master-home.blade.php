@@ -82,11 +82,11 @@
       <div class="col-12 col-lg-4 mb-3">
         <h5 class="mb-3">Huni<span class="bold">Aja</span></h5>
         <p class="description pr-lg-5">
-          Pages that you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows.
+          HuniAja adalah sebuah platform penyewaan properti berkualitas dengan harga murah dan terjangkau yang cocok untuk berbagai kalangan
         </p>
       </div>
       <div class="col-12 col-lg-4 mb-3">
-        <h6 class="mb-3">Importants Link</h6>
+        <h6 class="mb-3">Tautan Penting</h6>
         <ul class="list-none no-margin">
           <li>
             <a href="#">Beranda</a>
@@ -115,7 +115,7 @@
         </ul>
       </div>
       <div class="col-12 col-lg-4 social-media mb-3">
-        <h6 class="mb-3">Social Media</h6>
+        <h6 class="mb-3">Sosial Media</h6>
         <div class="d-flex align-items-center">
           <a href="#"><i class="fa fa-facebook-square"></i></a>
           <a href="#"><i class="fa fa-instagram"></i></a>

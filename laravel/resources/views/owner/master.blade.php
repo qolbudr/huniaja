@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 <head>
@@ -74,7 +73,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link" href="{{ URL::to('owner/dashboard') }}">
                                 <i data-feather="home" class="feather-icon"></i>
-                                <span class="hide-menu">Dashboard</span>
+                                <span class="hide-menu">Dasbor</span>
                             </a>
                         </li>
                         <li class="list-divider"></li>
@@ -114,17 +113,17 @@
                                         <span class="hide-menu">Tagihan</span
                                     ></a>
                                 </li>
-                                <li class="sidebar-item">
+<!--                                 <li class="sidebar-item">
                                     <a href="{{ URL::to('owner/discount') }}" class="sidebar-link">
                                         <span class="hide-menu">Diskon</span>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link" href="{{ URL::to('owner/chat') }}">
                                 <i data-feather="message-square" class="feather-icon"></i>
-                                <span class="hide-menu">Chat</span>
+                                <span class="hide-menu">Pesan</span>
                             </a>
                         </li>
                         <li class="list-divider"></li>
