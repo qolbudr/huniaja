@@ -7,9 +7,7 @@
     <div class="col-12 col-md-4 py-3">
       <div class="form-group">
         <form id="search-form" action="{{ URL::to('search') }}" method="get">
-          <div class="d-flex position-relative mt-3">
-            <input class="form-control mr-3 w-100" placeholder="Harga" name="price" value="{{$price}}" type="number">
-          </div>
+         
           <div class="d-flex position-relative mt-3">
             <input class="form-control mr-3 search-property w-100" placeholder="Cari rumah, apartemen dan kost terdekat" required>
             <input type="hidden" name="q" value="{{ $place }}" required>
@@ -18,7 +16,17 @@
             <div class="place-result bg-white position-absolute">
             </div>
           </div>
-         
+          <div class="d-flex position-relative mt-3">
+            <input class="form-control mr-3 w-100" placeholder="Harga" name="price" value="{{$price}}" type="number">
+          
+          </div>
+          <div class="d-flex position-relative mt-3">
+            <select name="filterBy" class="mr-3 w-100 form-control">
+              <option value="price_day">Harian</option>
+              <option value="price_month">Bulanan</option>
+              <option value="price_year">Tahunan</option>
+            </select>
+          </div>
 
         </form>
         <hr class="my-3">
