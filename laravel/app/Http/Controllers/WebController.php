@@ -84,6 +84,9 @@ class WebController extends Controller
 
     public function detail($id, $name)
     {
+        if(!Auth::check()) {
+            return redirect()->to('/login');
+        }
         $data['detail'] = DB::table('q_property')->where('id', $id)->first();
         $data['facility'] = DB::table('q_facility')->where('propertyId', $id)->get();
         $data['image'] = DB::table('image')->where('propertyId', $id)->get();
