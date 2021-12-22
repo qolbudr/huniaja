@@ -25,8 +25,8 @@ class OwnerAuth
             return $next($request);
         }
 
-        if(Auth::user()->role == 0) {
-            return redirect()->route('/');
+        if(Auth::user()->role != 1) {
+            return redirect()->to('/owner/login');
         }
     }
 }

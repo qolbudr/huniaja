@@ -21,11 +21,11 @@ class UserAuth
             return redirect()->route('login');
         }
 
-        if(Auth::user()->role == 1) {
-            return redirect()->route('ownerDashboard');
+        if(Auth::user()->role != 0) {
+            return redirect()->to('login');
         }
 
-        if(Auth::user()->role == 0 || Auth::user()->role == 2) {
+        if(Auth::user()->role == 0) {
             return $next($request);
         }
     }

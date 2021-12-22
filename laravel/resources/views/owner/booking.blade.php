@@ -45,16 +45,19 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Properti</th>
+                                    <th>Kamar</th>
                                     <th>Tanggal</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
+                              @php $i = 1 @endphp
                               @foreach($booking as $k => $data)
                               <tr>
                                   <td>{{ $k + 1}}</td>
                                   <td>{{ $data->name }}</td>
+                                  <td>{{ 'Kamar '.$data->room }}</td>
                                   <td>{{ $data->date }}</td>
                                   <td>
                                     @if($data->status == 0)

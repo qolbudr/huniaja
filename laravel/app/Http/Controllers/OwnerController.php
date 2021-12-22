@@ -66,6 +66,7 @@ class OwnerController extends Controller
                 ->join('property', 'property.id', '=', 'booking.propertyId')
                 ->join('bill', 'bill.bookingId', '=', 'booking.id')
                 ->where('ownerId', $ownerId)
+                ->groupBy('userId', 'property.id')
                 ->select(
                     'booking.id as id',
                     'property.id as propertyId',
@@ -116,6 +117,7 @@ class OwnerController extends Controller
                 ->where('ownerId', $ownerId)
                 ->select(
                     'booking.id as id',
+                    'booking.room as room',
                     'property.id as propertyId',
                     'userId',
                     'booking.date as date',
@@ -201,7 +203,7 @@ class OwnerController extends Controller
         ]);
 
         $file = $req->file('ownership_proof');
-        $path  = str_replace(' ', '-', $id . '-' . strtolower($req->name) . '/');
+        $path  = $id;
         $tujuan_upload = 'public/ownership/' . $path;
         $rand = rand(9999, 99999);
         $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
@@ -270,7 +272,7 @@ class OwnerController extends Controller
             ];
         } else {
             $file = $req->file('ownership_proof');
-            $path  = str_replace(' ', '-', $propertyId . '-' . strtolower($req->name) . '/');
+            $path  = $propertyId;
             $tujuan_upload = 'public/ownership/' . $path;
             $rand = rand(9999, 99999);
             $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
@@ -402,6 +404,8 @@ class OwnerController extends Controller
     public function confirmationBooking(Request $req, $bookingId)
     {
         $bill = DB::table('bill')->where('bookingId', $bookingId)->where('status', 1)->first();
+        $property = DB::table('property')->where('id', $bill->propertyId)->first();
+        $owner = DB::table('users')->where('id', $property->ownerId)->first();
         $userId = $bill->userId;
         
         $users = DB::table('users')->where('id', $userId)->first();
@@ -409,6 +413,8 @@ class OwnerController extends Controller
         $bookingStatusNumber = 0;
         if ($req->status == "accepted") {
             $bookingStatusNumber = 1;
+            $balance = $owner->balance + $bill->price;
+            DB::table('users')->where('id', $owner->id)->update(['balance' => $balance]);
             Session::flash('success', 'Berhasil menyutujui permintaan');
         } else {
             $bookingStatusNumber = 2;

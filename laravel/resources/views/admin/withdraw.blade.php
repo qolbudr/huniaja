@@ -187,7 +187,7 @@
                     <th><span id="confirmdateWithdrawDetail"></span></th>
                   </tr>
                   <tr>
-                    <th>Deskripsi</th>
+                    <th>Nomor Rekening</th>
                     <th>:</th>
                     <th><textarea id="descriptionWithdrawDetail" readonly class="form-control"></textarea></th>
                   </tr>
@@ -300,7 +300,7 @@
       document.querySelector('#amountWithdrawDetail').innerText = res.amount
       document.querySelector('#dateWithdrawDetail').innerText = res.created
       document.querySelector('#confirmdateWithdrawDetail').innerText = res.status_change
-      document.querySelector('#descriptionWithdrawDetail').innerText = description
+      document.querySelector('#descriptionWithdrawDetail').innerText = res.description
 
     })
   }

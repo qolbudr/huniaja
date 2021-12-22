@@ -111,9 +111,17 @@
       <div class="payment-plan py-3">
         <h5 class="font-weight-bold mb-2">Pembayaran</h5>
         <div class="payment-box py-2 mb-2 d-flex">
-          <button class="btn filter-btn px-4 mr-2 mb-2 btn-primary text-white" data="payment-daily">Harian</button>
-          <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" data="payment-monthly">Bulanan</button>
-          <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" data="payment-yearly">Tahunan</button>
+          @if(isset($detail->price_day))
+            <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" data="payment-daily">Harian</button>
+          @endif
+
+          @if(isset($detail->price_month) || isset($detail->discount_price))
+            <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" data="payment-monthly">Bulanan</button>
+          @endif
+
+          @if(isset($detail->price_year))
+            <button class="btn filter-btn px-4 mr-2 mb-2 btn-outline-primary" data="payment-yearly">Tahunan</button>
+          @endif
         </div>
         <div class="card wallet-card no-margin mb-3">
           <div class="p-4 d-flex align-items-center justify-content-between">
@@ -126,7 +134,7 @@
             </div>
           </div>
         </div>
-        <div class="payment-daily" price="{{ $detail->price_day }}">
+        <div class="payment-daily {{ !isset($detail->price_day) ? 'd-none' : '' }}" price="{{ $detail->price_day }}">
           <div class="row">
             <div class="col-6">                  
               <input class="form-control" type="date" min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" name="check-in" placeholder="Check-in" required>
@@ -151,7 +159,7 @@
             <button class="btn btn-primary btn-block">Pesan Sekarang</button>
           </div>
         </div>
-        <div class="payment-monthly d-none" price="{{ $detail->price_month }}">
+        <div class="payment-monthly {{ !isset($detail->price_day) ? '' : 'd-none' }}" price="{{ $detail->discount_price ?? $detail->discount_price ?? $detail->price_month }}">
           <div class="row">
             <div class="col-12">
               <select class="form-control" name="month">
@@ -180,11 +188,11 @@
             <table class="table w-100">
               <tr>
                 <td>Biaya Sewa</td>
-                <td class="text-right">Rp. {{ number_format($detail->price_month, 0, ',','.') }}</td>
+                <td class="text-right">Rp. {{ number_format($detail->discount_price ?? $detail->price_month, 0, ',','.') }}</td>
               </tr>
               <tr>
                 <td><h5 class="font-weight-bold">Total</h5></td>
-                <td class="text-right">Rp. {{ number_format($detail->price_month, 0, ',','.') }}</td>
+                <td class="text-right">Rp. {{ number_format($detail->discount_price ?? $detail->price_month, 0, ',','.') }}</td>
               </tr>
             </table>
           </div>
@@ -243,7 +251,7 @@
   @csrf
   <input type="hidden" name="propertyId" value="{{ $detail->id }}">
   <input type="hidden" name="duration" value="1">
-  <input type="hidden" name="price" value="{{ $detail->price_month }}">
+  <input type="hidden" name="price" value="{{ $detail->discount_price ?? $detail->price_month }}">
 </form>
 
 <form id="pay-year" action="{{ URL::to('pay/year') }}" method="post">

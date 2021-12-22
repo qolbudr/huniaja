@@ -70,11 +70,12 @@
                                   <td>{{ $p->price_month}}</td>
                                   <td><a href="{{asset(str_replace(' ', '-', 'ownership/' . $p->id . '-' . strtolower($p->name) . '/' . $p->ownership_proof))}}" target="_blank" class="btn btn-primary">Lihat Bukti Kepemilikan</a></td>
                                   <td>
-                                    <button class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#deletePropertyModal" onclick="deleteProperty({{$p->id}},'{{$p->name}}','{{$p->owner}}')"><i class="fa fa-trash"></i></button>
-                                  </td>
-                                  <td>
                                     <a role="button" class="btn btn-primary btn-circle btn-sm" href="{{ URL::to('detail/'.$p->id.'/'.str_replace(' ', '-', strtolower($p->name))) }}" target="_blank"><i class="fa fa-eye"></i></a>
                                   </td>
+                                  <td>
+                                    <button class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#deletePropertyModal" onclick="deleteProperty({{$p->id}},'{{$p->name}}','{{$p->owner}}')"><i class="fa fa-trash"></i></button>
+                                  </td>
+                                  
                               </tr>
                               @endforeach
                             </tbody>

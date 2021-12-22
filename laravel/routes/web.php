@@ -30,6 +30,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/face', [WebController::class, 'face'])->name('face');
 Route::get('/owner/login', [OwnerController::class, 'login'])->name('ownerLogin');
 Route::get('/owner/register', [OwnerController::class, 'register'])->name('ownerRegister');
+Route::get('/detail/{id}/{name}', [WebController::class, 'detail'])->name('detail');
 
 /* FUNCTION */
 Route::post('/auth/user/login', [AuthController::class, 'login'])->name('userLoginFunction');
@@ -48,7 +49,6 @@ Route::post('/user/update', [AuthController::class, 'updateUser'])->name('userin
 
 /* MUST BE USER AUTH */
 Route::group(['middleware' => 'user.auth'], function () {
-    Route::get('/detail/{id}/{name}', [WebController::class, 'detail'])->name('detail');
     Route::get('/account', [WebController::class, 'account'])->name('account');
     Route::post('/account/user/update', [AccountController::class, 'updateUserAccount'])->name('updateUserAccount');
     Route::post('/account/change/password', [AccountController::class, 'changePassword'])->name('changeUserPassword');

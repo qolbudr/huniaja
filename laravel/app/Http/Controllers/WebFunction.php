@@ -113,6 +113,22 @@ class WebFunction extends Controller
   public function payDay(Request $request)
   {
     $users = DB::table('users')->where('id', Auth::user()->id)->first();
+    $property = DB::table('property')->where('id', $request->propertyId)->first();
+    $roomNumber = null;
+
+    for($i = 1; $i <= $property->total_rooms; $i++) {
+      $count = DB::table('booking')->where('propertyId', $request->propertyId)->where('status', 1)->where('room', $i)->count();
+
+      if($count == 0) {
+        $roomNumber = $i;
+        break;
+      }
+    }
+
+    if(!isset($roomNumber)) {
+      Session::flash('error', 'Kamar tidak tersedia');
+      return redirect()->back();
+    }
 
     if ($users->balance < $request->price) {
       Session::flash('error', 'Saldo anda tidak cukup');
@@ -124,6 +140,7 @@ class WebFunction extends Controller
     $bookingId = DB::table('booking')->insertGetId([
       'userId' => Auth::user()->id,
       'propertyId' => $request->propertyId,
+      'room' => $roomNumber,
       'date' => date('Y-m-d'),
       'status' => 0
     ]);
@@ -150,6 +167,22 @@ class WebFunction extends Controller
   {
     $users = DB::table('users')->where('id', Auth::user()->id)->first();
     $duration = $request->duration;
+    $property = DB::table('property')->where('id', $request->propertyId)->first();
+    $roomNumber = null;
+
+    for($i = 1; $i <= $property->total_rooms; $i++) {
+      $count = DB::table('booking')->where('propertyId', $request->propertyId)->where('status', 1)->where('room', $i)->count();
+
+      if($count == 0) {
+        $roomNumber = $i;
+        break;
+      }
+    }
+
+    if(!isset($roomNumber)) {
+      Session::flash('error', 'Kamar tidak tersedia');
+      return redirect()->back();
+    }
 
     if ($users->balance < $request->price) {
       Session::flash('error', 'Saldo anda tidak cukup');
@@ -161,6 +194,7 @@ class WebFunction extends Controller
     $bookingId = DB::table('booking')->insertGetId([
       'userId' => Auth::user()->id,
       'propertyId' => $request->propertyId,
+      'room' => $roomNumber,
       'date' => date('Y-m-d'),
       'status' => 0
     ]);
@@ -199,6 +233,22 @@ class WebFunction extends Controller
     $duration = $request->duration;
     $year = $request->year;
     $price =  $request->price;
+    $property = DB::table('property')->where('id', $request->propertyId)->first();
+    $roomNumber = null;
+
+    for($i = 1; $i <= $property->total_rooms; $i++) {
+      $count = DB::table('booking')->where('propertyId', $request->propertyId)->where('status', 1)->where('room', $i)->count();
+
+      if($count == 0) {
+        $roomNumber = $i;
+        break;
+      }
+    }
+
+    if(!isset($roomNumber)) {
+      Session::flash('error', 'Kamar tidak tersedia');
+      return redirect()->back();
+    }
 
     if ($users->balance < $price) {
       Session::flash('error', 'Saldo anda tidak cukup');
@@ -211,6 +261,7 @@ class WebFunction extends Controller
       'userId' => Auth::user()->id,
       'propertyId' => $request->propertyId,
       'date' => date('Y-m-d'),
+      'room' => $roomNumber,
       'status' => 0
     ]);
 

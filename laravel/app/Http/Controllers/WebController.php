@@ -68,7 +68,7 @@ class WebController extends Controller
 
     public function login()
     {
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->role == 0) {
             return redirect()->route('/');
         }
         return view('login');
@@ -76,7 +76,7 @@ class WebController extends Controller
 
     public function register()
     {
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->role == 0) {
             return redirect()->route('/');
         }
         return view('register');
@@ -100,7 +100,7 @@ class WebController extends Controller
         $data['property'] = DB::table('favorite')->join('q_property', 'favorite.propertyId', '=', 'q_property.id')->where('favorite.userId', $userId)->get();
         $data['booking'] = DB::table('q_booking')->where('userId', $userId)->orderBy('id', 'DESC')->first();
         $data['review'] = DB::table('q_review')->where('userId', $userId)->orderBy('id', 'DESC')->first();
-        $data['bill'] = DB::table('q_bill')->join('booking', 'booking.id', '=', 'q_bill.bookingId')->where('q_bill.userId', $userId)->where('booking.status', 1)->get();
+        $data['bill'] = DB::table('q_bill')->select('q_bill.*', 'booking.status as bookingStatus')->join('booking', 'booking.id', '=', 'q_bill.bookingId')->where('q_bill.userId', $userId)->where('booking.status', 1)->get();
         return view('account', $data);
     }
 

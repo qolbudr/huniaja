@@ -113,7 +113,7 @@
               <a href="{{ URL::to('register') }}">Daftar</a>
             </li>
             <li>
-              <a class="btn btn-light no-margin px-4 py-2 text-primary" href="{{ URL::to('owner/login') }}">Daftarkan Properti</a>
+              <a class="btn btn-light no-margin px-4 py-2 text-primary" href="{{ URL::to('owner/login') }}">Masuk Pemilik</a>
             </li>
           @endif
         </ul>

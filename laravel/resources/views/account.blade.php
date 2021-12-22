@@ -276,6 +276,19 @@
                     <img src="{{ asset('assets/images/'.$data->id.'/'.$data->image) }}">
                   </div>
                   <div class="content py-3">
+                    <div class="house-tag w-100 d-flex mb-2">
+                      @if(isset($data->price_day))
+                        <span class="badge badge-primary mr-1">Harian</span>
+                      @endif
+
+                      @if(isset($data->price_month))
+                        <span class="badge badge-primary mr-1">Bulanan</span>
+                      @endif
+
+                      @if(isset($data->price_year))
+                        <span class="badge badge-primary mr-1">Tahunan</span>
+                      @endif
+                    </div>
                     <div class="place-description d-flex justify-content-between align-items-start mb-1">
                       <div class="place-info">
                         <div class="place-name">
@@ -292,7 +305,10 @@
                         </div>
                       </div>
                       <div class="place-price text-right">
-                        <h5 class="mb-1">{{ number_format($data->price_month, 0, ',','.') }}</h5>
+                        @if(isset($data->discount_price))
+                          <sup><strike>{{ number_format($data->price_month, 0, ',','.') }}</strike></sup>
+                        @endif
+                        <h6 class="mb-1">{{ number_format($data->discount_price ?? $data->price_month, 0, ',','.') }}</h6>
                         <p class="no-margin">per bulan</p>
                       </div>
                     </div>
