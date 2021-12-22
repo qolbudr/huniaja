@@ -75,6 +75,7 @@ Route::group(['middleware' => 'owner.auth'], function () {
     Route::get('/owner/discount', [OwnerController::class, 'discount']);
     Route::get('/owner/booking', [OwnerController::class, 'booking']);
     Route::get('/owner/bill', [OwnerController::class, 'bill']);
+    Route::get('/owner/bill/{propertyId}', [OwnerController::class, 'getbill']);
     Route::get('/owner/property', [OwnerController::class, 'property']);
     Route::get('/owner/property/{propertyId}/facility', [OwnerController::class, 'getFacilitiesProperty']);
     Route::get('/owner/property/{propertyId}', [OwnerController::class, 'getProperty']);
