@@ -1,19 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class WebController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $house = DB::table('q_property')->get();
         $data['house'] = $house;
         return view('home', $data);
     }
 
-    public function search() {
+    public function search()
+    {
         $query = [
             [
                 "place" => "Malang",
@@ -31,7 +34,7 @@ class WebController extends Controller
                 "longitude" => "112.752",
             ],
             [
-                "place" =>"Yogyakarta",
+                "place" => "Yogyakarta",
                 "latitude" => "-7.79558",
                 "longitude" => "110.369",
             ],
@@ -43,37 +46,44 @@ class WebController extends Controller
         ];
 
         shuffle($query);
-        
-        if(isset($_GET['q'])) {
+
+        if (isset($_GET['q'])) {
             $data['place'] = $_GET['q'];
             $data['latitude'] = $_GET['latitude'];
             $data['longitude'] = $_GET['longitude'];
-            $data['price']= $_GET['price'];
+            $data['price'] = $_GET['price'];
+            $data['filterBy'] = $_GET['filterBy'];
         } else {
             $data = $query[0];
             $data['price'] = null;
+            $data['filterBy'] = null;
         }
-
-        $data['property'] = DB::table('q_property')->where('address', 'like', '%'.$data['place'].'%')->
-        where('price_month', '>=', $data['price'])->get();
+        if($data['price']){
+            $data['property'] = DB::table('q_property')->where('address', 'like', '%' . $data['place'] . '%')->where($data['filterBy'], '>=', $data['price'])->get();
+        }else{
+            $data['property'] = DB::table('q_property')->where('address', 'like', '%' . $data['place'] . '%')->get();
+        }
         return view('search', $data);
     }
 
-    public function login() {
+    public function login()
+    {
         if (Auth::check()) {
             return redirect()->route('/');
         }
         return view('login');
     }
 
-    public function register() {
+    public function register()
+    {
         if (Auth::check()) {
             return redirect()->route('/');
         }
         return view('register');
     }
 
-    public function detail($id, $name) {
+    public function detail($id, $name)
+    {
         $data['detail'] = DB::table('q_property')->where('id', $id)->first();
         $data['facility'] = DB::table('q_facility')->where('propertyId', $id)->get();
         $data['image'] = DB::table('image')->where('propertyId', $id)->get();
@@ -83,7 +93,8 @@ class WebController extends Controller
         return view('detail', $data);
     }
 
-    public function account() {
+    public function account()
+    {
         $userId = Auth::user()->id;
         $data['user'] = DB::table('users')->where('id', $userId)->first();
         $data['property'] = DB::table('favorite')->join('q_property', 'favorite.propertyId', '=', 'q_property.id')->where('favorite.userId', $userId)->get();
@@ -93,7 +104,8 @@ class WebController extends Controller
         return view('account', $data);
     }
 
-    public function face(Request $request) {
+    public function face(Request $request)
+    {
         $data['request'] = $request;
         return view('face', $data);
     }
