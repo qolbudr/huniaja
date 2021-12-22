@@ -25,7 +25,7 @@ class UserAuth
             return redirect()->route('ownerDashboard');
         }
 
-        if(Auth::user()->role == 0) {
+        if(Auth::user()->role == 0 || Auth::user()->role == 2) {
             return $next($request);
         }
     }
