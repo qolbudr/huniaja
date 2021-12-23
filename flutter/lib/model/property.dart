@@ -15,6 +15,7 @@ class Property {
   int priceYear;
   int avgRating;
   int countFacility;
+  int discountPrice;
   String image;
   String ownerName;
   String email;
@@ -35,6 +36,7 @@ class Property {
       this.priceDay,
       this.priceMonth,
       this.priceYear,
+      this.discountPrice,
       this.avgRating,
       this.countFacility,
       this.image,
@@ -57,6 +59,7 @@ class Property {
     priceDay = json['price_day'];
     priceMonth = json['price_month'];
     priceYear = json['price_year'];
+    discountPrice = json['discount_price'];
     avgRating = json['avg_rating'];
     countFacility = json['count_facility'];
     image = json['image'];
@@ -81,6 +84,7 @@ class Property {
     data['price_day'] = this.priceDay;
     data['price_month'] = this.priceMonth;
     data['price_year'] = this.priceYear;
+    data['discount_price'] = this.discountPrice;
     data['avg_rating'] = this.avgRating;
     data['count_facility'] = this.countFacility;
     data['image'] = this.image;

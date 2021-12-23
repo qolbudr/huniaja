@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Waktu pembuatan: 22 Des 2021 pada 19.09
--- Versi server: 10.4.17-MariaDB
--- Versi PHP: 7.4.14
+-- Host: localhost
+-- Generation Time: Dec 23, 2021 at 04:24 AM
+-- Server version: 8.0.27-0ubuntu0.20.04.1
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,69 +18,71 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_huniaja`
+-- Database: `huniaja`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `bill`
+-- Table structure for table `bill`
 --
 
 CREATE TABLE `bill` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `userId` int(11) NOT NULL,
-  `propertyId` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `userId` int NOT NULL,
+  `propertyId` int NOT NULL,
   `date` date NOT NULL,
   `price` double NOT NULL,
-  `status` int(11) NOT NULL,
-  `bookingId` int(11) NOT NULL
+  `status` int NOT NULL,
+  `bookingId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `bill`
+-- Dumping data for table `bill`
 --
 
 INSERT INTO `bill` (`id`, `userId`, `propertyId`, `date`, `price`, `status`, `bookingId`) VALUES
 (1, 43, 2, '2021-12-22', 3000000, 1, 1),
-(2, 43, 2, '2022-01-22', 3000000, 0, 1);
+(2, 43, 2, '2022-01-22', 3000000, 0, 1),
+(3, 46, 2, '2021-12-22', 3000000, 1, 2);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `booking`
+-- Table structure for table `booking`
 --
 
 CREATE TABLE `booking` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `userId` int(11) NOT NULL,
-  `propertyId` int(11) NOT NULL,
-  `room` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `userId` int NOT NULL,
+  `propertyId` int NOT NULL,
+  `room` int NOT NULL,
   `date` date NOT NULL,
-  `status` int(11) NOT NULL
+  `status` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `booking`
+-- Dumping data for table `booking`
 --
 
 INSERT INTO `booking` (`id`, `userId`, `propertyId`, `room`, `date`, `status`) VALUES
-(1, 43, 2, 1, '2021-12-22', 1);
+(1, 43, 2, 1, '2021-12-22', 1),
+(2, 46, 2, 2, '2021-12-22', 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `facility`
+-- Table structure for table `facility`
 --
 
 CREATE TABLE `facility` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `propertyId` int(11) NOT NULL,
-  `facilityId` int(11) NOT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `propertyId` int NOT NULL,
+  `facilityId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `facility`
+-- Dumping data for table `facility`
 --
 
 INSERT INTO `facility` (`id`, `propertyId`, `facilityId`) VALUES
@@ -98,18 +100,18 @@ INSERT INTO `facility` (`id`, `propertyId`, `facilityId`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `facility_list`
+-- Table structure for table `facility_list`
 --
 
 CREATE TABLE `facility_list` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `webIcon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobileIcon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `webIcon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobileIcon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `facility_list`
+-- Dumping data for table `facility_list`
 --
 
 INSERT INTO `facility_list` (`id`, `name`, `webIcon`, `mobileIcon`) VALUES
@@ -123,52 +125,45 @@ INSERT INTO `facility_list` (`id`, `name`, `webIcon`, `mobileIcon`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `failed_jobs`
+-- Table structure for table `failed_jobs`
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `id` bigint UNSIGNED NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `favorite`
+-- Table structure for table `favorite`
 --
 
 CREATE TABLE `favorite` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `userId` int(11) NOT NULL,
-  `propertyId` int(11) NOT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `userId` int NOT NULL,
+  `propertyId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `favorite`
---
-
-INSERT INTO `favorite` (`id`, `userId`, `propertyId`) VALUES
-(1, 43, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `image`
+-- Table structure for table `image`
 --
 
 CREATE TABLE `image` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `propertyId` int(11) NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `propertyId` int NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `image`
+-- Dumping data for table `image`
 --
 
 INSERT INTO `image` (`id`, `propertyId`, `image`) VALUES
@@ -182,38 +177,45 @@ INSERT INTO `image` (`id`, `propertyId`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `invoice`
+-- Table structure for table `invoice`
 --
 
 CREATE TABLE `invoice` (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `userId` int NOT NULL,
   `orderId` varchar(50) NOT NULL,
   `transactionId` varchar(50) DEFAULT NULL,
   `payment_type` varchar(50) DEFAULT NULL,
   `settlement_time` varchar(50) DEFAULT NULL,
-  `snapToken` float NOT NULL DEFAULT 0,
+  `snapToken` float NOT NULL DEFAULT '0',
   `snapUrl` varchar(150) NOT NULL,
   `transactionStatus` varchar(50) DEFAULT NULL,
   `fraudStatus` varchar(50) DEFAULT NULL,
-  `amount` bigint(20) NOT NULL,
-  `status` int(10) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `amount` bigint NOT NULL,
+  `status` int DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `invoice`
+--
+
+INSERT INTO `invoice` (`id`, `userId`, `orderId`, `transactionId`, `payment_type`, `settlement_time`, `snapToken`, `snapUrl`, `transactionStatus`, `fraudStatus`, `amount`, `status`) VALUES
+(1, 46, '1640198018', 'f1f2ff28-6e88-4808-9fa5-678b9bdc447a', 'bank_transfer', NULL, 929, 'https://app.sandbox.midtrans.com/snap/v2/vtweb/929d6996-ab61-430c-a359-67a093136397', 'pending', 'accept', 5000000, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `migrations`
+-- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `migrations`
+-- Dumping data for table `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -260,15 +262,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `oauth_access_tokens`
+-- Table structure for table `oauth_access_tokens`
 --
 
 CREATE TABLE `oauth_access_tokens` (
-  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `client_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `scopes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `client_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `revoked` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -276,15 +278,17 @@ CREATE TABLE `oauth_access_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `oauth_access_tokens`
+-- Dumping data for table `oauth_access_tokens`
 --
 
 INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes`, `revoked`, `created_at`, `updated_at`, `expires_at`) VALUES
 ('02511a593be7457acad267b3fdfa9696d35aee50cd2228dd244c736897fb7ba29abb2a04b40c3e1f', 20, 1, 'LaravelAuthApp', '[]', 0, '2021-10-15 11:46:08', '2021-10-15 11:46:08', '2022-10-15 18:46:08'),
+('033f5aa2ef7e449025263c9ba61629cbfdb3537919c7043780b2ba26c57fc935b7b82afe570fd396', 43, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 01:51:51', '2021-12-23 01:51:51', '2022-12-23 01:51:51'),
 ('057944178add6687f8d557f05b0ae9fe2e1a43d3610a3e995a408264c70ddce2400094b58267b07f', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-21 01:15:36', '2021-09-21 01:15:36', '2022-09-21 15:15:36'),
 ('078cf38fb858ad2698f57913a63473eb6990a586aa8e117d341a5d860062494416535d0de227cdef', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-21 02:24:32', '2021-09-21 02:24:32', '2022-09-21 16:24:32'),
 ('089772d78b4fe072195cff47aec94619a361246f1ed32fabb79bb4f0db4e3f6eef8aa03e7e7710c0', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:11:22', '2021-09-20 01:11:22', '2022-09-20 15:11:22'),
 ('09d6883ba2ce89ae2302d591f47ac74912b13d2fa6af320758cc315de59f984401c65f71007538d7', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:12:19', '2021-09-20 01:12:19', '2022-09-20 15:12:19'),
+('109e79cf2f4719e4e67c5b124483b0b9f84259d1778ab12c2fee4143d221cab947f251a6a5a58e0c', 43, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 04:06:23', '2021-12-23 04:06:23', '2022-12-23 04:06:23'),
 ('16423880c1d5cf6795c7e4192d50e9de4c7c0cd8603f2a11b57bb223f943090280e2c9bcd1f1835c', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-25 17:24:48', '2021-09-25 17:24:48', '2022-09-26 07:24:48'),
 ('192d527327ce241e263ce0c35b614995297e8aa27bff6a0e624b11d9fd427b47306f6a740b3dd1c4', 20, 1, 'LaravelAuthApp', '[]', 0, '2021-10-15 11:43:54', '2021-10-15 11:43:54', '2022-10-15 18:43:54'),
 ('1db33865a9f8f904f75acce47f0a4586b534a54b036db0d3835c2ab7505b8a2e8b1d335d92a1137c', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-21 11:40:16', '2021-09-21 11:40:16', '2022-09-22 01:40:16'),
@@ -298,14 +302,17 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('2e603b38b6cf1ba50ccdc5db89221c53221b83ad8c6c03f96a78cbead4dc3385ae69c655dd0dec10', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-19 15:58:10', '2021-09-19 15:58:10', '2022-09-20 05:58:10'),
 ('36a866a917b1a37cab89028c8bc6561d2cf656f4404dddb303474c8f9e2354d995f229f4a5abd43e', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 15:43:54', '2021-09-20 15:43:54', '2022-09-21 05:43:54'),
 ('376ed864aa86cc0b91704ba97082d9bf01ced294d376982eacfac82f49e94345e7529e3a7cb6aab8', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-28 17:46:59', '2021-09-28 17:46:59', '2022-09-29 07:46:59'),
+('45eeb7995afbca8b9370e97dfbdd90c69e750b459273adb4336a4a9f055570305e7f6c2b7f47b32b', 43, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 02:21:43', '2021-12-23 02:21:43', '2022-12-23 02:21:43'),
 ('47ac69f913490a3f0020ed96d735944c63d516abf65808e73c3ade638d0b878b775a16e1a058f1e5', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 14:25:06', '2021-09-20 14:25:06', '2022-09-21 04:25:06'),
 ('4c5db2fdd10f69d35be4079afef5703d50954513ce07664363ce7f13e0ce4bc1c26ba7f597112435', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:08:30', '2021-09-20 01:08:30', '2022-09-20 15:08:30'),
+('4ee921abdbfe17bd12018fd8d09b4514e2a467630ae60588a222c0009363d05266698f2be4bbb2d5', 46, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 04:03:20', '2021-12-23 04:03:20', '2022-12-23 04:03:20'),
 ('4f5a2cf94ef2853da6ec73532360a2dffc8bfd38fb6163be91b914c21e39f8abafa35dca15ca6819', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:11:13', '2021-09-20 01:11:13', '2022-09-20 15:11:13'),
 ('505cb58a4013e8eadb2d6b3b211040244290b5cc856b2d6ed1c890a53b4685fb78207143ddb4bc6e', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 15:42:32', '2021-09-20 15:42:32', '2022-09-21 05:42:32'),
 ('56c40f566e5d55745ca6746a872d61a8701745d59b2cceeb96f6cba35537fd636cebd59cf7f56f01', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-22 13:41:31', '2021-09-22 13:41:31', '2022-09-23 03:41:31'),
 ('5cf1e19b0ba73cf6fabdb9707700bad84346c5cb8b4f3b0614edc69de6d8bfb2b8b91807411cc000', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-19 15:53:54', '2021-09-19 15:53:54', '2022-09-20 05:53:54'),
 ('6377567638df1dc0795d972b7129b1e988fe576323f34190df122838bcb115f7a6cfa9599f7c09e9', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:13:00', '2021-09-20 01:13:00', '2022-09-20 15:13:00'),
 ('70bb0c5622b8aa91e809f8d967e70e146b6d8bafb7f16925b45815cbbb20a470490724214b07d781', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:11:10', '2021-09-20 01:11:10', '2022-09-20 15:11:10'),
+('76cebaed9dabc7f772dbeef87ae871270f5873550c0d62d2d0781dfd95a15eb40b9effaf26736143', 46, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 03:55:52', '2021-12-23 03:55:52', '2022-12-23 03:55:52'),
 ('79cd3c97617e62bf4d341071caa7c130001346f520f68cec262af86ac83c0c4e26d301b3164c06dc', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:12:58', '2021-09-20 01:12:58', '2022-09-20 15:12:58'),
 ('8413faad7d80a39375151e9a3134f9f87df5b6e92bb3dcc7fa31b71142ebf953dc06d50b003fcb95', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-10-03 14:32:53', '2021-10-03 14:32:53', '2022-10-04 04:32:53'),
 ('84fd973def2ddcaa1693b935df7cf3fd25a9c9ddc8458dcfd08bfceb7312588f12cf79ab52f7a719', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:09:23', '2021-09-20 01:09:23', '2022-09-20 15:09:23'),
@@ -318,16 +325,20 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('bab505a44ece876370fc02f9c4c756210b1655f2d30061dc425b489ffce0317270814453b018f75c', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:12:35', '2021-09-20 01:12:35', '2022-09-20 15:12:35'),
 ('bba6d6c46db50732eb1290ee94ead24fd411fcebc9fca35407687f17c3060c99968c72ff2bd20047', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-10-03 13:05:14', '2021-10-03 13:05:14', '2022-10-04 03:05:14'),
 ('bc38f6d86861b16a2519317bc1cf8e9ec730705b6899996dbf216f1adb337c498973c08160aef8f6', 18, 1, 'LaravelAuthApp', '[]', 0, '2021-10-15 00:49:38', '2021-10-15 00:49:38', '2022-10-15 07:49:38'),
+('c41dede53b4439c47b4eee5596f1c03e2e95b3eb2b5c2037be4ed5b3d82d1df30750699817f453d3', 43, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 03:55:37', '2021-12-23 03:55:37', '2022-12-23 03:55:37'),
 ('c5b60764ee04d52db7091bfbde54a055177f6c0c76e647ab2e6203abb8e09087f96f1e8435e74f6e', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-25 17:24:27', '2021-09-25 17:24:27', '2022-09-26 07:24:27'),
 ('c7cda350921e7ce6bf98c52dee24633c4630c184d4d21f16f2cfe8ce5d6c6d6fdf3d9f817111e2e1', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:45:48', '2021-09-20 01:45:48', '2022-09-20 15:45:48'),
 ('ce7cc11478a7ff0f79e550ee7830b5f85ffd636578faa5ecb9c23796c25834707d86de1351ae6e8b', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-19 00:43:00', '2021-09-19 00:43:00', '2022-09-19 14:43:00'),
 ('d159ab0130c1137ced7169e75bb3231bb6ae58f94623095a2815638c8ad6d26187d48c46e78cb624', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:07:55', '2021-09-20 01:07:55', '2022-09-20 15:07:55'),
 ('d3559a910c424266a38987316516a4c5bfe3f3ca0e15c17e6bf3fee91933ade162dfac1845bfe688', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 15:45:43', '2021-09-20 15:45:43', '2022-09-21 05:45:43'),
 ('d50d0693e24ab98f2fcb3612632148d1e1d64965ecc16c312aae75b2896f4f162916f4db42b068c9', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-10-03 14:34:46', '2021-10-03 14:34:46', '2022-10-04 04:34:46'),
+('d59083c4cc82710613ab01324bdbd5698508feda0052aa9cd548a679b91af654ef78baa5b15de6df', 44, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 04:07:15', '2021-12-23 04:07:15', '2022-12-23 04:07:15'),
 ('dbe5e51ae5b45e5e676439a46dda52de11319e09ea87a955544dad9d07eb9d2c986e37f6ffd03a75', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:47:02', '2021-09-20 01:47:02', '2022-09-20 15:47:02'),
+('df42cad30386070c3bad7826b2b694fad12e980716e1c61b04157a1d3841fea6be3dbfe440dfcb02', 46, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 03:52:59', '2021-12-23 03:52:59', '2022-12-23 03:52:59'),
 ('e62e96891bcc50b16e6a78910b50213f471a10103c8d4d235df0b3233d7219dea0116802a744b9b9', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:13:02', '2021-09-20 01:13:02', '2022-09-20 15:13:02'),
 ('e6ad6b1697f5afe00472723d73eb7e47d3b4d8d2c4dff46c9a73d8d66f5e09020236b70a87a1dac6', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:15:19', '2021-09-20 01:15:19', '2022-09-20 15:15:19'),
 ('e8bd7918a58d1ef6af5b80d68c03d6c178aef279eafb50e29bcbb509b9fa70c9f067966ba3a00c53', 20, 1, 'LaravelAuthApp', '[]', 0, '2021-10-15 00:46:10', '2021-10-15 00:46:10', '2022-10-15 07:46:10'),
+('e983864c701d5fd6971569d4e55aee920ae4322acb369d75d0776ec6a452095ed6f5e1142c9d0817', 43, 1, 'LaravelAuthApp', '[]', 0, '2021-12-23 04:01:39', '2021-12-23 04:01:39', '2022-12-23 04:01:39'),
 ('ed4d1e42ea0d890748978108d885cb5790b576ad62097337ac6c056ebde94447a08a74112b1cc2fb', 7, 1, 'LaravelAuthApp', '[]', 0, '2021-09-19 15:56:21', '2021-09-19 15:56:21', '2022-09-20 05:56:21'),
 ('f0f753f02e8f8e53af9e0f2869732e6d0ccd2b292ade7b1354c583a9f3277933ed90e0ff29e43ceb', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-10-03 14:33:14', '2021-10-03 14:33:14', '2022-10-04 04:33:14'),
 ('f45b6ca28e6c9d61fb8115e33824362b56dd4f08e2f6ec4e49ae9adc247214e64e5152f7d3a19a06', 2, 1, 'LaravelAuthApp', '[]', 0, '2021-09-20 01:45:21', '2021-09-20 01:45:21', '2022-09-20 15:45:21'),
@@ -336,14 +347,14 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `oauth_auth_codes`
+-- Table structure for table `oauth_auth_codes`
 --
 
 CREATE TABLE `oauth_auth_codes` (
-  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `client_id` bigint(20) UNSIGNED NOT NULL,
-  `scopes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `client_id` bigint UNSIGNED NOT NULL,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -351,16 +362,16 @@ CREATE TABLE `oauth_auth_codes` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `oauth_clients`
+-- Table structure for table `oauth_clients`
 --
 
 CREATE TABLE `oauth_clients` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secret` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `provider` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `redirect` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `redirect` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `personal_access_client` tinyint(1) NOT NULL,
   `password_client` tinyint(1) NOT NULL,
   `revoked` tinyint(1) NOT NULL,
@@ -369,7 +380,7 @@ CREATE TABLE `oauth_clients` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `oauth_clients`
+-- Dumping data for table `oauth_clients`
 --
 
 INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `provider`, `redirect`, `personal_access_client`, `password_client`, `revoked`, `created_at`, `updated_at`) VALUES
@@ -379,18 +390,18 @@ INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `provider`, `red
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `oauth_personal_access_clients`
+-- Table structure for table `oauth_personal_access_clients`
 --
 
 CREATE TABLE `oauth_personal_access_clients` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `client_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `client_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `oauth_personal_access_clients`
+-- Dumping data for table `oauth_personal_access_clients`
 --
 
 INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `updated_at`) VALUES
@@ -399,12 +410,12 @@ INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `u
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `oauth_refresh_tokens`
+-- Table structure for table `oauth_refresh_tokens`
 --
 
 CREATE TABLE `oauth_refresh_tokens` (
-  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `access_token_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -412,28 +423,28 @@ CREATE TABLE `oauth_refresh_tokens` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `password_resets`
+-- Table structure for table `password_resets`
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `personal_access_tokens`
+-- Table structure for table `personal_access_tokens`
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -442,31 +453,31 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `property`
+-- Table structure for table `property`
 --
 
 CREATE TABLE `property` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `ownerId` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` int(11) NOT NULL,
-  `avaliable` int(11) NOT NULL,
-  `vrooms` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_rooms` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `ownerId` int NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitude` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `longitude` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` int NOT NULL,
+  `avaliable` int NOT NULL,
+  `vrooms` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_rooms` int NOT NULL,
   `date_created` date NOT NULL,
-  `price_day` int(11) DEFAULT NULL,
-  `price_month` int(11) DEFAULT NULL,
-  `price_year` int(11) DEFAULT NULL,
-  `ownership_proof` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `discount_price` int(11) DEFAULT NULL
+  `price_day` int DEFAULT NULL,
+  `price_month` int DEFAULT NULL,
+  `price_year` int DEFAULT NULL,
+  `ownership_proof` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `discount_price` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `property`
+-- Dumping data for table `property`
 --
 
 INSERT INTO `property` (`id`, `ownerId`, `name`, `description`, `address`, `latitude`, `longitude`, `type`, `avaliable`, `vrooms`, `total_rooms`, `date_created`, `price_day`, `price_month`, `price_year`, `ownership_proof`, `discount_price`) VALUES
@@ -476,17 +487,17 @@ INSERT INTO `property` (`id`, `ownerId`, `name`, `description`, `address`, `lati
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `q_bill`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `q_bill`
+-- (See below for the actual view)
 --
 CREATE TABLE `q_bill` (
-`id` bigint(20) unsigned
-,`userId` int(11)
-,`propertyId` int(11)
+`id` bigint unsigned
+,`userId` int
+,`propertyId` int
 ,`date` date
 ,`price` double
-,`status` int(11)
-,`bookingId` int(11)
+,`status` int
+,`bookingId` int
 ,`propertyName` varchar(255)
 ,`userName` varchar(255)
 );
@@ -494,41 +505,41 @@ CREATE TABLE `q_bill` (
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `q_booking`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `q_booking`
+-- (See below for the actual view)
 --
 CREATE TABLE `q_booking` (
-`id` bigint(20) unsigned
-,`ownerId` int(11)
+`id` bigint unsigned
+,`ownerId` int
 ,`name` varchar(255)
 ,`description` longtext
 ,`address` varchar(255)
 ,`latitude` varchar(255)
 ,`longitude` varchar(255)
-,`type` int(11)
-,`avaliable` int(11)
+,`type` int
+,`avaliable` int
 ,`vrooms` varchar(255)
 ,`date_created` date
-,`price_day` int(11)
-,`price_month` int(11)
-,`price_year` int(11)
-,`userId` int(11)
-,`avg_rating` double(12,5)
+,`price_day` int
+,`price_month` int
+,`price_year` int
+,`userId` int
+,`avg_rating` double(22,5)
 ,`date` date
-,`status` int(11)
+,`status` int
 ,`image` varchar(255)
 );
 
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `q_facility`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `q_facility`
+-- (See below for the actual view)
 --
 CREATE TABLE `q_facility` (
-`id` bigint(20) unsigned
-,`propertyId` int(11)
-,`facilityId` int(11)
+`id` bigint unsigned
+,`propertyId` int
+,`facilityId` int
 ,`name` varchar(255)
 ,`webIcon` varchar(255)
 ,`mobileIcon` varchar(255)
@@ -537,28 +548,28 @@ CREATE TABLE `q_facility` (
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `q_property`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `q_property`
+-- (See below for the actual view)
 --
 CREATE TABLE `q_property` (
-`id` bigint(20) unsigned
-,`ownerId` int(11)
+`id` bigint unsigned
+,`ownerId` int
 ,`name` varchar(255)
-,`propertyId` bigint(20) unsigned
+,`propertyId` bigint unsigned
 ,`description` longtext
 ,`address` varchar(255)
 ,`latitude` varchar(255)
 ,`longitude` varchar(255)
-,`type` int(11)
-,`avaliable` int(11)
+,`type` int
+,`avaliable` int
 ,`vrooms` varchar(255)
 ,`date_created` date
-,`price_day` int(11)
-,`price_month` int(11)
-,`price_year` int(11)
-,`discount_price` int(11)
-,`avg_rating` double(12,5)
-,`count_facility` bigint(21)
+,`price_day` int
+,`price_month` int
+,`price_year` int
+,`discount_price` int
+,`avg_rating` double(22,5)
+,`count_facility` bigint
 ,`image` varchar(255)
 ,`ownerName` varchar(255)
 ,`email` varchar(255)
@@ -568,13 +579,13 @@ CREATE TABLE `q_property` (
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `q_review`
--- (Lihat di bawah untuk tampilan aktual)
+-- Stand-in structure for view `q_review`
+-- (See below for the actual view)
 --
 CREATE TABLE `q_review` (
-`id` bigint(20) unsigned
-,`userId` int(11)
-,`propertyId` int(11)
+`id` bigint unsigned
+,`userId` int
+,`propertyId` int
 ,`review` longtext
 ,`rating` double(8,1)
 ,`date` date
@@ -584,50 +595,50 @@ CREATE TABLE `q_review` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `review`
+-- Table structure for table `review`
 --
 
 CREATE TABLE `review` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `userId` int(11) NOT NULL,
-  `propertyId` int(11) NOT NULL,
-  `review` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `userId` int NOT NULL,
+  `propertyId` int NOT NULL,
+  `review` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `rating` double(8,1) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `review`
+-- Dumping data for table `review`
 --
 
 INSERT INTO `review` (`id`, `userId`, `propertyId`, `review`, `rating`, `date`) VALUES
-(1, 43, 2, 'Wow keren', 3.0, '2021-12-22');
+(1, 43, 2, 'Wow keren', 3.0, '2021-12-23');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `role` int(11) NOT NULL,
-  `face` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` int NOT NULL,
+  `face` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `dob` date DEFAULT NULL,
-  `address` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `balance` int(11) DEFAULT NULL
+  `address` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `balance` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `face`, `dob`, `address`, `phone`, `balance`) VALUES
@@ -636,29 +647,29 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 (41, 'sri handayani', 'srihandayani@mail.com', '2021-12-11 11:42:53', '$2y$10$bOuN/bLCv1NHQfNNywiaN.OMZ5pAnX4eEnVyryy1ar65ZyUk6ul5m', NULL, NULL, NULL, 1, NULL, NULL, 'Jl. Jakarta No.2', '08123123428', NULL),
 (42, 'Eko', 'eko@mail.com', NULL, '$2y$10$2UvSplIFEiCXYdQ0lQJxdeEzxIzS1oGUb6OuRsIZ3MIcD0QZmqomm', NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL),
 (43, 'Imam', 'imam@mail.com', '2021-12-11 11:42:53', '$2y$10$BmHcX8ddfd1QH5GbQuEE8OsCMHgDJaY4MX.vJWNguacwsSE1g9fWq', NULL, NULL, NULL, 0, NULL, '2021-12-12', 'Jl. Surabaya No.1', '08123123428', 14222222),
-(44, 'bambang', 'bambang@mail.com', '2021-12-11 11:42:53', '$2y$10$eCMmoiHM8KGggxQ.FauR7ulKixTZa3qME/ZEfLudQvqKkTRxE/N9m', NULL, NULL, NULL, 1, NULL, NULL, 'Jl. Jakarta No.2', '08123123428', 3700000),
+(44, 'bambang', 'bambang@mail.com', '2021-12-11 11:42:53', '$2y$10$eCMmoiHM8KGggxQ.FauR7ulKixTZa3qME/ZEfLudQvqKkTRxE/N9m', NULL, NULL, NULL, 1, NULL, NULL, 'Jl. Jakarta No.2', '08123123428', 6700000),
 (45, 'Hasan', 'hasan@mail.com', NULL, '$2y$10$uYM76w14qfngaAmGl3cvJex2MzIQN10F4CeP1eWMJj/wXNCdAtv/y', NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL),
-(46, 'ibnu', 'ibnu@mail.com', '2021-12-11 11:42:53', '$2y$10$sjQHLn/XGD.XsokWud7mReeetQZioiIYGJ4F1W3e9v26MjEFVbtae', NULL, NULL, NULL, 0, NULL, NULL, 'Jl. Surabaya No.1', '08123123428', 2700000),
+(46, 'ibnu', 'ibnu@mail.com', '2021-12-11 11:42:53', '$2y$10$sjQHLn/XGD.XsokWud7mReeetQZioiIYGJ4F1W3e9v26MjEFVbtae', NULL, NULL, NULL, 0, NULL, '2021-12-23', 'Jl. Surabaya No.1', '08123123428', 4700000),
 (47, 'tahar', 'tahar@mail.com', '2021-12-11 11:42:53', '$2y$10$lhBAfTD7x8i0XJRhAjENZOyJHsGQ1B.z35VqglDhKmJsUjwx2fasW', NULL, NULL, NULL, 1, NULL, NULL, 'Jl. Jakarta No.2', '08123123428', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `withdraw`
+-- Table structure for table `withdraw`
 --
 
 CREATE TABLE `withdraw` (
-  `id` int(11) NOT NULL,
-  `ownerId` int(11) DEFAULT NULL,
-  `amount` int(11) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
+  `id` int NOT NULL,
+  `ownerId` int DEFAULT NULL,
+  `amount` int DEFAULT NULL,
+  `status` int DEFAULT NULL,
   `created` date NOT NULL,
   `status_change` date DEFAULT NULL,
   `description` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data untuk tabel `withdraw`
+-- Dumping data for table `withdraw`
 --
 
 INSERT INTO `withdraw` (`id`, `ownerId`, `amount`, `status`, `created`, `status_change`, `description`) VALUES
@@ -667,149 +678,149 @@ INSERT INTO `withdraw` (`id`, `ownerId`, `amount`, `status`, `created`, `status_
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `q_bill`
+-- Structure for view `q_bill`
 --
 DROP TABLE IF EXISTS `q_bill`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_bill`  AS SELECT `bill`.`id` AS `id`, `bill`.`userId` AS `userId`, `bill`.`propertyId` AS `propertyId`, `bill`.`date` AS `date`, `bill`.`price` AS `price`, `bill`.`status` AS `status`, `bill`.`bookingId` AS `bookingId`, `property`.`name` AS `propertyName`, `users`.`name` AS `userName` FROM (((`bill` join `property` on(`bill`.`propertyId` = `property`.`id`)) join `users` on(`bill`.`userId` = `users`.`id`)) join `booking` on(`bill`.`bookingId` = `booking`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_bill`  AS SELECT `bill`.`id` AS `id`, `bill`.`userId` AS `userId`, `bill`.`propertyId` AS `propertyId`, `bill`.`date` AS `date`, `bill`.`price` AS `price`, `bill`.`status` AS `status`, `bill`.`bookingId` AS `bookingId`, `property`.`name` AS `propertyName`, `users`.`name` AS `userName` FROM (((`bill` join `property` on((`bill`.`propertyId` = `property`.`id`))) join `users` on((`bill`.`userId` = `users`.`id`))) join `booking` on((`bill`.`bookingId` = `booking`.`id`))) ;
 
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `q_booking`
+-- Structure for view `q_booking`
 --
 DROP TABLE IF EXISTS `q_booking`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_booking`  AS SELECT `property`.`id` AS `id`, `property`.`ownerId` AS `ownerId`, `property`.`name` AS `name`, `property`.`description` AS `description`, `property`.`address` AS `address`, `property`.`latitude` AS `latitude`, `property`.`longitude` AS `longitude`, `property`.`type` AS `type`, `property`.`avaliable` AS `avaliable`, `property`.`vrooms` AS `vrooms`, `property`.`date_created` AS `date_created`, `property`.`price_day` AS `price_day`, `property`.`price_month` AS `price_month`, `property`.`price_year` AS `price_year`, `booking`.`userId` AS `userId`, avg(`review`.`rating`) AS `avg_rating`, `booking`.`date` AS `date`, `booking`.`status` AS `status`, `image`.`image` AS `image` FROM (((`booking` join `property` on(`property`.`id` = `booking`.`propertyId`)) join `image` on(`image`.`propertyId` = `property`.`id`)) left join `review` on(`review`.`propertyId` = `property`.`id`)) GROUP BY `property`.`id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_booking`  AS SELECT `property`.`id` AS `id`, `property`.`ownerId` AS `ownerId`, `property`.`name` AS `name`, `property`.`description` AS `description`, `property`.`address` AS `address`, `property`.`latitude` AS `latitude`, `property`.`longitude` AS `longitude`, `property`.`type` AS `type`, `property`.`avaliable` AS `avaliable`, `property`.`vrooms` AS `vrooms`, `property`.`date_created` AS `date_created`, `property`.`price_day` AS `price_day`, `property`.`price_month` AS `price_month`, `property`.`price_year` AS `price_year`, `booking`.`userId` AS `userId`, avg(`review`.`rating`) AS `avg_rating`, `booking`.`date` AS `date`, `booking`.`status` AS `status`, `image`.`image` AS `image` FROM (((`booking` join `property` on((`property`.`id` = `booking`.`propertyId`))) join `image` on((`image`.`propertyId` = `property`.`id`))) left join `review` on((`review`.`propertyId` = `property`.`id`))) GROUP BY `booking`.`userId` ;
 
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `q_facility`
+-- Structure for view `q_facility`
 --
 DROP TABLE IF EXISTS `q_facility`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_facility`  AS SELECT `facility`.`id` AS `id`, `facility`.`propertyId` AS `propertyId`, `facility`.`facilityId` AS `facilityId`, `facility_list`.`name` AS `name`, `facility_list`.`webIcon` AS `webIcon`, `facility_list`.`mobileIcon` AS `mobileIcon` FROM (`facility` join `facility_list` on(`facility`.`facilityId` = `facility_list`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_facility`  AS SELECT `facility`.`id` AS `id`, `facility`.`propertyId` AS `propertyId`, `facility`.`facilityId` AS `facilityId`, `facility_list`.`name` AS `name`, `facility_list`.`webIcon` AS `webIcon`, `facility_list`.`mobileIcon` AS `mobileIcon` FROM (`facility` join `facility_list` on((`facility`.`facilityId` = `facility_list`.`id`))) ;
 
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `q_property`
+-- Structure for view `q_property`
 --
 DROP TABLE IF EXISTS `q_property`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_property`  AS SELECT `property`.`id` AS `id`, `property`.`ownerId` AS `ownerId`, `property`.`name` AS `name`, `property`.`id` AS `propertyId`, `property`.`description` AS `description`, `property`.`address` AS `address`, `property`.`latitude` AS `latitude`, `property`.`longitude` AS `longitude`, `property`.`type` AS `type`, `property`.`avaliable` AS `avaliable`, `property`.`vrooms` AS `vrooms`, `property`.`date_created` AS `date_created`, `property`.`price_day` AS `price_day`, `property`.`price_month` AS `price_month`, `property`.`price_year` AS `price_year`, `property`.`discount_price` AS `discount_price`, avg(`review`.`rating`) AS `avg_rating`, count(`facility`.`id`) AS `count_facility`, `image`.`image` AS `image`, `users`.`name` AS `ownerName`, `users`.`email` AS `email`, `users`.`phone` AS `phone` FROM ((((`property` left join `review` on(`review`.`propertyId` = `property`.`id`)) join `facility` on(`facility`.`propertyId` = `property`.`id`)) join `image` on(`image`.`propertyId` = `property`.`id`)) join `users` on(`users`.`id` = `property`.`ownerId`)) GROUP BY `property`.`id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_property`  AS SELECT `property`.`id` AS `id`, `property`.`ownerId` AS `ownerId`, `property`.`name` AS `name`, `property`.`id` AS `propertyId`, `property`.`description` AS `description`, `property`.`address` AS `address`, `property`.`latitude` AS `latitude`, `property`.`longitude` AS `longitude`, `property`.`type` AS `type`, `property`.`avaliable` AS `avaliable`, `property`.`vrooms` AS `vrooms`, `property`.`date_created` AS `date_created`, `property`.`price_day` AS `price_day`, `property`.`price_month` AS `price_month`, `property`.`price_year` AS `price_year`, `property`.`discount_price` AS `discount_price`, avg(`review`.`rating`) AS `avg_rating`, count(`facility`.`id`) AS `count_facility`, `image`.`image` AS `image`, `users`.`name` AS `ownerName`, `users`.`email` AS `email`, `users`.`phone` AS `phone` FROM ((((`property` left join `review` on((`review`.`propertyId` = `property`.`id`))) join `facility` on((`facility`.`propertyId` = `property`.`id`))) join `image` on((`image`.`propertyId` = `property`.`id`))) join `users` on((`users`.`id` = `property`.`ownerId`))) GROUP BY `property`.`id` ;
 
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `q_review`
+-- Structure for view `q_review`
 --
 DROP TABLE IF EXISTS `q_review`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_review`  AS SELECT `review`.`id` AS `id`, `review`.`userId` AS `userId`, `review`.`propertyId` AS `propertyId`, `review`.`review` AS `review`, `review`.`rating` AS `rating`, `review`.`date` AS `date`, `users`.`name` AS `name` FROM (`review` join `users` on(`review`.`userId` = `users`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `q_review`  AS SELECT `review`.`id` AS `id`, `review`.`userId` AS `userId`, `review`.`propertyId` AS `propertyId`, `review`.`review` AS `review`, `review`.`rating` AS `rating`, `review`.`date` AS `date`, `users`.`name` AS `name` FROM (`review` join `users` on((`review`.`userId` = `users`.`id`))) ;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `bill`
+-- Indexes for table `bill`
 --
 ALTER TABLE `bill`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `booking`
+-- Indexes for table `booking`
 --
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `facility`
+-- Indexes for table `facility`
 --
 ALTER TABLE `facility`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `facility_list`
+-- Indexes for table `facility_list`
 --
 ALTER TABLE `facility_list`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `failed_jobs`
+-- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
--- Indeks untuk tabel `favorite`
+-- Indexes for table `favorite`
 --
 ALTER TABLE `favorite`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `image`
+-- Indexes for table `image`
 --
 ALTER TABLE `image`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `invoice`
+-- Indexes for table `invoice`
 --
 ALTER TABLE `invoice`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `migrations`
+-- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `oauth_access_tokens`
+-- Indexes for table `oauth_access_tokens`
 --
 ALTER TABLE `oauth_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_access_tokens_user_id_index` (`user_id`);
 
 --
--- Indeks untuk tabel `oauth_auth_codes`
+-- Indexes for table `oauth_auth_codes`
 --
 ALTER TABLE `oauth_auth_codes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_auth_codes_user_id_index` (`user_id`);
 
 --
--- Indeks untuk tabel `oauth_clients`
+-- Indexes for table `oauth_clients`
 --
 ALTER TABLE `oauth_clients`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_clients_user_id_index` (`user_id`);
 
 --
--- Indeks untuk tabel `oauth_personal_access_clients`
+-- Indexes for table `oauth_personal_access_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `oauth_refresh_tokens`
+-- Indexes for table `oauth_refresh_tokens`
 --
 ALTER TABLE `oauth_refresh_tokens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`);
 
 --
--- Indeks untuk tabel `password_resets`
+-- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
--- Indeks untuk tabel `personal_access_tokens`
+-- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
@@ -817,130 +828,130 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
--- Indeks untuk tabel `property`
+-- Indexes for table `property`
 --
 ALTER TABLE `property`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `review`
+-- Indexes for table `review`
 --
 ALTER TABLE `review`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `review_userid_propertyid_unique` (`userId`,`propertyId`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- Indeks untuk tabel `withdraw`
+-- Indexes for table `withdraw`
 --
 ALTER TABLE `withdraw`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `bill`
+-- AUTO_INCREMENT for table `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `booking`
+-- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `facility`
+-- AUTO_INCREMENT for table `facility`
 --
 ALTER TABLE `facility`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT untuk tabel `facility_list`
+-- AUTO_INCREMENT for table `facility_list`
 --
 ALTER TABLE `facility_list`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT untuk tabel `failed_jobs`
+-- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `favorite`
+-- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `image`
+-- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT untuk tabel `invoice`
+-- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `migrations`
+-- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
--- AUTO_INCREMENT untuk tabel `oauth_clients`
+-- AUTO_INCREMENT for table `oauth_clients`
 --
 ALTER TABLE `oauth_clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `oauth_personal_access_clients`
+-- AUTO_INCREMENT for table `oauth_personal_access_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `personal_access_tokens`
+-- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `property`
+-- AUTO_INCREMENT for table `property`
 --
 ALTER TABLE `property`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `review`
+-- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
--- AUTO_INCREMENT untuk tabel `withdraw`
+-- AUTO_INCREMENT for table `withdraw`
 --
 ALTER TABLE `withdraw`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

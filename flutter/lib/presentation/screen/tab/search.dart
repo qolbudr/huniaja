@@ -123,12 +123,14 @@ class _TabSearchState extends State<TabSearch> {
                             SizedBox(height: 20),
                             Column(
                               children: List.generate(data.data.property.length, 
-                                (index) => CardHotel(
+                                (index) => Container(
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  child: CardHotel(
                                   property: data.data.property[index], 
                                   onTap: () => Navigator.push(context, MaterialPageRoute(
                                     builder: (context) => Detail(property: data.data.property[index])
                                   )) 
-                                ) 
+                                )) 
                               ),
                             ),
                           ],

@@ -19,7 +19,7 @@ class Book extends StatefulWidget {
 }
 
 class _BookState extends State<Book> {
-  String type = "0";
+  String type = "1";
   String checkInDay = DateTime.now().toLocal().toString();
   String checkOutDay = DateTime.now().add(Duration(days: 1)).toLocal().toString();
   final checkInDays = TextEditingController();
@@ -93,12 +93,14 @@ class _BookState extends State<Book> {
                         autoWidth: true,
                         unSelectedColor: Theme.of(context).canvasColor,
                         buttonLables: [
-                          "Harian",
+                          if(widget.property.priceDay != null)
+                            "Harian",
                           "Bulanan",
                           "Tahunan",
                         ],
                         buttonValues: [
-                          "0",
+                          if(widget.property.priceDay != null)
+                            "0",
                           "1",
                           "2",
                         ],
@@ -107,59 +109,60 @@ class _BookState extends State<Book> {
                             type = value;
                           });
                         },
-                        defaultSelected: "0",
+                        defaultSelected: "1",
                         selectedColor: primaryColor,
                       ),
                     ],
                   ),
                   SizedBox(height: 10),
                   if(type == "0")
-                    Column(
-                      children: [
-                        TimePicker(
-                          controller: checkInDays,
-                          initialDate: DateTime.parse(checkInDay),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                          label: "Check In",
-                          icon: Icons.calendar_today,
-                          onChanged: (data) => setState(() {
-                            checkInDay = data;
-                            checkOutDay = DateTime.parse(data).add(Duration(days: 1)).toLocal().toString();
-                            checkOutDays.text = "";
-                            diff = null;
-                          }),
-                        ),
-                        SizedBox(height: 10),
-                        TimePicker(
-                          controller: checkOutDays,
-                          initialDate: DateTime.parse(checkOutDay),
-                          firstDate: DateTime.parse(checkOutDay),
-                          lastDate: DateTime(2100),
-                          label: "Check Out",
-                          icon: Icons.calendar_today,
-                          onChanged: (data) => setState(() {
-                            checkOutDay = data;
-                            DateTime checkin = DateTime.parse(checkInDay);
-                            DateTime checkout = DateTime.parse(checkOutDay);
-                            diff = checkout.difference(checkin).inDays.toString();
-                          }),
-                        ),
-                        SizedBox(height: 20),
-                        Button(text: "Pesan", color: primaryColor, onPressed: diff == null ? null : () async {
-                          try {
-                            String data = await ApiService().payDay(authLogin.authLogin.token, authLogin.authLogin.user.id.toString(), widget.property.id.toString(), diff);
-                            Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) => Message(data)
-                            ));
-                          } catch(e) {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => Message(e.toString())
-                            ));
-                          }
-                        })
-                      ],
-                    ),
+                    if(widget.property.priceDay != null)
+                      Column(
+                        children: [
+                          TimePicker(
+                            controller: checkInDays,
+                            initialDate: DateTime.parse(checkInDay),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2100),
+                            label: "Check In",
+                            icon: Icons.calendar_today,
+                            onChanged: (data) => setState(() {
+                              checkInDay = data;
+                              checkOutDay = DateTime.parse(data).add(Duration(days: 1)).toLocal().toString();
+                              checkOutDays.text = "";
+                              diff = null;
+                            }),
+                          ),
+                          SizedBox(height: 10),
+                          TimePicker(
+                            controller: checkOutDays,
+                            initialDate: DateTime.parse(checkOutDay),
+                            firstDate: DateTime.parse(checkOutDay),
+                            lastDate: DateTime(2100),
+                            label: "Check Out",
+                            icon: Icons.calendar_today,
+                            onChanged: (data) => setState(() {
+                              checkOutDay = data;
+                              DateTime checkin = DateTime.parse(checkInDay);
+                              DateTime checkout = DateTime.parse(checkOutDay);
+                              diff = checkout.difference(checkin).inDays.toString();
+                            }),
+                          ),
+                          SizedBox(height: 20),
+                          Button(text: "Pesan", color: primaryColor, onPressed: diff == null ? null : () async {
+                            try {
+                              String data = await ApiService().payDay(authLogin.authLogin.token, authLogin.authLogin.user.id.toString(), widget.property.id.toString(), diff);
+                              Navigator.pushReplacement(context, MaterialPageRoute(
+                                builder: (context) => Message(data)
+                              ));
+                            } catch(e) {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => Message(e.toString())
+                              ));
+                            }
+                          })
+                        ],
+                      ),
 
                   if(type == "1")
                     Column(
@@ -204,7 +207,7 @@ class _BookState extends State<Book> {
                         SizedBox(height: 20),
                         Button(text: "Pesan", color: primaryColor, onPressed: () async {
                           try {
-                            var price = widget.property.priceMonth;
+                            var price = widget.property.discountPrice ?? widget.property.priceMonth;
                             String data = await ApiService().payMonth(authLogin.authLogin.token, authLogin.authLogin.user.id.toString(), widget.property.id.toString(), monthDuration, price.toString());
                             Navigator.pushReplacement(context, MaterialPageRoute(
                               builder: (context) => Message(data)

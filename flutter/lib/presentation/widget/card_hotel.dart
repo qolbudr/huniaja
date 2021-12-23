@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manpro/config/app.dart';
 import 'package:manpro/model/booking.dart';
 import 'package:manpro/model/property.dart';
+import 'package:manpro/presentation/widget/badge.dart';
 import 'package:manpro/presentation/widget/rating.dart';
 import 'package:intl/intl.dart';
 import 'package:manpro/presentation/widget/shimmer.dart';
@@ -25,6 +26,19 @@ class CardHotel extends StatelessWidget {
               height: 200,
               fit: BoxFit.cover
             )
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              if(property.priceDay != null)
+                Badge(text: "Harian", color: primaryColor),
+
+              if(property.priceMonth != null)
+                Badge(text: "Bulanan", color: primaryColor),
+
+              if(property.priceYear != null)
+                Badge(text: "Tahunan", color: primaryColor),
+            ]
           ),
           SizedBox(height: 10),
           Row(
@@ -57,14 +71,20 @@ class CardHotel extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  if(property.discountPrice != null)
+                    Text(
+                      NumberFormat.compactCurrency(locale: 'ID').format(property.priceMonth), 
+                      style: TextStyle(fontSize: 12, letterSpacing: 0.1, color: Colors.black, decoration: TextDecoration.lineThrough),
+                      maxLines: 1,
+                    ),
                   Text(
-                    NumberFormat.compactCurrency(locale: 'ID').format(property.priceMonth), 
-                    style: TextStyle(fontSize: 20, letterSpacing: 0.1, color: Colors.black),
+                    NumberFormat.compactCurrency(locale: 'ID').format(property.discountPrice ?? property.priceMonth), 
+                    style: TextStyle(fontSize: 17, letterSpacing: 0.1, color: Colors.black),
                     maxLines: 1,
                   ),
                   Text(
                     "per bulan",
-                     style: TextStyle(fontSize: 14, letterSpacing: 0.1, color: Color(0xffbfbfbf)),
+                     style: TextStyle(fontSize: 10, letterSpacing: 0.1, color: Color(0xffbfbfbf)),
                   )
                 ],
               )
