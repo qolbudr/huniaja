@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:manpro/config/app.dart';
 import 'package:manpro/model/owner_booking.dart';
 import 'package:manpro/presentation/widget/button.dart';
+import 'package:manpro/presentation/widget/snackbar.dart';
 import 'package:manpro/presentation/widget/rating.dart';
 import 'package:manpro/provider/auth.dart';
 import 'package:manpro/service/api_service.dart';
@@ -50,9 +51,13 @@ class _TabOwnerBookingState extends State<TabOwnerBooking> {
                               children: [
                                 ButtonExSm(text: Icon(Icons.check), color: Colors.green, onPressed : () => {
                                   ApiService().confirmationBooking(authLogin.authLogin.token, data.booking.booking[index].bookingId, "accepted"),
+                                  showSnackbar(context, "Berhasil disetujui")
                                 }),
                                 SizedBox(width: 5),
-                                ButtonExSm(text: Icon(Icons.close), color: Colors.red, onPressed : () => ApiService().confirmationBooking(authLogin.authLogin.token, data.booking.booking[index].id, "deny"))
+                                ButtonExSm(text: Icon(Icons.close), color: Colors.red, onPressed : () => {
+                                  ApiService().confirmationBooking(authLogin.authLogin.token, data.booking.booking[index].id, "deny"),
+                                  showSnackbar(context, "Berhasil ditolak")
+                                }),
                               ],
                             ),
                           if(data.booking.booking[index].status == 1)
