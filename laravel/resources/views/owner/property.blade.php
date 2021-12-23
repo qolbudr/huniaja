@@ -127,7 +127,7 @@
                       <input type="number" class="form-control" placeholder="Harga (Harian)" name="price_day">
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month">
+                      <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month" required>
                     </div>
                     <div class="form-group col-12">
                       <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year">
@@ -192,7 +192,7 @@
                     <input type="number" class="form-control" placeholder="Harga (Harian)" name="price_day" id="editPriceDay">
                   </div>
                   <div class="form-group col-md-6">
-                    <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month" id="editPriceMonth">
+                    <input type="number" class="form-control" placeholder="Harga (Bulanan)" name="price_month" id="editPriceMonth" required>
                   </div>
                   <div class="form-group col-12">
                     <input type="number" class="form-control" placeholder="Harga (Tahunan)" name="price_year" id="editPriceYear">

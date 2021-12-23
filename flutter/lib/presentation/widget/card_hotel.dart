@@ -130,7 +130,7 @@ class CardHotelBooking extends StatelessWidget {
                     maxLines: 1,
                   ),
                   SizedBox(height: 5),
-                  RatingStar(count: property.avgRating),
+                  RatingStar(count: property.avgRating ?? 0),
                   SizedBox(height: 5),
                   Row(
                     children: [

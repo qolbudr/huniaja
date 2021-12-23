@@ -79,6 +79,13 @@ class _TabOwnerBillState extends State<TabOwnerBill> {
                                                 color: Colors.green,
                                                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                                                 child: Text("Lunas", style: textWhiteTheme.subtitle2)
+                                              ),
+
+                                            if(data[index].status == 0)
+                                              Container(
+                                                color: Colors.red,
+                                                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                                child: Text("Belum Lunas", style: textWhiteTheme.subtitle2)
                                               )
                                           ],
                                         ),

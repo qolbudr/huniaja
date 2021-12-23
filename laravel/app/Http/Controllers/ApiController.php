@@ -61,7 +61,7 @@ class ApiController extends Controller
     public function validateRegisterForm(Request $request)
     {
         $rules = [
-            'name'                  => 'required|min:6|max:35',
+            'name'                  => 'required|min:3|max:35',
             'email'                 => 'required|email|unique:users,email',
             'password'              => 'required|min:6|confirmed',
             'role'                  => 'required',
@@ -69,7 +69,7 @@ class ApiController extends Controller
 
         $messages = [
             'name.required'         => 'Nama Lengkap wajib diisi',
-            'name.min'              => 'Nama lengkap minimal 6 karakter',
+            'name.min'              => 'Nama lengkap minimal 3 karakter',
             'name.max'              => 'Nama lengkap maksimal 35 karakter',
             'email.required'        => 'Email wajib diisi',
             'email.email'           => 'Email tidak valid',
@@ -172,6 +172,20 @@ class ApiController extends Controller
         $user = DB::table('users')->where('id', $request->userId)->first();
         $property = DB::table('property')->where('id', $request->propertyId)->first();
         $duration = $request->duration;
+        $roomNumber = null;
+
+        for($i = 1; $i <= $property->total_rooms; $i++) {
+          $count = DB::table('booking')->where('propertyId', $request->propertyId)->where('status', 1)->where('room', $i)->count();
+
+          if($count == 0) {
+            $roomNumber = $i;
+            break;
+          }
+        }
+
+        if(!isset($roomNumber)) {
+          return response()->json(['message' => "Kamar sudah tidak tersedia"], 500);
+        }
 
 
         if ($user->balance < $property->price_day * $duration) {
@@ -184,6 +198,7 @@ class ApiController extends Controller
             'userId' => $user->id,
             'propertyId' => $request->propertyId,
             'date' => date('Y-m-d'),
+            'room' => $roomNumber,
             'status' => 0
         ]);
 
@@ -210,6 +225,21 @@ class ApiController extends Controller
         $duration = (int) $request->duration;
         $price = (int) $request->price;
 
+        $roomNumber = null;
+
+        for($i = 1; $i <= $property->total_rooms; $i++) {
+          $count = DB::table('booking')->where('propertyId', $request->propertyId)->where('status', 1)->where('room', $i)->count();
+
+          if($count == 0) {
+            $roomNumber = $i;
+            break;
+          }
+        }
+
+        if(!isset($roomNumber)) {
+          return response()->json(['message' => "Kamar sudah tidak tersedia"], 500);
+        }
+
         if ($users->balance < $price) {
             return response()->json(['message' => "Saldo anda tidak cukup untuk memesan property"], 500);
         }
@@ -220,6 +250,7 @@ class ApiController extends Controller
             'userId' => $users->id,
             'propertyId' => $request->propertyId,
             'date' => date('Y-m-d'),
+            'room' => $roomNumber,
             'status' => 0
         ]);
 
@@ -257,6 +288,21 @@ class ApiController extends Controller
         $year = (int) $request->year;
         $price =  (int) $request->price;
 
+        $roomNumber = null;
+
+        for($i = 1; $i <= $property->total_rooms; $i++) {
+          $count = DB::table('booking')->where('propertyId', $request->propertyId)->where('status', 1)->where('room', $i)->count();
+
+          if($count == 0) {
+            $roomNumber = $i;
+            break;
+          }
+        }
+
+        if(!isset($roomNumber)) {
+          return response()->json(['message' => "Kamar sudah tidak tersedia"], 500);
+        }
+
         if ($users->balance < $price) {
             return response()->json(['message' => "Saldo anda tidak cukup untuk memesan property"], 500);
         }
@@ -267,6 +313,7 @@ class ApiController extends Controller
             'userId' => $users->id,
             'propertyId' => $request->propertyId,
             'date' => date('Y-m-d'),
+            'room' => $roomNumber,
             'status' => 0
         ]);
 
@@ -304,7 +351,7 @@ class ApiController extends Controller
         $userId = $request->userId;
 
         $rules = [
-            'name'                  => 'required|min:6|max:15',
+            'name'                  => 'required|min:3|max:15',
             'email'                 => 'required|email|unique:users,email,' . $userId,
             'dob'                   => 'required',
             'address'               => 'required',
@@ -313,7 +360,7 @@ class ApiController extends Controller
 
         $messages = [
             'name.required'         => 'Nama Lengkap wajib diisi',
-            'name.min'              => 'Nama lengkap minimal 6 karakter',
+            'name.min'              => 'Nama lengkap minimal 3 karakter',
             'name.max'              => 'Nama lengkap maksimal 15 karakter',
             'email.required'        => 'Email wajib diisi',
             'email.email'           => 'Email tidak valid',
@@ -493,7 +540,7 @@ class ApiController extends Controller
     {
         $ownerId = $req->userId;
         $data = [
-            "booking" => DB::table('q_booking')->where('status', 0)->where('ownerId', $ownerId)->get()
+            "booking" => DB::table('q_booking')->where('ownerId', $ownerId)->get()
         ];
         return response()->json(['message' => "Fetching data berhasil", "booking" => $data], 200);
     }
@@ -504,9 +551,11 @@ class ApiController extends Controller
             'name'                  => 'required',
             'description'           => 'required',
             'address'               => 'required',
-            'price_day'             => 'required|integer',
+            'price_day'             => 'integer|nullable',
             'price_month'           => 'required|integer',
-            'price_year'            => 'required|integer',
+            'price_year'            => 'integer|nullable',
+            'total_rooms'           => 'required|integer',
+            'discount_price'        => 'integer|nullable',
             'type'                  => 'required',
         ];
 
@@ -514,13 +563,13 @@ class ApiController extends Controller
             'name.required'          => 'Nama property wajib diisi',
             'description.required'   => 'Deskripsi wajib diisi',
             'address.required'       => 'Alamat wajib diisi',
-            'price_day.confirmed'    => 'Harga harian wajib diisi',
             'price_day.integer'      => 'Harga harian berupa angka',
-            'price_month.confirmed'  => 'Harga bulanan wajib diisi',
+            'price_month.required'   => 'Harga bulanan wajib diisi',
             'price_month.integer'    => 'Harga bulanan berupa angka',
-            'price_year.confirmed'   => 'Harga tahunan wajib diisi',
             'price_year.integer'     => 'Harga tahunan berupa angka',
             'type.required'          => 'Tipe harus diisi',
+            'total_rooms.integer'    => 'Total kamar berupa angka',
+            'total_rooms.required'   => 'Total kamar wajib diisi',
         ];
 
         $validator = Validator::make($req->all(), $rules, $messages);
@@ -550,6 +599,8 @@ class ApiController extends Controller
             "price_day" => $req->price_day,
             "price_month" => $req->price_month,
             "price_year" => $req->price_year,
+            "total_rooms" => $req->total_rooms,
+            "discount_price" => $req->discount_price
         ]);
 
         return response()->json(['message' => "Data berhasil ditambahkan", "id" => $id], 200);
@@ -561,9 +612,11 @@ class ApiController extends Controller
             'name'                  => 'required',
             'description'           => 'required',
             'address'               => 'required',
-            'price_day'             => 'required|integer',
+            'price_day'             => 'integer|nullable',
             'price_month'           => 'required|integer',
-            'price_year'            => 'required|integer',
+            'price_year'            => 'integer|nullable',
+            'total_rooms'           => 'required|integer',
+            'discount_price'        => 'integer|nullable',
             'type'                  => 'required',
         ];
 
@@ -571,13 +624,13 @@ class ApiController extends Controller
             'name.required'          => 'Nama property wajib diisi',
             'description.required'   => 'Deskripsi wajib diisi',
             'address.required'       => 'Alamat wajib diisi',
-            'price_day.confirmed'    => 'Harga harian wajib diisi',
             'price_day.integer'      => 'Harga harian berupa angka',
-            'price_month.confirmed'  => 'Harga bulanan wajib diisi',
+            'price_month.required'   => 'Harga bulanan wajib diisi',
             'price_month.integer'    => 'Harga bulanan berupa angka',
-            'price_year.confirmed'   => 'Harga tahunan wajib diisi',
             'price_year.integer'     => 'Harga tahunan berupa angka',
             'type.required'          => 'Tipe harus diisi',
+            'total_rooms.integer'    => 'Total kamar berupa angka',
+            'total_rooms.required'   => 'Total kamar wajib diisi',
         ];
 
         $validator = Validator::make($req->all(), $rules, $messages);
@@ -608,6 +661,8 @@ class ApiController extends Controller
                 "price_day" => $req->price_day,
                 "price_month" => $req->price_month,
                 "price_year" => $req->price_year,
+                "total_rooms" => $req->total_rooms,
+                "discount_price" => $req->discount_price
             ]);
 
         return response()->json(['message' => "Data berhasil diupdate"], 200);
@@ -733,5 +788,47 @@ class ApiController extends Controller
     {
         DB::table('favorite')->where("propertyId", $req->propertyId)->where("userId", $req->userId)->delete();
         return response()->json(['message' => "Successfully removed from favorite"], 200);
+    }
+
+    public function confirmationBooking(Request $req) {
+        $bill = DB::table('bill')->where('bookingId', $req->bookingId)->where('status', 1)->first();
+        $property = DB::table('property')->where('id', $bill->propertyId)->first();
+        $owner = DB::table('users')->where('id', $property->ownerId)->first();
+        $userId = $bill->userId;
+        
+        $users = DB::table('users')->where('id', $userId)->first();
+
+        $bookingStatusNumber = 0;
+        if ($req->status == "accepted") {
+            $bookingStatusNumber = 1;
+            $balance = $owner->balance + $bill->price;
+            DB::table('users')->where('id', $owner->id)->update(['balance' => $balance]);
+            Session::flash('success', 'Berhasil menyutujui permintaan');
+        } else {
+            $bookingStatusNumber = 2;
+            $balance = $users->balance + $bill->price;
+            DB::table('users')->where('id', $userId)->update(['balance' => $balance]);
+            Session::flash('success', 'Berhasil membatalkan permintaan');
+        }
+        DB::table('booking')
+            ->where('id', $req->bookingId)
+            ->update([
+                'status' => $bookingStatusNumber
+            ]);
+    }
+
+    public function uploadOwnership(Request $req)
+    {
+        $id = $req->propertyId;
+        $file = $req->file('file');
+
+        $property = DB::table('property')->where('id', $id)->first();
+        $path  = $property->id . '/';
+        $tujuan_upload = 'public/ownership/' . $path;
+        $rand = rand(9999, 99999);
+        $file->move($tujuan_upload, $rand . '.' . $file->getClientOriginalExtension());
+        DB::table('property')->where('id', $property->id)->update([
+          'ownership_proof' => $rand . '.' . $file->getClientOriginalExtension()
+        ]);
     }
 }

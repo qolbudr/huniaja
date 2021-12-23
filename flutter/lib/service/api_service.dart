@@ -506,6 +506,23 @@ class ApiService  {
     }
   }
 
+  Future uploadOwnership(File file, token, propertyId, userId) async {
+    print("hit");
+    var request = http.MultipartRequest("POST", Uri.parse("${_apiURL}/api/property/ownership/upload"));
+    final files = await http.MultipartFile.fromPath("file", file.path);
+    request.headers['Authorization'] = "Bearer ${token}";
+    request.fields['userId'] = userId.toString();
+    request.fields['propertyId'] = propertyId.toString();
+    request.files.add(files);
+    final res = await request.send();
+    final resData = await res.stream.toBytes();
+    final resBody = String.fromCharCodes(resData);
+    print(resBody);
+    if(res.statusCode != 200){
+      return throw jsonDecode(resBody)['message'];
+    }
+  }
+
   Future<void> deleteImage(imageId, token) async {
     print("hit");
     final res = await http.post(Uri.parse("${_apiURL}/api/property/image/${imageId}/delete"), headers: {
@@ -529,7 +546,7 @@ class ApiService  {
     }
   }
 
-  Future insertProperty({token, userId, name, description, address, latitude, longitude, vrooms, priceMonth, priceDay, priceYear, type}) async {
+  Future insertProperty({token, userId, name, description, address, latitude, longitude, vrooms, priceMonth, priceDay, priceYear, type, discountPrice, totalRoom}) async {
     final response = await http.post(
       Uri.parse(_apiURL + "/api/owner/property/insert"),
       headers: {
@@ -545,6 +562,8 @@ class ApiService  {
         'price_day': priceDay, 
         'price_month': priceMonth,
         'price_year': priceYear,
+        'discount_price': discountPrice,
+        'total_rooms': totalRoom,
         'vrooms': vrooms,
         'type': type,
       },
@@ -578,7 +597,7 @@ class ApiService  {
     }
   }
 
-    Future updateProperty({token, userId, propertyId, name, description, address, latitude, longitude, vrooms, priceMonth, priceDay, priceYear, type}) async {
+    Future updateProperty({token, userId, propertyId, name, description, address, latitude, longitude, vrooms, priceMonth, priceDay, priceYear, type, discountPrice, totalRoom}) async {
     final response = await http.post(
       Uri.parse(_apiURL + "/api/owner/property/$propertyId/update"),
       headers: {
@@ -596,6 +615,8 @@ class ApiService  {
         'price_year': priceYear,
         'vrooms': vrooms,
         'type': type,
+        'total_rooms': totalRoom,
+        'discount_price': discountPrice,
       },
     );
 
@@ -685,6 +706,23 @@ class ApiService  {
       body: {
         "userId": userId,
         "propertyId": propertyId,
+      },
+    );
+
+    if(response.statusCode != 200) {
+      return throw 'Failed to fetch';
+    }
+  }
+
+  Future confirmationBooking(token, bookingId, status) async {
+    final response = await http.post(
+      Uri.parse(_apiURL + "/api/owner/booking/confirmation"),
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+      body: {
+        "status": status,
+        "bookingId": bookingId.toString()
       },
     );
 

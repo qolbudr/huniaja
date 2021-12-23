@@ -468,7 +468,7 @@ if($("#owner-chat-box").length) {
                             <div class="message-center">
                                 <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                     <div class="user-img">
-                                        <img src="${d.face}" class="img-fluid rounded-circle" style="height:40px" width="40px">
+                                        <img src="../public/assets/images/user.jpg" class="img-fluid rounded-circle" style="height:40px" width="40px">
                                         <span class="profile-status online float-right"></span>
                                     </div>
                                     <div class="w-75 d-inline-block v-middle pl-2 py-3">

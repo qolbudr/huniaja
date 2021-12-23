@@ -41,6 +41,8 @@ class _EditPropertyState extends State<EditProperty> {
   final priceDaily = TextEditingController();
   final priceMonthly = TextEditingController();
   final priceYearly = TextEditingController();
+  final totalRoom = TextEditingController();
+  final discountPrice = TextEditingController();
   String latitude = "";
   String longitude = "";
   bool isUser = false;
@@ -59,6 +61,8 @@ class _EditPropertyState extends State<EditProperty> {
     priceDaily.dispose();
     priceMonthly.dispose();
     priceYearly.dispose();
+    totalRoom.dispose();
+    discountPrice.dispose();
     super.dispose();
   }
 
@@ -91,9 +95,11 @@ class _EditPropertyState extends State<EditProperty> {
       description.text = property.propertyOwner.description;
       address.text = property.propertyOwner.address;
       virtualRoom.text = property.propertyOwner.vrooms;
-      priceDaily.text = property.propertyOwner.priceDay.toString();
+      priceDaily.text = "${property.propertyOwner.priceDay ?? ''}";
       priceMonthly.text = property.propertyOwner.priceMonth.toString();
-      priceYearly.text = property.propertyOwner.priceYear.toString();
+      priceYearly.text = "${property.propertyOwner.priceYear ?? ''}";
+      totalRoom.text = property.propertyOwner.totalRoom.toString();
+      discountPrice.text = "${property.propertyOwner.discountPrice ?? ''}";
       _currentType = property.propertyOwner.type.toString();
       propertyDetails.img.imageProperty
           .add(ImageProperty(id: null, imageName: "Widget", propertyId: null));
@@ -263,6 +269,8 @@ class _EditPropertyState extends State<EditProperty> {
                           priceYear: priceYearly.text,
                           priceDay: priceDaily.text,
                           type: _currentType,
+                          discountPrice: discountPrice.text,
+                          totalRoom: totalRoom.text
                         );
                         setState(() {
                           isLoading = false;
@@ -300,6 +308,9 @@ class _EditPropertyState extends State<EditProperty> {
                             onTap: () => openLocationPicker(context)),
                         SizedBox(height: 10),
                         Input(
+                            hintText: "Jumlah Kamar", controller: totalRoom),
+                        SizedBox(height: 10),
+                        Input(
                             hintText: "Virtual Room", controller: virtualRoom),
                         SizedBox(height: 10),
                         Input(
@@ -312,6 +323,10 @@ class _EditPropertyState extends State<EditProperty> {
                         Input(
                             hintText: "Harga (Tahunan)",
                             controller: priceYearly),
+                        SizedBox(height: 10),
+                        Input(
+                            hintText: "Harga Diskon (Bulanan)",
+                            controller: discountPrice),
                         SizedBox(height: 10),
                         Select(
                           icon: Icons.hotel,

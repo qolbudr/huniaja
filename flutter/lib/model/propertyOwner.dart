@@ -14,6 +14,8 @@ class PropertyOwner {
   int priceDay;
   int priceMonth;
   int priceYear;
+  int totalRoom;
+  int discountPrice;
 
   PropertyOwner.fromJson(Map<String, dynamic> json):
   id = json['id'],
@@ -27,8 +29,10 @@ class PropertyOwner {
   avaliable = json['avaliable'],
   vrooms = json['vrooms'],
   priceDay = json['price_day'],
+  totalRoom = json['total_rooms'],
   priceMonth = json['price_month'],
-  priceYear = json['price_year'];
+  priceYear = json['price_year'],
+  discountPrice = json['discount_price'];
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -41,7 +45,9 @@ class PropertyOwner {
     'avaliable': avaliable,
     'vrooms': vrooms,
     'price_daily': priceDay,
+    'total_rooms': totalRoom,
     'price_monthly': priceMonth,
-    'price_yearly': priceYear
+    'price_yearly': priceYear,
+    'discount_price': discountPrice,
   };
 }

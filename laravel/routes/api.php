@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/property/getFacility/{propertyId}', [ApiController::class, 'getFacility']);
     Route::get('/property/getReview/{propertyId}', [ApiController::class, 'getReview']);
     Route::post('/property/image/upload', [WebFunction::class, 'uploadImageMultiple']);
+    Route::post('/property/ownership/upload', [ApiController::class, 'uploadOwnership']);
     Route::post('/property/image/{imageId}/delete', [WebFunction::class, 'deleteImage']);
     
     Route::post('/property/pay/day', [ApiController::class, 'payDay']);
@@ -63,4 +64,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/owner/withdraw/insert', [ApiController::class, 'requestWithdraw']);
 
     Route::get('/owner/bill/{id}', [ApiController::class, 'getBillByProperty']);
+
+    Route::post('/owner/booking/confirmation', [ApiController::class, 'confirmationBooking']);
 });

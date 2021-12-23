@@ -65,6 +65,7 @@ class BookingElement {
         this.date,
         this.status,
         this.image,
+        this.bookingId
     });
 
     int id;
@@ -85,6 +86,7 @@ class BookingElement {
     int avgRating;
     DateTime date;
     int status;
+    int bookingId;
     String image;
 
     factory BookingElement.fromJson(Map<String, dynamic> json) => BookingElement(
@@ -107,6 +109,7 @@ class BookingElement {
         date: DateTime.parse(json["date"]),
         status: json["status"],
         image: json["image"],
+        bookingId: json["bookingId"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -129,5 +132,6 @@ class BookingElement {
         "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
         "status": status,
         "image": image,
+        "bookingId": bookingId,
     };
 }

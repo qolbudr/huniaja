@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manpro/model/auth_login.dart';
 import 'package:manpro/model/location_item.dart';
-import 'package:manpro/presentation/screen/owner/next_form_property.dart';
+import 'package:manpro/presentation/screen/owner/ownership.dart';
 import 'package:manpro/presentation/screen/owner/location_picker.dart';
 import 'package:manpro/presentation/widget/input.dart';
 import 'package:manpro/presentation/widget/link.dart';
@@ -25,6 +25,8 @@ class _AddPropertyState extends State<AddProperty> {
   final priceDaily = TextEditingController();
   final priceMonthly = TextEditingController();
   final priceYearly = TextEditingController();
+  final totalRoom = TextEditingController();
+  final discountPrice = TextEditingController();
   String latitude = "";
   String longitude = "";
   bool isUser = false;
@@ -87,9 +89,11 @@ class _AddPropertyState extends State<AddProperty> {
                           priceYear: priceYearly.text,
                           priceDay: priceDaily.text,
                           type: _currentType,
+                          discountPrice: discountPrice.text,
+                          totalRoom: totalRoom.text
                         );
                         print(data['id']);
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NextFormProperty(id: data['id'],)));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Ownership(id: data['id'],)));
                       } catch (e) {
                         return showSnackbar(context, e.toString());
                       }
@@ -109,10 +113,11 @@ class _AddPropertyState extends State<AddProperty> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(height: 10),
                           Input(hintText: "Nama", controller: name),
                           SizedBox(height: 10),
                           TextArea(hintText: "Deskripsi", controller: description),
+                          SizedBox(height: 10),
+                          Input(hintText: "Jumlah Kamar",  controller: totalRoom),
                           SizedBox(height: 10),
                           Input(hintText: "Alamat", readOnly: true, controller: address, onTap: () => openLocationPicker(context)),
                           SizedBox(height: 10),
@@ -123,6 +128,8 @@ class _AddPropertyState extends State<AddProperty> {
                           Input(hintText: "Harga (Bulanan)", controller: priceMonthly),
                           SizedBox(height: 10),
                           Input(hintText: "Harga (Tahunan)", controller: priceYearly),
+                          SizedBox(height: 10),
+                          Input(hintText: "Harga Diskon (Bulanan)", controller: discountPrice),
                           SizedBox(height: 10),
                           Select(
                             icon: Icons.hotel,

@@ -8,7 +8,12 @@ import 'package:manpro/service/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
 
-class TabOwnerBooking extends StatelessWidget {
+class TabOwnerBooking extends StatefulWidget {
+  @override
+  _TabOwnerBookingState createState() => _TabOwnerBookingState();
+}
+
+class _TabOwnerBookingState extends State<TabOwnerBooking> {
   Widget build(BuildContext context) {
     return Consumer<AuthNotifier>(
       builder: (context, authLogin, child) {
@@ -35,18 +40,35 @@ class TabOwnerBooking extends StatelessWidget {
                         children: [
                           Text(property[index].name, style: textTheme.headline6, maxLines: 1),
                           SizedBox(height: 5),
-                          RatingStar(count: property[index].avgRating),
+                          RatingStar(count: property[index].avgRating ?? 0),
                           SizedBox(height: 5),
                           Text(property[index].description, style: textTheme.subtitle2, maxLines: 3),
                           SizedBox(height: 15),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ButtonExSm(text: Icon(Icons.check), color: Colors.green, onPressed : () {}),
-                              SizedBox(width: 5),
-                              ButtonExSm(text: Icon(Icons.close), color: Colors.red, onPressed : () {})
-                            ],
-                          )
+                          if(data.booking.booking[index].status == 0)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ButtonExSm(text: Icon(Icons.check), color: Colors.green, onPressed : () => {
+                                  ApiService().confirmationBooking(authLogin.authLogin.token, data.booking.booking[index].bookingId, "accepted"),
+                                }),
+                                SizedBox(width: 5),
+                                ButtonExSm(text: Icon(Icons.close), color: Colors.red, onPressed : () => ApiService().confirmationBooking(authLogin.authLogin.token, data.booking.booking[index].id, "deny"))
+                              ],
+                            ),
+                          if(data.booking.booking[index].status == 1)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ButtonExSm(text: Text("Diterima"), color: Colors.green, onPressed : () {}),
+                              ],
+                            ),
+                          if(data.booking.booking[index].status == 2)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ButtonExSm(text: Text("Ditolak"), color: Colors.red, onPressed : () {}),
+                              ],
+                            ),
                         ],
                       )
                     );
