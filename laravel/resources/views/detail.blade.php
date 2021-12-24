@@ -43,6 +43,19 @@
           <div class="place-about">
             <h5 class="font-weight-bold mb-2">Tentang</h5>
             <p class="no-margin text-justify">{{ $detail->description }}</p>
+            <p class="no-margin text-justify my-2">
+              @if(isset($detail->price_day))
+                Harga Harian : Rp. {{ number_format($detail->price_day, 0, ',', '.') }}
+              @endif
+
+              @if(isset($detail->price_month))
+                <br>Harga Bulanan : Rp. {{ number_format($detail->price_month, 0, ',', '.') }}
+              @endif
+
+              @if(isset($detail->price_year))
+                <br>Harga Tahunan : Rp. {{ number_format($detail->price_year, 0, ',', '.') }}
+              @endif
+            </p>
           </div>
           @if($detail->vrooms != null)
           <hr class="my-4">

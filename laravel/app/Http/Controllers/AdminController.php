@@ -24,6 +24,24 @@ class AdminController extends Controller
         ]);
     }
 
+    public function booking() {
+        $data = [
+            "booking" => DB::table('booking')
+                ->join('property', 'property.id', '=', 'booking.propertyId')
+                ->select(
+                    'booking.id as id',
+                    'booking.room as room',
+                    'property.id as propertyId',
+                    'userId',
+                    'booking.date as date',
+                    'property.name as name',
+                    'booking.status as status'
+                )
+                ->get()
+        ];
+        return view('admin.booking', $data);
+    }
+
     public function manageUser()
     {
         $users = DB::table('users')->where("role", 0)->get();

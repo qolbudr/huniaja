@@ -133,5 +133,7 @@ Route::middleware(['middleware' => 'admin.auth'])->group(function () {
     Route::get('/admin/withdraw/details/{id}', [AdminController::class, 'withdrawDetail']);
     Route::post('/admin/withdraw/confirmation/{withdrawId}', [AdminController::class, 'withdrawConfirmation']);
     Route::get('/admin/transaction', [AdminController::class, 'showTransaction']);
+    Route::get('/admin/booking', [AdminController::class, 'booking']);
+    Route::get('/admin/booking/information/{userId}', [OwnerController::class, 'getUserIdentity']);
 
 });

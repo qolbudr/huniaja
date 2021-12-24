@@ -104,6 +104,12 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ URL::to('admin/booking') }}">
+                                <i data-feather="book" class="feather-icon"></i>
+                                <span class="hide-menu">Sewa</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ URL::to('admin/property') }}">
                                 <i data-feather="home" class="feather-icon"></i>
                                 <span class="hide-menu">Properti</span>
